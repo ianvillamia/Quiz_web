@@ -1,7 +1,11 @@
-import 'package:Quiz_web/Screens/home.dart';
+
+import 'package:Quiz_web/Services/routing.dart';
+import 'package:fluro/fluro.dart';
+
 import 'package:flutter/material.dart';
 
 void main() {
+  FluroRouter.setupRouter();
   runApp(MyApp());
 }
 
@@ -10,16 +14,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      initialRoute: '/',
+      onGenerateRoute: FluroRouter.router.generator,
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-       
-        primarySwatch: Colors.blue,
-   
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: Home(),
+    
     );
   }
 }
-

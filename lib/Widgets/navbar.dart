@@ -1,9 +1,11 @@
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'material.dart';
 
-class Navbar extends StatelessWidget {
-  const Navbar({Key key}) : super(key: key);
+import 'package:Quiz_web/Services/routing.dart';
 
+class Navbar extends StatelessWidget {
+  var router = Router();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -21,23 +23,38 @@ class Navbar extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                   fontSize: 40),
             ),
-            nav_buttons()
+            nav_buttons(context)
           ],
         ),
       ),
     );
   }
 
-  nav_buttons() {
+  nav_buttons(BuildContext context) {
     return Row(
       children: <Widget>[
-        CustomMaterialButton(
-            function: () {},
+        MaterialButton(
+          color:Colors.green,
+          elevation:0,
+          onPressed: () {        
+          Navigator.pushNamed(context, '/');
+          },
+          child: Text('Home',style:TextStyle(fontSize:15)),
+        ),
+        SizedBox(
+          width: 10,
+        ),
+          MaterialButton(
+            color:Color.fromRGBO(60, 207, 207, 1),
             
-            color: Color.fromRGBO(60, 207, 207, 1),
-            hoverColor: Colors.redAccent,
-            text: 'Log in'),
-       // IconButton(icon: Icon(Icons.search), onPressed: () {}),
+          onPressed: () {
+           
+          Navigator.pushNamed(context, '/quiz');
+          },
+          child: Text('Quiz'),
+        ),
+
+        // IconButton(icon: Icon(Icons.search), onPressed: () {}),
       ],
     );
   }
