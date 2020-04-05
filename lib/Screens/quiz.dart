@@ -5,6 +5,7 @@ import 'package:Quiz_web/Widgets/Quiz-widgets/trueOrFalse.dart';
 import 'package:flutter/material.dart';
 import 'package:Quiz_web/Widgets/navbar.dart';
 import 'package:Quiz_web/Widgets/Quiz-widgets/quiz-Items.dart';
+import 'package:slide_countdown_clock/slide_countdown_clock.dart';
 
 class Quiz extends StatefulWidget {
   const Quiz({Key key}) : super(key: key);
@@ -15,7 +16,6 @@ class Quiz extends StatefulWidget {
 
 class _QuizState extends State<Quiz> {
   QuizItems quizItems = QuizItems();
-
 
   @override
   Widget build(BuildContext context) {
@@ -30,12 +30,17 @@ class _QuizState extends State<Quiz> {
               width: MediaQuery.of(context).size.width * .7,
               child: ListView(
                 children: <Widget>[
-                  MultipleChoice(choices: ["Choice1","Choice2","Choice3","Choice4"],
-                  question: "What does the Fox say",),
-                  Identification(question: "What does the Dog Say?What does the Dog Say?What does the Dog Say?What does the Dog Say?"),
+                  MultipleChoice(
+                    choices: ["Choice1", "Choice2", "Choice3", "Choice4"],
+                    question: "What does the Fox say",
+                  ),
+                  Identification(
+                      question:
+                          "What does the Dog Say?What does the Dog Say?What does the Dog Say?What does the Dog Say?"),
                   FillInTheBlank(
-                    leadingQuestion: "First This is the QUestion before a TextBox",
-                    afterQuestion: "This is the second after the TextBox", 
+                    leadingQuestion:
+                        "First This is the QUestion before a TextBox",
+                    afterQuestion: "This is the second after the TextBox",
                   ),
                   TrueOrFalse(
                     question: "Is the World Round?",
@@ -56,10 +61,19 @@ class _QuizState extends State<Quiz> {
               width: 100,
               color: Colors.red,
               child: Center(
-                  child: Text(
-                'Timer',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              )),
+                child: SlideCountdownClock(
+                  duration: Duration(minutes: 1),
+                  slideDirection: SlideDirection.Down,
+                  separator: ":",
+                  textStyle: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  onDone: () {
+                    // do routing
+                  },
+                ),
+              ),
             ),
           )
         ],
