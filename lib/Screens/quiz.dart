@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:Quiz_web/Widgets/navbar.dart';
 import 'package:Quiz_web/Widgets/Quiz-widgets/quiz-Items.dart';
 import 'package:slide_countdown_clock/slide_countdown_clock.dart';
+import 'package:lite_rolling_switch/lite_rolling_switch.dart';
 
 class Quiz extends StatefulWidget {
   const Quiz({Key key}) : super(key: key);
@@ -55,24 +56,44 @@ class _QuizState extends State<Quiz> {
           ),
           Positioned(
             top: MediaQuery.of(context).size.height * .5,
-            right: 0,
+            right: 50,
             child: Container(
-              height: 100,
               width: 100,
-              color: Colors.red,
-              child: Center(
-                child: SlideCountdownClock(
-                  duration: Duration(minutes: 1),
-                  slideDirection: SlideDirection.Down,
-                  separator: ":",
-                  textStyle: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+              //color: Colors.red,
+              child: Column(
+                children: <Widget>[
+               
+                  LiteRollingSwitch(
+                    //initial value
+                    value: true,
+                    textOn: 'Timer on',
+                    textOff: 'Timer off',
+                    colorOn: Colors.greenAccent[700],
+                    colorOff: Colors.redAccent[700],
+                    iconOn: Icons.alarm_on,
+                    animationDuration: Duration(seconds:1),
+                    iconOff: Icons.alarm_off,
+                    textSize: 10.0,
+                    onChanged: (bool state) {
+                      //Use it to manage the different states
+                      print('Current State of SWITCH IS: $state');
+                    },
                   ),
-                  onDone: () {
-                    // do routing
-                  },
-                ),
+
+                     SlideCountdownClock(
+                    duration: Duration(minutes: 1),
+                    slideDirection: SlideDirection.Down,
+                    separator: ":",
+                    textStyle: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
+                    onDone: () {
+                      // do routing
+                      print('tapos ka na mag quiz noob');
+                    },
+                  ),
+                ],
               ),
             ),
           )
