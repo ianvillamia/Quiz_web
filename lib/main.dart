@@ -1,13 +1,18 @@
 import 'package:Quiz_web/Services/Providers/quizProvider.dart';
 import 'package:Quiz_web/Services/routing.dart';
-import 'package:fluro/fluro.dart';
+
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+
 void main() {
   FluroRouter.setupRouter();
   runApp(MyApp());
+
+
+
+
 }
 
 class MyApp extends StatelessWidget {

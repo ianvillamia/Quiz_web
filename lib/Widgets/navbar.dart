@@ -1,3 +1,4 @@
+import 'package:Quiz_web/Services/Firestore/sampleService.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 
@@ -17,10 +18,10 @@ class Navbar extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             InkWell(
-              onTap: (){
-                  Navigator.pushNamed(context, '/');
+              onTap: () {
+                Navigator.pushNamed(context, '/');
               },
-                          child: Text(
+              child: Text(
                 'QuizApp',
                 style: TextStyle(
                     color: Colors.white,
@@ -38,7 +39,6 @@ class Navbar extends StatelessWidget {
   nav_buttons(BuildContext context) {
     return Row(
       children: <Widget>[
-   
         SizedBox(
           width: 10,
         ),
@@ -52,7 +52,16 @@ class Navbar extends StatelessWidget {
               style:
                   TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
         ),
-
+        MaterialButton(
+          elevation: 0,
+          color: Color.fromRGBO(60, 207, 207, 1),
+          onPressed: () {
+        SampleService().createCollection();
+          },
+          child: Text('TEST BUTTOn',
+              style:
+                  TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+        ),
         // IconButton(icon: Icon(Icons.search), onPressed: () {}),
       ],
     );
