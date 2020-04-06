@@ -1,4 +1,4 @@
-import 'package:Quiz_web/Services/Firestore/sampleService.dart';
+
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 
@@ -56,7 +56,7 @@ class Navbar extends StatelessWidget {
           elevation: 0,
           color: Color.fromRGBO(60, 207, 207, 1),
           onPressed: () {
-        SampleService().createCollection();
+    
           },
           child: Text('TEST BUTTOn',
               style:

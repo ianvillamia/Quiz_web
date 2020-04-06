@@ -1,3 +1,4 @@
+import 'package:Quiz_web/Services/Firestore/quizService.dart';
 import 'package:Quiz_web/Widgets/Quiz-widgets/fillInTheBlanks.dart';
 import 'package:Quiz_web/Widgets/Quiz-widgets/identification.dart';
 import 'package:Quiz_web/Widgets/Quiz-widgets/multipleChoice.dart';
@@ -8,8 +9,11 @@ import 'package:Quiz_web/Widgets/Quiz-widgets/trueOrFalse.dart';
 import 'package:flutter/material.dart';
 import 'package:Quiz_web/Widgets/navbar.dart';
 import 'package:Quiz_web/Widgets/Quiz-widgets/quiz-Items.dart';
-
+import 'package:draggable_scrollbar/draggable_scrollbar.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:Quiz_web/Services/routing.dart';
+import 'package:provider/provider.dart';
+import 'package:Quiz_web/Services/Providers/quizProvider.dart';
 
 class Quiz extends StatefulWidget {
   const Quiz({Key key}) : super(key: key);
@@ -19,6 +23,8 @@ class Quiz extends StatefulWidget {
 }
 
 class _QuizState extends State<Quiz> {
+  bool initCounter = true;
+  final db = Firestore.instance;
   QuizItems quizItems = QuizItems();
 
   @override
@@ -32,30 +38,21 @@ class _QuizState extends State<Quiz> {
               // color: Colors.red,
               height: MediaQuery.of(context).size.height * .8,
               width: MediaQuery.of(context).size.width * .7,
-              child: ListView(
-                children: <Widget>[
-               
-               QuizInfo(
-                 quizTitle: "Sample Quiz Header",
-                 quizInstructions: "This is some insctructions in the quiz to be added.Some are useless some are ok, some are soso",
-                quizCreator: "Kristian Dean E. Villamia",
-               ),
-                  MultipleChoice(
-                    choices: ["Choice1", "Choice2", "Choice3", "Choice4"],
-                    question: "What does the Fox say",
-                  ),
-                  Identification(
-                      question:
-                          "What does the Dog Say?What does the Dog Say?What does the Dog Say?What does the Dog Say?"),
-                  FillInTheBlank(
-                    leadingQuestion:
-                        "First This is the QUestion before a TextBox",
-                    afterQuestion: "This is the second after the TextBox",
-                  ),
-                  TrueOrFalse(
-                    question: "Is the World Round?",
-                  )
-                ],
+              child: StreamBuilder<QuerySnapshot>(
+                stream: db.collection('quiz1').orderBy('order').snapshots(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (snapshot.hasData) {
+                    return Scrollbar(
+                      child: ListView(
+                          children: snapshot.data.documents
+                              .map((doc) => quizItemBuilder(doc: doc))
+                              .toList()),
+                    );
+                  } else {
+                    return Center(child: CircularProgressIndicator());
+                  }
+                },
               ),
             ),
           ),
@@ -70,5 +67,35 @@ class _QuizState extends State<Quiz> {
         ],
       ),
     );
+  }
+
+  Widget quizItemBuilder({DocumentSnapshot doc}) {
+    final _quizProvider = Provider.of<QuizProvider>(context, listen: false);
+    var type = doc.data['type'];
+
+    if (_quizProvider.isInit && type == "header") {
+      _quizProvider.isInit = false;
+      return QuizInfo(
+        quizTitle: doc.data['title'],
+        quizInstructions: doc.data['instructions'],
+        quizCreator: doc.data['creator'],
+      );
+    } else {
+      print(type);
+      var questionType = doc.data['questionType'];
+     // print(questionType);
+      if (questionType == 'identification') {
+        return Identification(question: doc.data['question']);
+      }
+      if (questionType == 'multipleChoice') {
+       // print(questionType);
+        return MultipleChoice(
+          question: doc.data['question'],
+          choices: doc.data['choices'],
+        );
+      }
+    }
+
+    return Container();
   }
 }
