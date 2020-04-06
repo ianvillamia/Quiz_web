@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 
 class TrueOrFalse extends StatefulWidget {
   final String question;
+  final bool answer;
 
-  TrueOrFalse({this.question});
+  TrueOrFalse({@required this.question,@required this.answer});
   @override
   _TrueOrFalseState createState() => _TrueOrFalseState();
 }

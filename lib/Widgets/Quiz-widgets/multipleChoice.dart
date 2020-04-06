@@ -2,9 +2,9 @@ import 'package:Quiz_web/Widgets/Quiz-widgets/buttonBar.dart';
 import 'package:flutter/material.dart';
 
 class MultipleChoice extends StatefulWidget {
-  final List<String> choices;
+  final List choices;
   final String question;
-  MultipleChoice({this.choices, this.question});
+  MultipleChoice({@required this.choices, @required this.question});
 
   @override
   _MultipleChoiceState createState() => _MultipleChoiceState();
@@ -35,9 +35,8 @@ class _MultipleChoiceState extends State<MultipleChoice> {
         child: Card(
           child: Column(
             children: <Widget>[
-               ListTile(
-                title: Text(
-                   widget.question),
+              ListTile(
+                title: Text(widget.question),
               ),
               Row(
                 children: <Widget>[
@@ -56,7 +55,6 @@ class _MultipleChoiceState extends State<MultipleChoice> {
                   ),
                 ],
               ),
-
               Row(
                 children: <Widget>[
                   Radio(
@@ -74,7 +72,7 @@ class _MultipleChoiceState extends State<MultipleChoice> {
                   ),
                 ],
               ),
-                Row(
+              Row(
                 children: <Widget>[
                   Radio(
                     value: 3,
@@ -91,7 +89,7 @@ class _MultipleChoiceState extends State<MultipleChoice> {
                   ),
                 ],
               ),
-                Row(
+              Row(
                 children: <Widget>[
                   Radio(
                     value: 4,
@@ -108,8 +106,7 @@ class _MultipleChoiceState extends State<MultipleChoice> {
                   ),
                 ],
               ),
-
-             QuestionBar()
+              QuestionBar()
             ],
           ),
         ),

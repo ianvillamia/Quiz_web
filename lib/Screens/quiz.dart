@@ -72,7 +72,7 @@ class _QuizState extends State<Quiz> {
   Widget quizItemBuilder({DocumentSnapshot doc}) {
     final _quizProvider = Provider.of<QuizProvider>(context, listen: false);
     var type = doc.data['type'];
-
+    print(doc.documentID);
     if (_quizProvider.isInit && type == "header") {
       _quizProvider.isInit = false;
       return QuizInfo(
@@ -81,17 +81,23 @@ class _QuizState extends State<Quiz> {
         quizCreator: doc.data['creator'],
       );
     } else {
-      print(type);
+      // print(type);
       var questionType = doc.data['questionType'];
-     // print(questionType);
+      // print(questionType);
       if (questionType == 'identification') {
         return Identification(question: doc.data['question']);
       }
       if (questionType == 'multipleChoice') {
-       // print(questionType);
+        // print(questionType);
         return MultipleChoice(
           question: doc.data['question'],
           choices: doc.data['choices'],
+        );
+      }
+      if(questionType=='trueOrFalse'){
+        return TrueOrFalse(
+          question: doc.data['question'],
+          answer: doc.data['answer']
         );
       }
     }

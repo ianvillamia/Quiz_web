@@ -39,9 +39,7 @@ class Navbar extends StatelessWidget {
   nav_buttons(BuildContext context) {
     return Row(
       children: <Widget>[
-        SizedBox(
-          width: 10,
-        ),
+     
         MaterialButton(
           elevation: 0,
           color: Color.fromRGBO(60, 207, 207, 1),
@@ -52,13 +50,16 @@ class Navbar extends StatelessWidget {
               style:
                   TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
         ),
-        MaterialButton(
+           SizedBox(
+          width: 10,
+        ),
+      MaterialButton(
           elevation: 0,
           color: Color.fromRGBO(60, 207, 207, 1),
           onPressed: () {
-    
+            Navigator.pushNamed(context, '/reviewer');
           },
-          child: Text('TEST BUTTOn',
+          child: Text('Review',
               style:
                   TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
         ),
