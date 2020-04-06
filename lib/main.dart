@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         //add providers here
-        Provider<QuizProvider>(create: (_) => QuizProvider())
+        ListenableProvider<QuizProvider>(create: (_) => QuizProvider())
       ],
       child: MaterialApp(
         title: "QuizApp",

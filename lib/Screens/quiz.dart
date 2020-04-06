@@ -1,14 +1,14 @@
-import 'package:Quiz_web/Services/Providers/quizProvider.dart';
 import 'package:Quiz_web/Widgets/Quiz-widgets/fillInTheBlanks.dart';
 import 'package:Quiz_web/Widgets/Quiz-widgets/identification.dart';
 import 'package:Quiz_web/Widgets/Quiz-widgets/multipleChoice.dart';
+import 'package:Quiz_web/Widgets/Quiz-widgets/quizInfo.dart';
+
+import 'package:Quiz_web/Widgets/Quiz-widgets/timer.dart';
 import 'package:Quiz_web/Widgets/Quiz-widgets/trueOrFalse.dart';
 import 'package:flutter/material.dart';
 import 'package:Quiz_web/Widgets/navbar.dart';
 import 'package:Quiz_web/Widgets/Quiz-widgets/quiz-Items.dart';
-import 'package:slide_countdown_clock/slide_countdown_clock.dart';
-import 'package:lite_rolling_switch/lite_rolling_switch.dart';
-import 'package:provider/provider.dart';
+
 import 'package:Quiz_web/Services/routing.dart';
 
 class Quiz extends StatefulWidget {
@@ -20,10 +20,9 @@ class Quiz extends StatefulWidget {
 
 class _QuizState extends State<Quiz> {
   QuizItems quizItems = QuizItems();
-  bool isClockVisible = false;
+
   @override
   Widget build(BuildContext context) {
-    final quizProvider = Provider.of<QuizProvider>(context);
     return Scaffold(
       body: Stack(
         children: <Widget>[
@@ -35,6 +34,12 @@ class _QuizState extends State<Quiz> {
               width: MediaQuery.of(context).size.width * .7,
               child: ListView(
                 children: <Widget>[
+               
+               QuizInfo(
+                 quizTitle: "Sample Quiz Header",
+                 quizInstructions: "This is some insctructions in the quiz to be added.Some are useless some are ok, some are soso",
+                quizCreator: "Kristian Dean E. Villamia",
+               ),
                   MultipleChoice(
                     choices: ["Choice1", "Choice2", "Choice3", "Choice4"],
                     question: "What does the Fox say",
@@ -59,63 +64,9 @@ class _QuizState extends State<Quiz> {
             child: Navbar(),
           ),
           Positioned(
-            top: MediaQuery.of(context).size.height * .5,
-            right: 0,
-            child: Container(
-              width: 250,
-              height: 150,
-              color: Colors.red,
-              child: Column(
-                children: <Widget>[
-                  Consumer(
-                    builder: (context, quizProvider, child) => Visibility(
-                      visible: quizProvider.isTimerVisible,
-                      child: SlideCountdownClock(
-                        duration: Duration(minutes: 1),
-                        slideDirection: SlideDirection.Up,
-                        separator: "-",
-                        textStyle: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                        separatorTextStyle: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.blue,
-                        ),
-                        padding: EdgeInsets.all(10),
-                        decoration: BoxDecoration(color: Colors.blue),
-                        onDone: () {},
-                      ),
-                    ),
-                  ),
-                  LiteRollingSwitch(
-                    //initial value
-                    value: false,
-                    textOn: 'Timer on',
-                    textOff: 'Timer off',
-                    colorOn: Colors.greenAccent[700],
-                    colorOff: Colors.redAccent[700],
-                    iconOn: Icons.alarm_on,
-                    animationDuration: Duration(milliseconds: 500),
-                    iconOff: Icons.alarm_off,
-                    textSize: 10.0,
-                    onChanged: (bool state) {
-                      //Use it to manage the different states
-                      if (state) {
-                        setState(() {
-                          isClockVisible = true;
-                        });
-                      }
-
-                      print('Current State of SWITCH IS: $state');
-                    },
-                  ),
-                ],
-              ),
-            ),
-          )
+              top: MediaQuery.of(context).size.height * .5,
+              right: 0,
+              child: Timer())
         ],
       ),
     );
