@@ -12,7 +12,7 @@ class Timer extends StatelessWidget {
     final _quizProvider = Provider.of<QuizProvider>(context);
     return Container(
       decoration: BoxDecoration(
-        color: Colors.grey,
+        color: Colors.white,
         border: Border.all(color:Colors.black),
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(15), bottomLeft: Radius.circular(15))),
@@ -39,7 +39,7 @@ class Timer extends StatelessWidget {
                   color: Colors.blue,
                 ),
                 padding: EdgeInsets.all(10),
-                decoration: BoxDecoration(color: Colors.blue),
+                decoration: BoxDecoration(color: Colors.redAccent),
                 onDone: () {},
               ),
             ),

@@ -63,7 +63,9 @@ class Reviewer extends StatelessWidget {
                                 .toList()),
                       );
                     } else {
-                      return Center(child: CircularProgressIndicator());
+                      return Center(child: CircularProgressIndicator(
+               
+                      ));
                     }
                   },
                 ),

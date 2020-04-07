@@ -85,7 +85,7 @@ class _QuizState extends State<Quiz> {
       var questionType = doc.data['questionType'];
       // print(questionType);
       if (questionType == 'identification') {
-        return Identification(question: doc.data['question']);
+        return Identification(question: doc.data['question'],answer: doc.data['answer'],);
       }
       if (questionType == 'multipleChoice') {
         // print(questionType);

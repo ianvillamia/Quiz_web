@@ -1,17 +1,24 @@
+import 'package:Quiz_web/Services/Providers/quizProvider.dart';
 import 'package:Quiz_web/Widgets/Quiz-widgets/buttonBar.dart';
 import 'package:flutter/material.dart';
-class Identification extends StatefulWidget {
-final String question;
+import 'package:provider/provider.dart';
 
-Identification({@required this.question});
+class Identification extends StatefulWidget {
+  final String question;
+  final String answer;
+
+ Identification({@required this.question,@required this.answer});
 
   @override
   _IdentificationState createState() => _IdentificationState();
 }
 
 class _IdentificationState extends State<Identification> {
+  TextEditingController _controller = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
+    final _quizProvider = Provider.of<QuizProvider>(context, listen: false);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
       child: Container(
@@ -27,7 +34,9 @@ class _IdentificationState extends State<Identification> {
                 child: Container(
                   width: 350,
                   child: TextField(
-                    controller: null,
+                    onChanged: (text) => _quizProvider.answerChecker(
+                    userAnswer: text,correctAnswer:widget.answer ),
+                    controller: _controller,
                     decoration: InputDecoration(
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.black),
@@ -39,7 +48,7 @@ class _IdentificationState extends State<Identification> {
                   ),
                 ),
               ),
-           QuestionBar()
+              QuestionBar()
             ],
           ),
         ),
