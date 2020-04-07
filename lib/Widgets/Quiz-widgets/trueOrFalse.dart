@@ -1,32 +1,21 @@
+import 'package:Quiz_web/Services/Providers/quizProvider.dart';
 import 'package:Quiz_web/Widgets/Quiz-widgets/buttonBar.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class TrueOrFalse extends StatefulWidget {
   final String question;
   final bool answer;
 
-  TrueOrFalse({@required this.question,@required this.answer});
+  TrueOrFalse({@required this.question, @required this.answer});
   @override
   _TrueOrFalseState createState() => _TrueOrFalseState();
 }
 
 class _TrueOrFalseState extends State<TrueOrFalse> {
-  int selected;
-  @override
-  void initState() {
-    super.initState();
-    selected = 0;
-  }
-
-  setSelectedRadio(int value) {
-    print('updating');
-    setState(() {
-      selected = value;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
+    final _quizProvider = Provider.of<QuizProvider>(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
       child: Container(
@@ -34,16 +23,18 @@ class _TrueOrFalseState extends State<TrueOrFalse> {
         child: Card(
           child: Column(
             children: <Widget>[
-               ListTile(title: Text(widget.question)),
+              ListTile(title: Text(widget.question)),
               Row(
                 children: <Widget>[
                   Radio(
                     value: 1,
-                    groupValue: selected,
-                    onChanged: (t) {
-                      print('selected' + t.toString());
-                      setSelectedRadio(t);
-                      print(selected);
+                    groupValue: _quizProvider.trueOrFalseAnswer,
+                    onChanged: (val) {
+                    
+
+                      _quizProvider.changeTrueOrFalse(
+                          val: val, correctAnswer: widget.answer.toString());
+                      // _quizProvider.answerChecker(userAnswer: val, correctAnswer: null)
                     },
                   ),
                   Text(
@@ -56,11 +47,11 @@ class _TrueOrFalseState extends State<TrueOrFalse> {
                 children: <Widget>[
                   Radio(
                     value: 2,
-                    groupValue: selected,
-                    onChanged: (t) {
-                      print('selected' + t.toString());
-                      setSelectedRadio(t);
-                      print(selected);
+                    groupValue: _quizProvider.trueOrFalseAnswer,
+                    onChanged: (val) {
+                   
+                      _quizProvider.changeTrueOrFalse(
+                          val: val, correctAnswer: widget.answer.toString());
                     },
                   ),
                   Text(

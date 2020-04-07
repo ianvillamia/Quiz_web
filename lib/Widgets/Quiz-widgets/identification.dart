@@ -14,11 +14,11 @@ class Identification extends StatefulWidget {
 }
 
 class _IdentificationState extends State<Identification> {
-  TextEditingController _controller = TextEditingController();
+ 
 
   @override
   Widget build(BuildContext context) {
-    final _quizProvider = Provider.of<QuizProvider>(context, listen: false);
+    final _quizProvider = Provider.of<QuizProvider>(context,listen: false);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
       child: Container(
@@ -36,7 +36,7 @@ class _IdentificationState extends State<Identification> {
                   child: TextField(
                     onChanged: (text) => _quizProvider.answerChecker(
                     userAnswer: text,correctAnswer:widget.answer ),
-                    controller: _controller,
+                  
                     decoration: InputDecoration(
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.black),

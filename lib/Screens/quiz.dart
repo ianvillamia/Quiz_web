@@ -25,7 +25,7 @@ class Quiz extends StatefulWidget {
 class _QuizState extends State<Quiz> {
   bool initCounter = true;
   final db = Firestore.instance;
-  QuizItems quizItems = QuizItems();
+
 
   @override
   Widget build(BuildContext context) {
@@ -71,6 +71,7 @@ class _QuizState extends State<Quiz> {
 
   Widget quizItemBuilder({DocumentSnapshot doc}) {
     final _quizProvider = Provider.of<QuizProvider>(context, listen: false);
+      
     var type = doc.data['type'];
     print(doc.documentID);
     if (_quizProvider.isInit && type == "header") {
@@ -80,6 +81,7 @@ class _QuizState extends State<Quiz> {
         quizInstructions: doc.data['instructions'],
         quizCreator: doc.data['creator'],
       );
+    
     } else {
       // print(type);
       var questionType = doc.data['questionType'];
@@ -103,5 +105,7 @@ class _QuizState extends State<Quiz> {
     }
 
     return Container();
+
+    
   }
 }

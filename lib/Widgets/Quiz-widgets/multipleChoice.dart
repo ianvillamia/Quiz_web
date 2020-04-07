@@ -1,5 +1,7 @@
+import 'package:Quiz_web/Services/Providers/quizProvider.dart';
 import 'package:Quiz_web/Widgets/Quiz-widgets/buttonBar.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class MultipleChoice extends StatefulWidget {
   final List choices;
@@ -12,22 +14,14 @@ class MultipleChoice extends StatefulWidget {
 
 class _MultipleChoiceState extends State<MultipleChoice> {
   int selected;
-
-  @override
-  void initState() {
-    super.initState();
-    selected = 0;
-  }
-
-  setSelectedRadio(int value) {
-    print('updating');
+  void changeValue({@required int val}){
     setState(() {
-      selected = value;
+      selected= val;
     });
   }
-
   @override
   Widget build(BuildContext context) {
+    final _quizProvider = Provider.of<QuizProvider>(context,listen: false);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
       child: Container(
@@ -44,9 +38,7 @@ class _MultipleChoiceState extends State<MultipleChoice> {
                     value: 1,
                     groupValue: selected,
                     onChanged: (t) {
-                      print('selected' + t.toString());
-                      setSelectedRadio(t);
-                      print(selected);
+                    
                     },
                   ),
                   Text(
@@ -61,9 +53,7 @@ class _MultipleChoiceState extends State<MultipleChoice> {
                     value: 2,
                     groupValue: selected,
                     onChanged: (t) {
-                      print('selected' + t.toString());
-                      setSelectedRadio(t);
-                      print(selected);
+                 
                     },
                   ),
                   Text(
@@ -78,9 +68,7 @@ class _MultipleChoiceState extends State<MultipleChoice> {
                     value: 3,
                     groupValue: selected,
                     onChanged: (t) {
-                      print('selected' + t.toString());
-                      setSelectedRadio(t);
-                      print(selected);
+                    
                     },
                   ),
                   Text(
@@ -95,9 +83,7 @@ class _MultipleChoiceState extends State<MultipleChoice> {
                     value: 4,
                     groupValue: selected,
                     onChanged: (t) {
-                      print('selected' + t.toString());
-                      setSelectedRadio(t);
-                      print(selected);
+                    
                     },
                   ),
                   Text(
