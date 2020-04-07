@@ -1,15 +1,19 @@
+import 'package:Quiz_web/Services/Providers/reviewerProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:Quiz_web/Widgets/navbar.dart';
 import 'package:flip_card/flip_card.dart';
+import 'package:provider/provider.dart';
 
 class Reviewer extends StatelessWidget {
   const Reviewer({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final reviewerProvider = Provider.of<ReviewerProvider>(context,listen: false);
     final db = Firestore.instance;
-    final _pageViewController = PageController(initialPage: 1);
+    final _pageViewController =
+        PageController(initialPage: reviewerProvider.pageCounter);
 
     return Scaffold(
       body: Stack(
@@ -40,25 +44,29 @@ class Reviewer extends StatelessWidget {
           Positioned(
             top: MediaQuery.of(context).size.height * .4,
             child: Container(
+              color: Colors.blueGrey,
               height: MediaQuery.of(context).size.height * .8,
               width: MediaQuery.of(context).size.width,
-              child: StreamBuilder<QuerySnapshot>(
-                stream: db.collection('quiz1').orderBy('order').snapshots(),
-                builder: (BuildContext context,
-                    AsyncSnapshot<QuerySnapshot> snapshot) {
-                  if (snapshot.hasData) {
-                    return Scrollbar(
-                      child: PageView(
-                          controller: _pageViewController,
-                          children: snapshot.data.documents
-                              .map((doc) =>
-                                  buildCard(context, doc, _pageViewController))
-                              .toList()),
-                    );
-                  } else {
-                    return Center(child: CircularProgressIndicator());
-                  }
-                },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 50),
+                child: StreamBuilder<QuerySnapshot>(
+                  stream: db.collection('quiz1').orderBy('order').snapshots(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (snapshot.hasData) {
+                      return Scrollbar(
+                        child: PageView(
+                            controller: _pageViewController,
+                            children: snapshot.data.documents
+                                .map((doc) => buildCard(
+                                    context, doc, _pageViewController))
+                                .toList()),
+                      );
+                    } else {
+                      return Center(child: CircularProgressIndicator());
+                    }
+                  },
+                ),
               ),
             ),
           ),
@@ -66,10 +74,48 @@ class Reviewer extends StatelessWidget {
             top: 0,
             child: Navbar(),
           ),
-          // Positioned(
-          //     top: MediaQuery.of(context).size.height * .5,
-          //     right: 0,
-          //     child: Timer())
+          Positioned(
+            top: MediaQuery.of(context).size.height * .5,
+            left: 0,
+            child: Container(
+              height: 250,
+              child: Center(
+                child: ButtonTheme(
+                  minWidth: 50,
+                  height: 50,
+                  buttonColor: Colors.redAccent,
+                  child: RaisedButton.icon(
+                      onPressed: () {
+                        reviewerProvider.goBack(controller: _pageViewController);
+                      
+                      },
+                      icon: Icon(Icons.arrow_left),
+                      label: Text('')),
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            right: 0,
+            top: MediaQuery.of(context).size.height * .5,
+            child: Container(
+              height: 250,
+              width: 70,
+              child: Center(
+                child: ButtonTheme(
+                  height: 50,
+                  buttonColor: Colors.redAccent,
+                  child: RaisedButton.icon(
+                      onPressed: () {
+                    reviewerProvider.goForward(controller: _pageViewController);
+                      
+                      },
+                      icon: Icon(Icons.arrow_right),
+                      label: Text('')),
+                ),
+              ),
+            ),
+          )
         ],
       ),
     );
@@ -82,72 +128,40 @@ class Reviewer extends StatelessWidget {
     if (type == "header") {
       return Container();
     } else {
-      return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 50),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Container(
+      return Container(
+        child: FlipCard(
+          direction: FlipDirection.VERTICAL, // default
+          front: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 250),
+            child: Container(
+              width: MediaQuery.of(context).size.width * .7,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(15)),
+                color: Colors.white,
+              ),
               height: 250,
               child: Center(
-                child: RaisedButton.icon(
-                    color: Colors.blueAccent,
-                    onPressed: () {
-                      controller.previousPage(
-                          duration: Duration(seconds: 1), curve: Curves.easeIn);
-                    },
-                    icon: Icon(Icons.arrow_left),
-                    label: Text('')),
-              ),
+                  child: Text(doc.data['question'],
+                      style: TextStyle(
+                          fontSize: 20, fontWeight: FontWeight.bold))),
             ),
-            SizedBox(
-              width: 10,
-            ),
-            Container(
-              color: Colors.black,
-              child: FlipCard(
-                direction: FlipDirection.VERTICAL, // default
-                front: Container(
-                  
-                  width: MediaQuery.of(context).size.width * .8,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(15)),
-                   color: Colors.white,
-                  ),
-                  height: 250,
-                  child: Center(child: Text(doc.data['question'])),
-                ),
-                back: Container(
-                  
-                  width: MediaQuery.of(context).size.width * .8,
-                  height: 250,
-                  decoration: BoxDecoration(
-              
-                    borderRadius: BorderRadius.all(Radius.circular(15)),
-                      color: Colors.white,
-                  ),
-                  child: Center(child: Text(doc.data['answer'].toString())),
-                ),
-              ),
-            ),
-            SizedBox(
-              width: 10,
-            ),
-            Container(
+          ),
+          back: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 250),
+            child: Container(
+              width: MediaQuery.of(context).size.width * .7,
               height: 250,
-              child: Center(
-                child: RaisedButton.icon(
-                    color: Colors.blueAccent,
-                    onPressed: () {
-                      controller.nextPage(
-                          duration: Duration(seconds: 1), curve: Curves.easeIn);
-                    },
-                    icon: Icon(Icons.arrow_right),
-                    label: Text('')),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(15)),
+                color: Colors.white,
               ),
+              child: Center(
+                  child: Text(
+                doc.data['answer'].toString(),
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              )),
             ),
-          ],
+          ),
         ),
       );
     }

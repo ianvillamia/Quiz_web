@@ -1,4 +1,5 @@
 import 'package:Quiz_web/Services/Providers/quizProvider.dart';
+import 'package:Quiz_web/Services/Providers/reviewerProvider.dart';
 import 'package:Quiz_web/Services/routing.dart';
 
 
@@ -22,7 +23,8 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         //add providers here
-        ListenableProvider<QuizProvider>(create: (_) => QuizProvider())
+        ListenableProvider<QuizProvider>(create: (_) => QuizProvider()),
+          ListenableProvider<ReviewerProvider>(create: (_) => ReviewerProvider())
       ],
       child: MaterialApp(
         title: "QuizApp",
