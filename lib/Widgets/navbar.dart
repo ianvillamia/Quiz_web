@@ -63,6 +63,16 @@ class Navbar extends StatelessWidget {
               style:
                   TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
         ),
+          MaterialButton(
+          elevation: 0,
+          color: Color.fromRGBO(60, 207, 207, 1),
+          onPressed: () {
+            Navigator.pushNamed(context, '/quizScore');
+          },
+          child: Text('QuizScore',
+              style:
+                  TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+        ),
         // IconButton(icon: Icon(Icons.search), onPressed: () {}),
       ],
     );

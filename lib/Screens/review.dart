@@ -45,7 +45,7 @@ class Reviewer extends StatelessWidget {
             top: MediaQuery.of(context).size.height * .4,
             child: Container(
               color: Colors.blueGrey,
-              height: MediaQuery.of(context).size.height * .8,
+              height: MediaQuery.of(context).size.height * .6,
               width: MediaQuery.of(context).size.width,
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 50),
@@ -54,14 +54,12 @@ class Reviewer extends StatelessWidget {
                   builder: (BuildContext context,
                       AsyncSnapshot<QuerySnapshot> snapshot) {
                     if (snapshot.hasData) {
-                      return Scrollbar(
-                        child: PageView(
-                            controller: _pageViewController,
-                            children: snapshot.data.documents
-                                .map((doc) => buildCard(
-                                    context, doc, _pageViewController))
-                                .toList()),
-                      );
+                      return PageView(
+                          controller: _pageViewController,
+                          children: snapshot.data.documents
+                              .map((doc) => buildCard(
+                                  context, doc, _pageViewController))
+                              .toList());
                     } else {
                       return Center(child: CircularProgressIndicator(
                

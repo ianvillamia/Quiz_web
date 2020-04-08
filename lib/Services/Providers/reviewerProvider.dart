@@ -16,6 +16,6 @@ class ReviewerProvider with ChangeNotifier {
 
   void goForward({@required PageController controller}) {
      controller.nextPage(
-          duration: Duration(seconds: 1), curve: Curves.easeIn);
+          duration: Duration(seconds: 1), curve: Curves.easeOut);
   }
 }
