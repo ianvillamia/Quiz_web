@@ -30,11 +30,8 @@ class _TrueOrFalseState extends State<TrueOrFalse> {
                     value: 1,
                     groupValue: _quizProvider.trueOrFalseAnswer,
                     onChanged: (val) {
-                    
-
-                      _quizProvider.changeTrueOrFalse(
+                      _quizProvider.onchangeTrueOrFalse(
                           val: val, correctAnswer: widget.answer.toString());
-                      // _quizProvider.answerChecker(userAnswer: val, correctAnswer: null)
                     },
                   ),
                   Text(
@@ -49,8 +46,7 @@ class _TrueOrFalseState extends State<TrueOrFalse> {
                     value: 2,
                     groupValue: _quizProvider.trueOrFalseAnswer,
                     onChanged: (val) {
-                   
-                      _quizProvider.changeTrueOrFalse(
+                      _quizProvider.onchangeTrueOrFalse(
                           val: val, correctAnswer: widget.answer.toString());
                     },
                   ),

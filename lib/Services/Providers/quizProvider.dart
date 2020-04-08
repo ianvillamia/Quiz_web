@@ -9,7 +9,14 @@ class QuizProvider with ChangeNotifier {
   int multipleChoiceValue;
   QuizProvider();
 
-  void changeTrueOrFalse({@required int val, @required String correctAnswer}) {
+  void onChangeMultipleChoice({@required int val, @required String correctAnswer,@required String userAnswer}){
+    multipleChoiceValue=val;
+
+    notifyListeners();
+  }
+
+  void onchangeTrueOrFalse({@required int val, @required String correctAnswer}) 
+  {
     trueOrFalseAnswer = val;
     if (val == 1) {
       answerChecker(userAnswer: "True", correctAnswer: correctAnswer);
@@ -18,6 +25,7 @@ class QuizProvider with ChangeNotifier {
     }
     notifyListeners();
   }
+
 
   void changeTimer(bool val) {
     isTimerVisible = val;
@@ -37,4 +45,7 @@ class QuizProvider with ChangeNotifier {
       }
     }
   }
+
+
+
 }
