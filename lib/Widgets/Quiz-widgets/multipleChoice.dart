@@ -7,7 +7,8 @@ class MultipleChoice extends StatefulWidget {
   final List choices;
   final String question;
   final String answer;
-  MultipleChoice({@required this.choices, @required this.question,@required this.answer});
+  MultipleChoice(
+      {@required this.choices, @required this.question, @required this.answer});
 
   @override
   _MultipleChoiceState createState() => _MultipleChoiceState();
@@ -17,10 +18,18 @@ class _MultipleChoiceState extends State<MultipleChoice> {
   int selected;
   String userAnswer;
 
-
   @override
   Widget build(BuildContext context) {
-    final _quizProvider = Provider.of<QuizProvider>(context);
+    final _quizProvider = Provider.of<QuizProvider>(context, listen: false);
+     changeSelectedValue(int val) {
+      setState(() {
+        selected = val;
+        getUserAnswer(value: selected);
+        _quizProvider.onChangeMultipleChoice(
+                          correctAnswer: widget.answer, userAnswer: userAnswer);
+      });
+    }
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
       child: Container(
@@ -35,11 +44,10 @@ class _MultipleChoiceState extends State<MultipleChoice> {
                 children: <Widget>[
                   Radio(
                     value: 1,
-                    groupValue: _quizProvider.multipleChoiceValue,
-                    onChanged: (val) async{
-                      getUserAnswer(value: val).then(
-                        _quizProvider.onChangeMultipleChoice(val: val, correctAnswer: widget.answer,userAnswer: userAnswer)
-                      );
+                    groupValue: selected,
+                    onChanged: (val)  {
+                      changeSelectedValue(val);
+                      
                     },
                   ),
                   Text(
@@ -52,11 +60,10 @@ class _MultipleChoiceState extends State<MultipleChoice> {
                 children: <Widget>[
                   Radio(
                     value: 2,
-                    groupValue: _quizProvider.multipleChoiceValue,
-                   onChanged: (val) async{
-                      getUserAnswer(value: val).then(
-                        _quizProvider.onChangeMultipleChoice(val: val, correctAnswer: widget.answer,userAnswer: userAnswer)
-                      );
+                    groupValue: selected,
+                    onChanged: (val) async {
+                      changeSelectedValue(val);
+                  
                     },
                   ),
                   Text(
@@ -69,12 +76,10 @@ class _MultipleChoiceState extends State<MultipleChoice> {
                 children: <Widget>[
                   Radio(
                     value: 3,
-                    groupValue: _quizProvider.multipleChoiceValue,
-                    onChanged: (val) async{
-                      getUserAnswer(value: val).then(
-                        _quizProvider.onChangeMultipleChoice(val: val, correctAnswer: widget.answer,userAnswer: userAnswer)
-                      );
-                    },
+                    groupValue: selected,
+                    onChanged: (val) async {
+                      changeSelectedValue(val);
+                    }
                   ),
                   Text(
                     widget.choices[2],
@@ -86,11 +91,10 @@ class _MultipleChoiceState extends State<MultipleChoice> {
                 children: <Widget>[
                   Radio(
                     value: 4,
-                    groupValue: _quizProvider.multipleChoiceValue,
-                    onChanged: (val) async{
-                      getUserAnswer(value: val).then(
-                        _quizProvider.onChangeMultipleChoice(val: val, correctAnswer: widget.answer,userAnswer: userAnswer)
-                      );
+                    groupValue: selected,
+                    onChanged: (val) async {
+                      changeSelectedValue(val);
+                     
                     },
                   ),
                   Text(
@@ -107,7 +111,8 @@ class _MultipleChoiceState extends State<MultipleChoice> {
     );
   }
 
-   getUserAnswer({int value}) {
+  getUserAnswer({int value}) {
+
     switch (value) {
       case 1:
         userAnswer = widget.choices[0];
@@ -122,5 +127,6 @@ class _MultipleChoiceState extends State<MultipleChoice> {
         userAnswer = widget.choices[3];
         break;
     }
+  
   }
 }
