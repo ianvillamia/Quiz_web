@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 class TrueOrFalse extends StatefulWidget {
   final String question;
   final bool answer;
+  
 
   TrueOrFalse({@required this.question, @required this.answer});
   @override
@@ -13,9 +14,21 @@ class TrueOrFalse extends StatefulWidget {
 }
 
 class _TrueOrFalseState extends State<TrueOrFalse> {
+  int selected;
+  
   @override
   Widget build(BuildContext context) {
-    final _quizProvider = Provider.of<QuizProvider>(context);
+
+
+    final _quizProvider = Provider.of<QuizProvider>(context,listen: false);
+     changeSelectedValue(int val) {
+      setState(() {
+        selected = val;
+       _quizProvider.onchangeTrueOrFalse(val: selected, correctAnswer: widget.answer.toString());
+      });
+    }
+    
+    
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
       child: Container(
@@ -28,11 +41,10 @@ class _TrueOrFalseState extends State<TrueOrFalse> {
                 children: <Widget>[
                   Radio(
                     value: 1,
-                    groupValue: _quizProvider.trueOrFalseAnswer,
+                    groupValue: selected,
                     onChanged: (val) {
-                      _quizProvider.onchangeTrueOrFalse(
-                          val: val, correctAnswer: widget.answer.toString());
-                    },
+                 changeSelectedValue(val);
+                      },
                   ),
                   Text(
                     "True",
@@ -44,10 +56,9 @@ class _TrueOrFalseState extends State<TrueOrFalse> {
                 children: <Widget>[
                   Radio(
                     value: 2,
-                    groupValue: _quizProvider.trueOrFalseAnswer,
+                    groupValue: selected,
                     onChanged: (val) {
-                      _quizProvider.onchangeTrueOrFalse(
-                          val: val, correctAnswer: widget.answer.toString());
+                               changeSelectedValue(val);
                     },
                   ),
                   Text(
