@@ -67,7 +67,7 @@ class Navbar extends StatelessWidget {
           elevation: 0,
           color: Color.fromRGBO(60, 207, 207, 1),
           onPressed: () {
-            Navigator.pushNamed(context, '/quizScore');
+            Navigator.pushNamed(context, '/quizLoader');
           },
           child: Text('QuizScore',
               style:

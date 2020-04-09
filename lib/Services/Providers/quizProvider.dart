@@ -8,7 +8,7 @@ class QuizProvider with ChangeNotifier {
   int trueOrFalseAnswer;
   int multipleChoiceValue;
   QuizProvider();
-
+  
   void onChangeMultipleChoice({ @required String correctAnswer,@required String userAnswer}){
  
     answerChecker(userAnswer: userAnswer, correctAnswer: correctAnswer);

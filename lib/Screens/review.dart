@@ -128,39 +128,37 @@ class Reviewer extends StatelessWidget {
     if (type == "header") {
       return Container();
     } else {
-      return Container(
-        child: FlipCard(
-          direction: FlipDirection.VERTICAL, // default
-          front: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 250),
-            child: Container(
-              width: MediaQuery.of(context).size.width * .7,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(15)),
-                color: Colors.white,
-              ),
-              height: 250,
-              child: Center(
-                  child: Text(doc.data['question'],
-                      style: TextStyle(
-                          fontSize: 20, fontWeight: FontWeight.bold))),
+      return FlipCard(
+        direction: FlipDirection.VERTICAL, // default
+        front: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 250),
+          child: Container(
+            width: MediaQuery.of(context).size.width * .7,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(15)),
+              color: Colors.white,
             ),
+            height: 250,
+            child: Center(
+                child: Text(doc.data['question'],
+                    style: TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.bold))),
           ),
-          back: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 250),
-            child: Container(
-              width: MediaQuery.of(context).size.width * .7,
-              height: 250,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(15)),
-                color: Colors.white,
-              ),
-              child: Center(
-                  child: Text(
-                doc.data['answer'].toString(),
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              )),
+        ),
+        back: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 250),
+          child: Container(
+            width: MediaQuery.of(context).size.width * .7,
+            height: 250,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(15)),
+              color: Colors.white,
             ),
+            child: Center(
+                child: Text(
+              doc.data['answer'].toString(),
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            )),
           ),
         ),
       );

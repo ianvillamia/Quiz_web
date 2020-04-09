@@ -1,6 +1,7 @@
 import 'package:Quiz_web/Screens/home.dart';
 import 'package:Quiz_web/Screens/quiz.dart';
 import 'package:Quiz_web/Screens/quizScore.dart';
+import 'package:Quiz_web/Screens/quizScoreLoading.dart';
 import 'package:Quiz_web/Screens/review.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
@@ -17,9 +18,13 @@ class FluroRouter {
   static Handler _reviewerHandler = Handler(
       handlerFunc: (BuildContext context, Map<String, dynamic> params) =>
           Reviewer());
-          static Handler _quizScoreHandler = Handler(
+  static Handler _quizScoreHandler = Handler(
       handlerFunc: (BuildContext context, Map<String, dynamic> params) =>
           QuizScore());
+  static Handler _quizLoadingHandler = Handler(
+      handlerFunc: (BuildContext context, Map<String, dynamic> params) =>
+          QuizLoader());
+
   static void setupRouter() {
     router.define('/',
         handler: _homehandler, transitionType: TransitionType.fadeIn);
@@ -29,5 +34,7 @@ class FluroRouter {
         handler: _reviewerHandler, transitionType: TransitionType.fadeIn);
     router.define('/quizScore',
         handler: _quizScoreHandler, transitionType: TransitionType.fadeIn);
+    router.define('/quizLoader',
+        handler: _quizLoadingHandler, transitionType: TransitionType.fadeIn);
   }
 }
