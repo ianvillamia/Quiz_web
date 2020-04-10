@@ -5,10 +5,11 @@ import 'package:Quiz_web/Services/routing.dart';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'Services/Firestore/firestoreInit.dart';
 
-
-void main() {
+void main() async{
   FluroRouter.setupRouter();
+
   runApp(MyApp());
 
 
