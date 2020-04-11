@@ -17,16 +17,20 @@ class Navbar extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            InkWell(
-              onTap: () {
-                Navigator.pushNamed(context, '/');
-              },
-              child: Text(
-                'QuizApp',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 40),
+            Material(
+              color: Colors.transparent,
+              
+                          child: InkWell(
+                onTap: () {
+                  Navigator.pushNamed(context, '/');
+                },
+                child: Text(
+                  'QuizApp',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 40),
+                ),
               ),
             ),
             nav_buttons(context)
