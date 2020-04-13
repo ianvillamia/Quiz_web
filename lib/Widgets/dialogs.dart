@@ -1,5 +1,4 @@
-import 'package:Quiz_web/Services/Validators/validators.dart';
-import 'package:Quiz_web/Services/authenticationService.dart';
+import 'package:Quiz_web/Services/Firebase/authenticationService.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 
@@ -210,6 +209,7 @@ class Dialogs {
                             print('jejedog');
                             if (_fbKey.currentState.saveAndValidate()) {
                               print(_fbKey.currentState.value);
+                              _auth.registerWithEmailAndPassword(email: emailController.text, password: password1Controller.text);
                             }
                           },
                           child: Text(

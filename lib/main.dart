@@ -3,19 +3,13 @@ import 'package:Quiz_web/Services/Providers/quizProvider.dart';
 import 'package:Quiz_web/Services/Providers/reviewerProvider.dart';
 import 'package:Quiz_web/Services/routing.dart';
 
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-
-void main() async{
+void main() async {
   FluroRouter.setupRouter();
 
   runApp(MyApp());
-
-
-
-
 }
 
 class MyApp extends StatelessWidget {
@@ -26,8 +20,10 @@ class MyApp extends StatelessWidget {
       providers: [
         //add providers here
         ListenableProvider<QuizProvider>(create: (_) => QuizProvider()),
-          ListenableProvider<ReviewerProvider>(create: (_) => ReviewerProvider()),
-        ChangeNotifierProvider<LoginListener>(create: (_)=>LoginListener(),),
+        ListenableProvider<ReviewerProvider>(create: (_) => ReviewerProvider()),
+        ChangeNotifierProvider<LoginListener>(
+          create: (_) => LoginListener(),
+        ),
       ],
       child: MaterialApp(
         title: "QuizApp",
