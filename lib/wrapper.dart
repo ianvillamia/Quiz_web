@@ -29,7 +29,7 @@ class _WrapperState extends State<Wrapper> {
         return Quiz();
       case UserState.Authenticating:
         return Loading(
-          routeName: '/quiz',
+         
         );
 
         break;

@@ -6,13 +6,12 @@ import 'package:provider/provider.dart';
 
 
 class Loading extends StatelessWidget {
-  final String routeName;
-  Loading({@required this.routeName});
+
  
   doSomething(loginListener,context){
     Future.delayed(Duration(seconds: 3),(){
     loginListener.updateStatus(state: UserState.Authenticated);
-    Navigator.pushNamed(context, routeName);
+ 
     });
 
   }
