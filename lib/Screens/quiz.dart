@@ -10,8 +10,6 @@ import 'package:provider/provider.dart';
 import 'package:Quiz_web/Services/Providers/quizProvider.dart';
 
 class Quiz extends StatefulWidget {
-  const Quiz({Key key}) : super(key: key);
-
   @override
   _QuizState createState() => _QuizState();
 }
@@ -22,6 +20,8 @@ class _QuizState extends State<Quiz> {
 
   @override
   Widget build(BuildContext context) {
+    final _quizProvider = Provider.of<QuizProvider>(context, listen: false);
+
     return Scaffold(
       body: Stack(
         children: <Widget>[
@@ -40,7 +40,8 @@ class _QuizState extends State<Quiz> {
                       child: SingleChildScrollView(
                         child: Column(
                             children: snapshot.data.documents
-                                .map((doc) => quizItemBuilder(doc: doc))
+                                .map((doc) => quizItemBuilder(
+                                    doc: doc, quizProvider: _quizProvider))
                                 .toList()),
                       ),
                     );
@@ -64,22 +65,20 @@ class _QuizState extends State<Quiz> {
     );
   }
 
-  Widget quizItemBuilder({DocumentSnapshot doc}) {
-    final _quizProvider = Provider.of<QuizProvider>(context, listen: false);
-
+  Widget quizItemBuilder({DocumentSnapshot doc, quizProvider}) {
     var type = doc.data['type'];
-    print(doc.documentID);
-    if (_quizProvider.isInit && type == "header") {
-      _quizProvider.isInit = false;
+
+    if (quizProvider.isInit && type == "header") {
+      quizProvider.isInit = false;
       return QuizInfo(
         quizTitle: doc.data['title'],
         quizInstructions: doc.data['instructions'],
         quizCreator: doc.data['creator'],
       );
     } else {
-      // print(type);
+  
       var questionType = doc.data['questionType'];
-      // print(questionType);
+    
       if (questionType == 'identification') {
         return Identification(
           question: doc.data['question'],
@@ -87,7 +86,7 @@ class _QuizState extends State<Quiz> {
         );
       }
       if (questionType == 'multipleChoice') {
-        // print(questionType);
+    
         return MultipleChoice(
           question: doc.data['question'],
           choices: doc.data['choices'],

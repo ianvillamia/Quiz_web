@@ -1,13 +1,18 @@
-
+import 'package:Quiz_web/Models/userState.dart';
+import 'package:Quiz_web/Services/Providers/loginListener.dart';
+import 'package:Quiz_web/Widgets/dialogs.dart';
+import 'package:Quiz_web/Widgets/loading.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 
 import 'package:Quiz_web/Services/routing.dart';
-
+import 'package:provider/provider.dart';
 class Navbar extends StatelessWidget {
+    final _formKey=GlobalKey<FormState>();
   var router = Router();
   @override
   Widget build(BuildContext context) {
+    final loginListener = Provider.of<LoginListener>(context);
     return Container(
       height: MediaQuery.of(context).size.height * .20,
       width: MediaQuery.of(context).size.width,
@@ -19,10 +24,9 @@ class Navbar extends StatelessWidget {
           children: <Widget>[
             Material(
               color: Colors.transparent,
-              
-                          child: InkWell(
+              child: InkWell(
                 onTap: () {
-                  Navigator.pushNamed(context, '/');
+                  Navigator.pushNamed(context, '/home');
                 },
                 child: Text(
                   'QuizApp',
@@ -33,17 +37,18 @@ class Navbar extends StatelessWidget {
                 ),
               ),
             ),
-            nav_buttons(context)
+            nav_buttons(context,loginListener)
           ],
         ),
       ),
     );
   }
 
-  nav_buttons(BuildContext context) {
+  nav_buttons(BuildContext context,loginListener) {
+  if(loginListener.status==UserState.Authenticated){
     return Row(
+      
       children: <Widget>[
-     
         MaterialButton(
           elevation: 0,
           color: Color.fromRGBO(60, 207, 207, 1),
@@ -54,10 +59,10 @@ class Navbar extends StatelessWidget {
               style:
                   TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
         ),
-           SizedBox(
+        SizedBox(
           width: 10,
         ),
-      MaterialButton(
+        MaterialButton(
           elevation: 0,
           color: Color.fromRGBO(60, 207, 207, 1),
           onPressed: () {
@@ -67,18 +72,64 @@ class Navbar extends StatelessWidget {
               style:
                   TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
         ),
+  buildButtons(context, loginListener)
+     
+      ],
+    );
+  }  
+  else{
+    return Row(
+      
+      children: <Widget>[
+   
+  buildButtons(context, loginListener)
+     
+      ],
+    );
+  }
+  
+  }
+  buildButtons(context,loginListener){
+    if(loginListener.status==UserState.Unauthenticated){
+ return Row(
+    
+      children: <Widget>[
+         MaterialButton(
+          elevation: 0,
+          color: Color.fromRGBO(60, 207, 207, 1),
+          onPressed: () {
+            Dialogs().loginDialog(context);
+          },
+          child: Text('Login',
+              style:
+                  TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+        ),
           MaterialButton(
           elevation: 0,
           color: Color.fromRGBO(60, 207, 207, 1),
           onPressed: () {
-            Navigator.pushNamed(context, '/quizLoader');
+            Dialogs().signUpDialog(context);
           },
-          child: Text('QuizScore',
+          child: Text('SignUp',
               style:
                   TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
         ),
-        // IconButton(icon: Icon(Icons.search), onPressed: () {}),
+      
       ],
     );
+    }
+    else
+    {
+      return MaterialButton(onPressed: (){
+        loginListener.updateStatus(state:UserState.Unauthenticated);
+      
+        Navigator.popUntil(context, ModalRoute.withName(Navigator.defaultRouteName));
+      
+      },
+      color: Colors.amber
+      ,child: Text('Sign Out'),);
+    }
+
+   
   }
 }

@@ -10,6 +10,7 @@ class Reviewer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+   
     final reviewerProvider = Provider.of<ReviewerProvider>(context,listen: false);
     final db = Firestore.instance;
     final _pageViewController =

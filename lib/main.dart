@@ -1,3 +1,4 @@
+import 'package:Quiz_web/Services/Providers/loginListener.dart';
 import 'package:Quiz_web/Services/Providers/quizProvider.dart';
 import 'package:Quiz_web/Services/Providers/reviewerProvider.dart';
 import 'package:Quiz_web/Services/routing.dart';
@@ -25,7 +26,8 @@ class MyApp extends StatelessWidget {
       providers: [
         //add providers here
         ListenableProvider<QuizProvider>(create: (_) => QuizProvider()),
-          ListenableProvider<ReviewerProvider>(create: (_) => ReviewerProvider())
+          ListenableProvider<ReviewerProvider>(create: (_) => ReviewerProvider()),
+        ChangeNotifierProvider<LoginListener>(create: (_)=>LoginListener(),),
       ],
       child: MaterialApp(
         title: "QuizApp",
