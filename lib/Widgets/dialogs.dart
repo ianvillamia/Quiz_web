@@ -5,11 +5,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 
 class Dialogs {
+      final AuthenticationService _auth = AuthenticationService();
   loginDialog(BuildContext context) {
+    final GlobalKey<FormBuilderState> _fbKey = GlobalKey<FormBuilderState>();
     var size = MediaQuery.of(context).size;
     return showDialog(
         context: context,
         builder: (context) {
+           TextEditingController emailController = TextEditingController(),
+        passwordController = TextEditingController();
+       
+      
           return AlertDialog(
             titlePadding: EdgeInsets.all(0),
             contentPadding: EdgeInsets.all(20),
@@ -30,75 +36,101 @@ class Dialogs {
                         fontWeight: FontWeight.bold),
                   ),
                 )),
-            content: Container(
-                width: 500,
-                height: 300,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    InkWell(
-                      onTap: () {},
-                      child: Container(
-                        child: Padding(
-                          padding: const EdgeInsets.all(2),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Container(
-                                width: 50,
-                                height: 50,
-                                decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                        image:
-                                            AssetImage('assets/google.png'))),
-                              ),
-                              SizedBox(width: 10),
-                              Text('Log in with Google',
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w600))
-                            ],
+            content: FormBuilder(
+                autovalidate: true,
+                key: _fbKey,
+                          child: Container(
+                  width: 500,
+                  height: 300,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      InkWell(
+                        onTap: () {},
+                        child: Container(
+                          child: Padding(
+                            padding: const EdgeInsets.all(2),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Container(
+                                  width: 50,
+                                  height: 50,
+                                  decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                          image:
+                                              AssetImage('assets/google.png'))),
+                                ),
+                                SizedBox(width: 10),
+                                Text('Log in with Google',
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w600))
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    TextFormField(
-                      decoration: InputDecoration(
-                          labelText: 'Username', hintText: 'example@gmail.com'),
-                    ),
-                    TextFormField(
-                      obscureText: true,
-                      decoration: InputDecoration(
-                          labelText: 'Password', hintText: '******'),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    MaterialButton(
-                      hoverColor: Colors.amber,
-                      color: Color.fromRGBO(60, 206, 206, 1),
-                      minWidth: size.width,
-                      onPressed: () {},
-                      child: Text(
-                        'Login',
-                        style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white),
+                      SizedBox(
+                        height: 10,
                       ),
-                    )
-                  ],
-                )),
+                       FormBuilderTextField(
+                          attribute: "name",
+                          controller: emailController,
+                          decoration: InputDecoration(labelText: "Email"),
+                          validators: [
+                            FormBuilderValidators.email(
+                                errorText:
+                                    'Wrong Format please use proper email'),
+                            FormBuilderValidators.required()
+                          ],
+                        ),
+                      TextFormField(
+                        controller: passwordController,
+                        obscureText: true,
+                        decoration: InputDecoration(
+                            labelText: 'Password', hintText: '******'),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      MaterialButton(
+                        hoverColor: Colors.amber,
+                        color: Color.fromRGBO(60, 206, 206, 1),
+                        minWidth: size.width,
+                        onPressed: () async{
+                            if (_fbKey.currentState.saveAndValidate()) {
+                              print(_fbKey.currentState.value);
+                              await _auth
+                                  .signInWithEmailAndPassword(
+                                      email: emailController.text,
+                                      password: passwordController.text)
+                                  .then((value) => print('success'))
+                                  .catchError((error, stackTrace) {
+                                print("outer: $error");
+                                errorDialog(context, error.toString());
+                                  _fbKey.currentState.reset();
+                              });
+                            }
+                        },
+                        child: Text(
+                          'Login',
+                          style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
+                        ),
+                      )
+                    ],
+                  )),
+            ),
           );
         });
   }
 
   signUpDialog(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    final AuthenticationService _auth = AuthenticationService();
+
     final GlobalKey<FormBuilderState> _fbKey = GlobalKey<FormBuilderState>();
     TextEditingController userNameController = TextEditingController(),
         password1Controller = TextEditingController(),
@@ -255,21 +287,21 @@ class Dialogs {
   }
 
   errorDialog(BuildContext context, errorMessage) {
-    // errorMessage.forEach((key,value){
-    //   print('wat da');
-    //   print('key:$key and value:$value');
-    // });
-    var see =errorMessage.contains('email address is already in use by another account');
-    String e='';
-    if(see){
-      e+='Email already in Use';
+    var msg = errorMessage.contains('email address is already in use by another account');
+    var mm = errorMessage.contains('no user record corresponding to this identifier');
+    String error='';
+    if(msg){
+      error+='Email already in Use';
+    }
+    if(mm){
+      error+='User does not Exist please sign up';
     }
     return showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
             title: Text('Error'),
-            content: Text(e),
+            content: Text(error),
           );
         });
   }

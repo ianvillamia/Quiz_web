@@ -18,14 +18,22 @@ class AuthenticationService {
     try {
       AuthResult result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
-      FirebaseUser user=result.user;
+      FirebaseUser user = result.user;
       return _userFromFirebaseUser(user);
     } catch (e) {
+      return Future.error({e});
+    }
+  }
 
-      return Future.error({
-    e
-      });
-   
+  Future signInWithEmailAndPassword(
+      {@required email, @required String password}) async {
+    try {
+      AuthResult result = await _auth.signInWithEmailAndPassword(
+          email: email, password: password);
+      FirebaseUser user = result.user;
+      return _userFromFirebaseUser(user);
+    } catch (e) {
+      return Future.error({e});
     }
   }
 }
