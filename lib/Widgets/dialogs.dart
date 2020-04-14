@@ -219,6 +219,7 @@ class Dialogs {
                                   .catchError((error, stackTrace) {
                                 print("outer: $error");
                                 errorDialog(context, error.toString());
+                                  _fbKey.currentState.reset();
                               });
                             }
                           },
@@ -258,12 +259,17 @@ class Dialogs {
     //   print('wat da');
     //   print('key:$key and value:$value');
     // });
+    var see =errorMessage.contains('email address is already in use by another account');
+    String e='';
+    if(see){
+      e+='Email already in Use';
+    }
     return showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
             title: Text('Error'),
-            content: Text(errorMessage),
+            content: Text(e),
           );
         });
   }
