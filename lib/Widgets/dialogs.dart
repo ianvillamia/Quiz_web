@@ -1,3 +1,5 @@
+import 'dart:js';
+
 import 'package:Quiz_web/Services/Firebase/authenticationService.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -190,7 +192,7 @@ class Dialogs {
                           decoration: InputDecoration(
                               labelText: 'Password', hintText: '******'),
                           validator: (value) => _passwordValidator(
-                              password1Controller, password2Controller),
+                              value, password1Controller, password2Controller),
                         ),
                         TextFormField(
                           controller: password2Controller,
@@ -199,17 +201,25 @@ class Dialogs {
                               labelText: 'Confirm Password',
                               hintText: '******'),
                           validator: (value) => _passwordValidator(
-                              password1Controller, password2Controller),
+                              value, password1Controller, password2Controller),
                         ),
                         MaterialButton(
                           hoverColor: Colors.amber,
                           color: Color.fromRGBO(60, 206, 206, 1),
                           minWidth: size.width,
-                          onPressed: () {
+                          onPressed: () async {
                             print('jejedog');
                             if (_fbKey.currentState.saveAndValidate()) {
                               print(_fbKey.currentState.value);
-                              _auth.registerWithEmailAndPassword(email: emailController.text, password: password1Controller.text);
+                              await _auth
+                                  .registerWithEmailAndPassword(
+                                      email: emailController.text,
+                                      password: password1Controller.text)
+                                  .then((value) => print('success'))
+                                  .catchError((error, stackTrace) {
+                                print("outer: $error");
+                                errorDialog(context, error.toString());
+                              });
                             }
                           },
                           child: Text(
@@ -228,20 +238,33 @@ class Dialogs {
         });
   }
 
-  _passwordValidator(passwordController1, passwordController2) {
-    var pass1 = passwordController1.text;
-    var pass2 = passwordController2.text;
-    String errorText='';
-    if (pass1 == pass2 && (pass1 != '' || pass2 != '')) {
-      print('matches');
-      return null;
-    } else {
-      errorText +='Passwords dont match';
-      if (pass1.length < 8 || pass2.length < 8) {
-        errorText += '| Must have alteast 8 characters';
-      }
-       
+  _passwordValidator(value, password1Controller, password2Controller) {
+    String errorText = '';
+
+    if (password1Controller.text != password2Controller.text) {
+      errorText += 'Passwords dont match';
     }
-    return errorText;
+    if (value.length < 8) {
+      errorText += '| Password must have atleast 8 characters';
+    }
+    if (errorText != '') {
+      return errorText;
+    } else
+      return null;
+  }
+
+  errorDialog(BuildContext context, errorMessage) {
+    // errorMessage.forEach((key,value){
+    //   print('wat da');
+    //   print('key:$key and value:$value');
+    // });
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Error'),
+            content: Text(errorMessage),
+          );
+        });
   }
 }
