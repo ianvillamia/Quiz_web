@@ -1,10 +1,10 @@
 import 'package:Quiz_web/Models/userState.dart';
 import 'package:Quiz_web/Services/Providers/loginListener.dart';
 import 'package:Quiz_web/Widgets/dialogs.dart';
-import 'package:Quiz_web/Widgets/loading.dart';
+
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
-
+import 'Animations/hover_extensions.dart';
 import 'package:Quiz_web/Services/routing.dart';
 import 'package:provider/provider.dart';
 class Navbar extends StatelessWidget {
@@ -90,7 +90,8 @@ class Navbar extends StatelessWidget {
   
   }
   buildButtons(context,loginListener){
-    if(loginListener.status==UserState.Unauthenticated){
+    var status =loginListener.status;
+    if(status!=UserState.Authenticated){
  return Row(
     
       children: <Widget>[
@@ -103,6 +104,9 @@ class Navbar extends StatelessWidget {
           child: Text('Login',
               style:
                   TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+        ).showCursorOnHover,
+        SizedBox(
+          width: 10,
         ),
           MaterialButton(
           elevation: 0,
@@ -113,7 +117,7 @@ class Navbar extends StatelessWidget {
           child: Text('SignUp',
               style:
                   TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
-        ),
+        ).showCursorOnHover,
       
       ],
     );
@@ -121,7 +125,8 @@ class Navbar extends StatelessWidget {
     else
     {
       return MaterialButton(onPressed: (){
-        loginListener.updateStatus(state:UserState.Unauthenticated);
+        //show Logging out 
+        loginListener.updateStatus(state:UserState.LoggingOut);
       
         Navigator.popUntil(context, ModalRoute.withName(Navigator.defaultRouteName));
       

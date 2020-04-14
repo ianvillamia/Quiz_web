@@ -2,5 +2,6 @@ enum UserState{
   Uninitialized,
   Unauthenticated,
   Authenticating, 
-  Authenticated
+  Authenticated,
+  LoggingOut
 }

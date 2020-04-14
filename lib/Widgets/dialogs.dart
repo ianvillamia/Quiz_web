@@ -6,6 +6,7 @@ import 'package:Quiz_web/Services/Providers/loginListener.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:provider/provider.dart';
+
 class Dialogs {
   final AuthenticationService _auth = AuthenticationService();
   loginDialog(BuildContext context) {
@@ -107,12 +108,14 @@ class Dialogs {
                                     email: emailController.text,
                                     password: passwordController.text)
                                 .then((value) {
-                                  final _loginListener = Provider.of<LoginListener>(context,listen: false);
-                                _loginListener.updateStatus(
-                                  state: UserState.Authenticated
-                                );   Navigator.pop(context);
-                                })
-                                .catchError((error, stackTrace) {
+                              final _loginListener = Provider.of<LoginListener>(
+                                  context,
+                                  listen: false);
+                                   _loginListener.updateStatus(
+                                  state: UserState.Authenticating);
+                              
+                              Navigator.pop(context);
+                            }).catchError((error, stackTrace) {
                               print("outer: $error");
                               errorDialog(context, error.toString());
                               _fbKey.currentState.reset();
@@ -254,11 +257,11 @@ class Dialogs {
                                       email: emailController.text,
                                       password: password1Controller.text)
                                   .then((value) {
-                                      _fbKey.currentState.reset(); Navigator.pop(context);
-                                      successDialog(context,message: 'Please proceed to Login');
-                                       
-                                  } )
-                                  .catchError((error, stackTrace) {
+                                _fbKey.currentState.reset();
+                                Navigator.pop(context);
+                                successDialog(context,
+                                    message: 'Please proceed to Login');
+                              }).catchError((error, stackTrace) {
                                 print("outer: $error");
                                 errorDialog(context, error.toString());
                                 _fbKey.currentState.reset();
@@ -297,17 +300,16 @@ class Dialogs {
   }
 
   errorDialog(BuildContext context, errorMessage) {
-    var msg = errorMessage
+    var doubleAccount = errorMessage
         .contains('email address is already in use by another account');
-    var mm = errorMessage
+    var noUser = errorMessage
         .contains('no user record corresponding to this identifier');
+    var passwordInvalid = errorMessage.contains('password is invalid');
     String error = '';
-    if (msg) {
-      error += 'Email already in Use';
-    }
-    if (mm) {
-      error += 'User does not Exist please sign up';
-    }
+    if (doubleAccount) error += 'Email already in Use';
+
+    if (noUser) error += 'User does not Exist please sign up';
+    if(passwordInvalid) error+='Password Invalid';
     return showDialog(
         context: context,
         builder: (context) {
@@ -318,9 +320,7 @@ class Dialogs {
         });
   }
 
-  successDialog(BuildContext context,{String message}) {
- 
- 
+  successDialog(BuildContext context, {String message}) {
     return showDialog(
         context: context,
         builder: (context) {

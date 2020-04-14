@@ -2,7 +2,7 @@ import 'package:Quiz_web/Screens/home.dart';
 import 'package:Quiz_web/Screens/quiz.dart';
 import 'package:Quiz_web/Screens/quizScore.dart';
 import 'package:Quiz_web/Screens/review.dart';
-import 'package:Quiz_web/Widgets/loading.dart';
+
 import 'package:Quiz_web/wrapper.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
@@ -22,9 +22,7 @@ class FluroRouter {
   static Handler _quizScoreHandler = Handler(
       handlerFunc: (BuildContext context, Map<String, dynamic> params) =>
           QuizScore());
-  static Handler _quizLoadingHandler = Handler(
-      handlerFunc: (BuildContext context, Map<String, dynamic> params) =>
-          Loading());
+ 
  static Handler _wrapperHandler = Handler(
       handlerFunc: (BuildContext context, Map<String, dynamic> params) =>
           Wrapper());
@@ -39,7 +37,6 @@ class FluroRouter {
         handler: _reviewerHandler, transitionType: TransitionType.fadeIn);
     router.define('/quizScore',
         handler: _quizScoreHandler, transitionType: TransitionType.fadeIn);
-    router.define('/quizLoader',
-        handler: _quizLoadingHandler, transitionType: TransitionType.fadeIn);
+   
   }
 }

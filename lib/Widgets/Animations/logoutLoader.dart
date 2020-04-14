@@ -5,12 +5,12 @@ import 'package:Quiz_web/Models/userState.dart';
 import 'package:provider/provider.dart';
 
 
-class Loading extends StatelessWidget {
+class LogOutLoader extends StatelessWidget {
 
  
   doSomething(loginListener,context){
-    Future.delayed(Duration(seconds: 3),(){
-    loginListener.updateStatus(state: UserState.Authenticated);
+    Future.delayed(Duration(seconds: 1),(){
+    loginListener.updateStatus(state: UserState.Unauthenticated);
  
     });
 
@@ -22,7 +22,7 @@ class Loading extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.blue,
       body: Center(
-          child: SpinKitChasingDots(
+          child: SpinKitCubeGrid(
             color: Colors.white,
             size: 50,
           ),

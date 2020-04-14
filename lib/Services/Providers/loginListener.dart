@@ -6,7 +6,7 @@ import 'package:Quiz_web/Models/userState.dart';
 class LoginListener with ChangeNotifier {
   FirebaseAuth auth;
   FirebaseUser user;
-  UserState status = UserState.Unauthenticated;
+  UserState status = UserState.Uninitialized;
 var counter=0;
   void updateStatus({UserState state}){
  
