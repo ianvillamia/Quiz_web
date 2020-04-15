@@ -13,27 +13,18 @@ class Loader extends StatelessWidget {
     var size = MediaQuery.of(context).size;
     final loginListener = Provider.of<LoginListener>(context, listen: false);
     switch (loginListener.status) {
-      case UserState.Authenticating:
-        Future.delayed(Duration(seconds: 1), () {
-          loginListener.updateStatus(state: UserState.Authenticated);
-        });
-
-        break;
-      case UserState.LoggingOut:
+      default:
         Future.delayed(Duration(seconds: 1), () {
           loginListener.updateStatus(state: UserState.Unauthenticated);
         });
-
         break;
-      default:
     }
     return Scaffold(
-      
       backgroundColor: Colors.blue,
       body: Center(
         child: SpinKitCubeGrid(
           color: Colors.white,
-          size: size.width*.3,
+          size: size.width * .3,
         ),
       ),
     );

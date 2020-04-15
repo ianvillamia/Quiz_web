@@ -1,5 +1,6 @@
 import 'package:Quiz_web/Models/userState.dart';
 import 'package:Quiz_web/Services/Providers/loginListener.dart';
+import 'package:Quiz_web/Services/SharedPreferences/sharedPrefs.dart';
 import 'package:Quiz_web/Widgets/dialogs.dart';
 
 import 'package:fluro/fluro.dart';
@@ -127,7 +128,7 @@ class Navbar extends StatelessWidget {
       return MaterialButton(onPressed: (){
         //show Logging out 
         loginListener.updateStatus(state:UserState.LoggingOut);
-      
+      SharedData().resetSharedPrefData(key: 'isLoggedIn');
         Navigator.popUntil(context, ModalRoute.withName(Navigator.defaultRouteName));
       
       },

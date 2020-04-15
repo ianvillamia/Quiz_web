@@ -17,28 +17,26 @@ class Wrapper extends StatefulWidget {
 
 class _WrapperState extends State<Wrapper> {
   @override
+  void initState() {
+    // TODO: implement initState
+    LoginListener();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final loginListener = Provider.of<LoginListener>(context);
-
+    //builds before listening to stream
     switch (loginListener.status) {
       case UserState.Unauthenticated:
         //should show login forms? idduno
-
-        return Home();
-      case UserState.Uninitialized:
-        //should show home? idunno
         return Home();
       case UserState.Authenticated:
         return Quiz();
-      case UserState.Authenticating:
-        return Loader(state: UserState.Authenticating);
-      case UserState.LoggingOut:
-        return Loader(state: UserState.LoggingOut);
-
         break;
+
       default:
-        Container();
+        break;
     }
-    return Container();
+    return Loader(state: UserState.Initializing);
   }
 }

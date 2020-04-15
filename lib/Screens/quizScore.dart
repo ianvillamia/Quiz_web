@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:Quiz_web/Models/sizingInfo.dart';
+
 import 'package:Quiz_web/Services/Providers/quizProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:Quiz_web/Widgets/navbar.dart';
@@ -17,8 +17,8 @@ class _QuizScoreState extends State<QuizScore> {
 
   @override
   Widget build(BuildContext context) {
-    SizingInfo size = SizingInfo(context: context);
-    size.setSizes();
+    var size=  MediaQuery.of(context).size;
+
     return Scaffold(
       body: Stack(
         children: <Widget>[

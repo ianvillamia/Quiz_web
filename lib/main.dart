@@ -1,6 +1,7 @@
 import 'package:Quiz_web/Services/Providers/loginListener.dart';
 import 'package:Quiz_web/Services/Providers/quizProvider.dart';
 import 'package:Quiz_web/Services/Providers/reviewerProvider.dart';
+import 'package:Quiz_web/Services/SharedPreferences/sharedPrefs.dart';
 import 'package:Quiz_web/Services/routing.dart';
 
 import 'package:flutter/material.dart';
@@ -12,8 +13,22 @@ void main() async {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   // This widget is the root of your application.
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    //do setting of shared prefs here
+    SharedData().startUp();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(

@@ -82,7 +82,7 @@ void initState() {
                                 fontWeight: FontWeight.bold, fontSize: 22),
                           ),
                           onPressed: () {
-                             loginListener.updateStatus(state: UserState.Authenticating);
+                             loginListener.updateStatus(state: UserState.Authenticated);
                           },
                         )
                       ],

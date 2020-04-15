@@ -1,7 +1,7 @@
-enum UserState{
-  Uninitialized,
+enum UserState {
   Unauthenticated,
-  Authenticating, 
+
   Authenticated,
-  LoggingOut
+  LoggingOut,
+  Initializing
 }

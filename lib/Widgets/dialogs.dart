@@ -112,7 +112,7 @@ class Dialogs {
                                   context,
                                   listen: false);
                                    _loginListener.updateStatus(
-                                  state: UserState.Authenticating);
+                                  state: UserState.Authenticated);
                               
                               Navigator.pop(context);
                             }).catchError((error, stackTrace) {
