@@ -1,3 +1,4 @@
+import 'package:Quiz_web/Screens/authScreens/signupScreen.dart';
 import 'package:Quiz_web/Screens/home.dart';
 import 'package:Quiz_web/Screens/quiz.dart';
 import 'package:Quiz_web/Screens/quizScore.dart';
@@ -22,14 +23,19 @@ class FluroRouter {
   static Handler _quizScoreHandler = Handler(
       handlerFunc: (BuildContext context, Map<String, dynamic> params) =>
           QuizScore());
- 
- static Handler _wrapperHandler = Handler(
+
+  static Handler _wrapperHandler = Handler(
       handlerFunc: (BuildContext context, Map<String, dynamic> params) =>
           Wrapper());
+  static Handler _signupHandler = Handler(
+      handlerFunc: (BuildContext context, Map<String, dynamic> params) =>
+          SignUp());
   static void setupRouter() {
     router.define('/',
         handler: _wrapperHandler, transitionType: TransitionType.fadeIn);
-         router.define('/home',
+    router.define('/signup',
+        handler: _signupHandler, transitionType: TransitionType.cupertino);
+    router.define('/home',
         handler: _homehandler, transitionType: TransitionType.fadeIn);
     router.define('/quiz',
         handler: _quizhandler, transitionType: TransitionType.fadeIn);
@@ -37,6 +43,5 @@ class FluroRouter {
         handler: _reviewerHandler, transitionType: TransitionType.fadeIn);
     router.define('/quizScore',
         handler: _quizScoreHandler, transitionType: TransitionType.fadeIn);
-   
   }
 }

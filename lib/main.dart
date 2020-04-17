@@ -22,14 +22,15 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
 
-  
+
   @override
   Widget build(BuildContext context) {
+    AuthenticationService auth = AuthenticationService();
     return MultiProvider(
       providers: [
         //add providers here
           StreamProvider<User>.value(
-          value: AuthenticationService().user,
+          value:auth.user,
         ),
         
         ListenableProvider<QuizProvider>(create: (_) => QuizProvider()),

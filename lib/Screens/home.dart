@@ -1,9 +1,9 @@
-
-
-import 'package:firebase_web/firebase.dart';
+import 'package:Quiz_web/Services/Firebase/authenticationService.dart';
+import 'package:Quiz_web/Widgets/navbar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:Quiz_web/Models/userModel.dart';
+
 class Home extends StatefulWidget {
   const Home({Key key}) : super(key: key);
 
@@ -12,6 +12,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  AuthenticationService auth = AuthenticationService();
   @override
   void initState() {
     super.initState();
@@ -19,12 +20,10 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<User>(context);
-
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
-          children: <Widget>[ section1(context)],
+          children: <Widget>[Navbar(), section1(context)],
         ),
       ),
     );
@@ -72,8 +71,13 @@ class _HomeState extends State<Home> {
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 22),
                           ),
-                          onPressed: () {
-                         
+                          onPressed: () async {
+                            print('sign out');
+                            await auth.signOut();
+                            Navigator.popUntil(
+                                context,
+                                ModalRoute.withName(
+                                    Navigator.defaultRouteName));
                           },
                         )
                       ],

@@ -1,32 +1,17 @@
-import 'package:Quiz_web/Services/Providers/loginListener.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:Quiz_web/Models/userState.dart';
-import 'package:provider/provider.dart';
 
-class Loader extends StatelessWidget {
-  final state;
-  Loader({@required this.state});
-
+class Loading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-    final loginListener = Provider.of<LoginListener>(context, listen: false);
-    switch (loginListener.status) {
-      default:
-        Future.delayed(Duration(seconds: 1), () {
-          loginListener.updateStatus(state: UserState.Unauthenticated);
-        });
-        break;
-    }
-    return Scaffold(
-      backgroundColor: Colors.blue,
-      body: Center(
-        child: SpinKitCubeGrid(
-          color: Colors.white,
-          size: size.width * .3,
+    return Container(
+   
+      child: Center(
+        child: SpinKitChasingDots(
+          color: Colors.brown,
+          size: 50.0,
         ),
       ),
     );
   }
-}
+  }

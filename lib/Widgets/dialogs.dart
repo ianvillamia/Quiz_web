@@ -111,9 +111,9 @@ class Dialogs {
                               final _loginListener = Provider.of<LoginListener>(
                                   context,
                                   listen: false);
-                                   _loginListener.updateStatus(
+                              _loginListener.updateStatus(
                                   state: UserState.Authenticated);
-                              
+
                               Navigator.pop(context);
                             }).catchError((error, stackTrace) {
                               print("outer: $error");
@@ -300,34 +300,48 @@ class Dialogs {
   }
 
   errorDialog(BuildContext context, errorMessage) {
-    var doubleAccount = errorMessage
-        .contains('email address is already in use by another account');
-    var noUser = errorMessage
-        .contains('no user record corresponding to this identifier');
-    var passwordInvalid = errorMessage.contains('password is invalid');
-    String error = '';
-    if (doubleAccount) error += 'Email already in Use';
+    String errMessage = errorMessage.toString();
 
-    if (noUser) error += 'User does not Exist please sign up';
-    if(passwordInvalid) error+='Password Invalid';
+    var doubleAccount = errMessage
+        .contains('email address is already in use by another account');
+    var noUser =
+        errMessage.contains('no user record corresponding to this identifier');
+    var passwordInvalid = errMessage.contains('password is invalid');
+
+    if (doubleAccount) errMessage += 'Email already in Use';
+    if (noUser) errMessage += 'User does not Exist please sign up';
+    if (passwordInvalid) errMessage += 'Password Invalid';
+
     return showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
             title: Text('Error'),
-            content: Text(error),
+            content: Text(errMessage),
           );
         });
   }
 
-  successDialog(BuildContext context, {String message}) {
+  successDialog(BuildContext context, {@required String message}) {
     return showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
             title: Text('Success'),
             content: Text(message),
+            actions: <Widget>[
+              MaterialButton(
+                onPressed: () async{
+              await   popLog(context);
+                },
+                child: Text('Proceed to login'),
+              )
+            ],
           );
         });
+  }
+   Future popLog(context) async {
+    Navigator.popUntil(
+        context, ModalRoute.withName(Navigator.defaultRouteName));
   }
 }

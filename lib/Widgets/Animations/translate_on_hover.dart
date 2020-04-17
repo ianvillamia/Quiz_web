@@ -6,9 +6,9 @@ class TranslateOnHover extends StatefulWidget {
   final animationType;
   // You can also pass the translation in here if you want to
   TranslateOnHover(
-      {@required this.child,
-      @required this.colorChange,
-      @required this.animationType});
+      { this.child,
+       this.colorChange,
+       @required this.animationType});
   @override
   _TranslateOnHoverState createState() => _TranslateOnHoverState();
 }
@@ -28,6 +28,7 @@ class _TranslateOnHoverState extends State<TranslateOnHover> {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         child: widget.child,
+        
         decoration: BoxDecoration(
           color: _hovering ? widget.colorChange : null,
         ),

@@ -8,10 +8,12 @@ class AuthenticationService {
   User _userFromFirebaseUser(FirebaseUser user) {
     return user != null ? User(uid: user.uid) : null;
   }
+
 //auth change user Stream
-  Stream<User> get user{
+  Stream<User> get user {
     return _auth.onAuthStateChanged.map(_userFromFirebaseUser);
   }
+
   Future registerWithEmailAndPassword(
       {@required String email, @required String password}) async {
     try {
@@ -36,27 +38,25 @@ class AuthenticationService {
     }
   }
 
- //sign in Anon;
-  Future signInAnon()async{
-    try{
-     AuthResult result =  await _auth.signInAnonymously();
-     FirebaseUser user  = result.user;
-     return _userFromFirebaseUser(user);
-    }catch(e){
+  //sign in Anon;
+  Future signInAnon() async {
+    try {
+      AuthResult result = await _auth.signInAnonymously();
+      FirebaseUser user = result.user;
+      return _userFromFirebaseUser(user);
+    } catch (e) {
       print(e.toString());
       return null;
     }
   }
-  //sign out 
-  Future signOut()async{
-    try{
+
+  //sign out
+  Future signOut() async {
+    try {
       return await _auth.signOut();
-    }catch(e){
+    } catch (e) {
       print(e.toString());
       return null;
     }
   }
-
 }
-
-

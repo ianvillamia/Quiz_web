@@ -2,8 +2,7 @@ import 'package:Quiz_web/Models/animationTypes.dart';
 import 'package:flutter/material.dart';
 import 'package:Quiz_web/Widgets/Animations/hover_extensions.dart';
 import 'package:Quiz_web/Widgets/Animations/translate_on_hover.dart';
-import 'package:provider/provider.dart';
-import 'package:Quiz_web/Models/userModel.dart';
+
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key key}) : super(key: key);
 
