@@ -1,12 +1,13 @@
-
+import 'package:Quiz_web/Services/Firebase/authenticationService.dart';
 import 'package:flutter/material.dart';
 import 'package:Quiz_web/Widgets/Animations/hover_extensions.dart';
+
 class LoginScreen extends StatelessWidget {
   const LoginScreen({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-  var size = MediaQuery.of(context).size;
+    var size = MediaQuery.of(context).size;
 
     return Scaffold(
       backgroundColor: Colors.blueAccent,
@@ -32,7 +33,10 @@ class LoginScreen extends StatelessWidget {
                 padding: EdgeInsets.symmetric(vertical: size.height * .1),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[header(size), formContainer(size,context)],
+                  children: <Widget>[
+                    header(size),
+                    formContainer(size, context)
+                  ],
                 ),
               ),
             ),
@@ -59,7 +63,7 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  formContainer(size,context) {
+  formContainer(size, context) {
     return Padding(
       padding: EdgeInsets.all(size.height * .05),
       child: Container(
@@ -89,7 +93,9 @@ class LoginScreen extends StatelessWidget {
               height: 10,
             ),
             MaterialButton(
-                onPressed: () {
+                onPressed: () async{
+                   AuthenticationService _auth = AuthenticationService();
+                   await _auth.signInAnon();
                   Navigator.pushNamed(context, '/home');
                 },
                 color: Color.fromRGBO(75, 85, 95, 1),

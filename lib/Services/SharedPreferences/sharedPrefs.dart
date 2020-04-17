@@ -6,9 +6,7 @@ class SharedData {
     final pref = await SharedPreferences.getInstance();
     final startupNumber = pref.get('startupNumber');
     if (startupNumber == null) {
-      //SETTING FOR UPON RELOAD
-      // await pref.setBool('isLoggedIn', false);
-      // await pref.setString('isLoggedIn', 'false');
+    
       await pref.setBool('isLoggedIn', false);
       return 0;
     }

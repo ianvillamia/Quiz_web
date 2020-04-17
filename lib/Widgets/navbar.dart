@@ -1,19 +1,15 @@
-import 'package:Quiz_web/Models/userState.dart';
-import 'package:Quiz_web/Services/Providers/loginListener.dart';
-import 'package:Quiz_web/Services/SharedPreferences/sharedPrefs.dart';
-import 'package:Quiz_web/Widgets/dialogs.dart';
-
+import 'package:Quiz_web/Services/Firebase/authenticationService.dart';
+import 'package:firebase_web/firebase.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
-import 'Animations/hover_extensions.dart';
-import 'package:Quiz_web/Services/routing.dart';
 import 'package:provider/provider.dart';
+
 class Navbar extends StatelessWidget {
-    final _formKey=GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
   var router = Router();
   @override
   Widget build(BuildContext context) {
-    final loginListener = Provider.of<LoginListener>(context);
+    AuthenticationService auth = AuthenticationService();
     return Container(
       height: MediaQuery.of(context).size.height * .20,
       width: MediaQuery.of(context).size.width,
@@ -26,8 +22,10 @@ class Navbar extends StatelessWidget {
             Material(
               color: Colors.transparent,
               child: InkWell(
-                onTap: () {
-                  Navigator.pushNamed(context, '/home');
+                onTap: () async {
+                  print('tapped');
+
+                  await auth.signOut();
                 },
                 child: Text(
                   'QuizApp',
@@ -38,104 +36,37 @@ class Navbar extends StatelessWidget {
                 ),
               ),
             ),
-            nav_buttons(context,loginListener)
+            Row(
+              children: <Widget>[
+                MaterialButton(
+                  elevation: 0,
+                  color: Color.fromRGBO(60, 207, 207, 1),
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/quiz');
+                  },
+                  child: Text('Take a Quiz',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.white)),
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                MaterialButton(
+                  elevation: 0,
+                  color: Color.fromRGBO(60, 207, 207, 1),
+                  onPressed: () async{
+                    await auth.signOut();
+                  
+                  },
+                  child: Text('Review',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.white)),
+                ),
+              ],
+            )
           ],
         ),
       ),
     );
-  }
-
-  nav_buttons(BuildContext context,loginListener) {
-  if(loginListener.status==UserState.Authenticated){
-    return Row(
-      
-      children: <Widget>[
-        MaterialButton(
-          elevation: 0,
-          color: Color.fromRGBO(60, 207, 207, 1),
-          onPressed: () {
-            Navigator.pushNamed(context, '/quiz');
-          },
-          child: Text('Take a Quiz',
-              style:
-                  TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
-        ),
-        SizedBox(
-          width: 10,
-        ),
-        MaterialButton(
-          elevation: 0,
-          color: Color.fromRGBO(60, 207, 207, 1),
-          onPressed: () {
-            Navigator.pushNamed(context, '/reviewer');
-          },
-          child: Text('Review',
-              style:
-                  TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
-        ),
-  buildButtons(context, loginListener)
-     
-      ],
-    );
-  }  
-  else{
-    return Row(
-      
-      children: <Widget>[
-   
-  buildButtons(context, loginListener)
-     
-      ],
-    );
-  }
-  
-  }
-  buildButtons(context,loginListener){
-    var status =loginListener.status;
-    if(status!=UserState.Authenticated){
- return Row(
-    
-      children: <Widget>[
-         MaterialButton(
-          elevation: 0,
-          color: Color.fromRGBO(60, 207, 207, 1),
-          onPressed: () {
-            Dialogs().loginDialog(context);
-          },
-          child: Text('Login',
-              style:
-                  TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
-        ).showCursorOnHover,
-        SizedBox(
-          width: 10,
-        ),
-          MaterialButton(
-          elevation: 0,
-          color: Color.fromRGBO(60, 207, 207, 1),
-          onPressed: () {
-            Dialogs().signUpDialog(context);
-          },
-          child: Text('SignUp',
-              style:
-                  TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
-        ).showCursorOnHover,
-      
-      ],
-    );
-    }
-    else
-    {
-      return MaterialButton(onPressed: (){
-        //show Logging out 
-        loginListener.updateStatus(state:UserState.LoggingOut);
-      SharedData().resetSharedPrefData(key: 'isLoggedIn');
-        Navigator.popUntil(context, ModalRoute.withName(Navigator.defaultRouteName));
-      
-      },
-      color: Colors.amber
-      ,child: Text('Sign Out'),);
-    }
-
-   
   }
 }

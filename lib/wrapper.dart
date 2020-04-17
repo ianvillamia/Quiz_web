@@ -1,42 +1,28 @@
-import 'package:Quiz_web/Models/userState.dart';
-import 'package:Quiz_web/Screens/home.dart';
-import 'package:Quiz_web/Screens/quiz.dart';
-import 'package:Quiz_web/Services/Providers/loginListener.dart';
-import 'package:Quiz_web/Widgets/Animations/loader.dart';
-import 'package:Quiz_web/Widgets/Animations/logoutLoader.dart';
+import 'package:Quiz_web/Models/userModel.dart';
+import 'package:Quiz_web/Services/Firebase/authenticationService.dart';
+
+import 'package:Quiz_web/Screens/adminScreens/loginScreen.dart';
+import 'package:Quiz_web/Widgets/pageBuilder.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:Quiz_web/Models/userState.dart';
 
-class Wrapper extends StatefulWidget {
-  Wrapper({Key key}) : super(key: key);
-
-  @override
-  _WrapperState createState() => _WrapperState();
-}
-
-class _WrapperState extends State<Wrapper> {
-  @override
-  void initState() {
-    // TODO: implement initState
-    LoginListener();
-  }
-
+class Wrapper extends StatelessWidget {
+  var currentPage = '/home';
+  AuthenticationService auth = AuthenticationService();
   @override
   Widget build(BuildContext context) {
-    final loginListener = Provider.of<LoginListener>(context);
-    //builds before listening to stream
-    switch (loginListener.status) {
-      case UserState.Unauthenticated:
-        //should show login forms? idduno
-        return Home();
-      case UserState.Authenticated:
-        return Quiz();
-        break;
+ 
+    final user = Provider.of<User>(context);
+    if (user == null) {
+      //not signed in
 
-      default:
-        break;
+      return LoginScreen();
+    } else {
+      //return pagebuilder
+
+      return PageBuilder(page: currentPage);
     }
-    return Loader(state: UserState.Initializing);
   }
+
+ 
 }

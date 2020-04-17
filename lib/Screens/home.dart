@@ -1,14 +1,10 @@
-import 'package:Quiz_web/Services/Providers/loginListener.dart';
-import 'package:Quiz_web/Themes/colors.dart';
 
-import 'package:Quiz_web/Widgets/navbar.dart';
+
+import 'package:firebase_web/firebase.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:Quiz_web/Models/userState.dart';
-
-
+import 'package:Quiz_web/Models/userModel.dart';
 class Home extends StatefulWidget {
-  
   const Home({Key key}) : super(key: key);
 
   @override
@@ -16,30 +12,25 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-@override
-void initState() { 
-  super.initState();
-  
-}
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-        final loginListener = Provider.of<LoginListener>(context,listen: false);
-       
+    final user = Provider.of<User>(context);
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
-          children: <Widget>[
-            Navbar(), section1(context,loginListener)
-           
-           
-            
-            ],
+          children: <Widget>[ section1(context)],
         ),
       ),
     );
   }
 
-  section1(BuildContext context,loginListener) {
+  section1(BuildContext context) {
     return Container(
       height: MediaQuery.of(context).size.height * .8,
       width: MediaQuery.of(context).size.width,
@@ -82,7 +73,7 @@ void initState() {
                                 fontWeight: FontWeight.bold, fontSize: 22),
                           ),
                           onPressed: () {
-                             loginListener.updateStatus(state: UserState.Authenticated);
+                         
                           },
                         )
                       ],

@@ -1,9 +1,10 @@
+import 'package:Quiz_web/Services/Firebase/authenticationService.dart';
 import 'package:Quiz_web/Services/Providers/loginListener.dart';
 import 'package:Quiz_web/Services/Providers/quizProvider.dart';
 import 'package:Quiz_web/Services/Providers/reviewerProvider.dart';
-import 'package:Quiz_web/Services/SharedPreferences/sharedPrefs.dart';
 import 'package:Quiz_web/Services/routing.dart';
-
+import 'package:Quiz_web/wrapper.dart';
+import 'Models/userModel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -21,19 +22,16 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    //do setting of shared prefs here
-    SharedData().startUp();
-  }
-
+  
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
         //add providers here
+          StreamProvider<User>.value(
+          value: AuthenticationService().user,
+        ),
+        
         ListenableProvider<QuizProvider>(create: (_) => QuizProvider()),
         ListenableProvider<ReviewerProvider>(create: (_) => ReviewerProvider()),
         ChangeNotifierProvider<LoginListener>(
@@ -47,6 +45,7 @@ class _MyAppState extends State<MyApp> {
         initialRoute: '/',
         onGenerateRoute: FluroRouter.router.generator,
         debugShowCheckedModeBanner: false,
+      home: Wrapper(),
       ),
     );
   }

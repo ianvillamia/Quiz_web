@@ -1,4 +1,4 @@
-class UserModel{
+class User{
   final String uid;
-  UserModel({this.uid});
+  User({this.uid});
 }
