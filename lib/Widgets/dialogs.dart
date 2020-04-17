@@ -302,11 +302,11 @@ class Dialogs {
   errorDialog(BuildContext context, errorMessage) {
     String errMessage = errorMessage.toString();
 
-    var doubleAccount = errMessage
+    var doubleAccount = errorMessage
         .contains('email address is already in use by another account');
     var noUser =
-        errMessage.contains('no user record corresponding to this identifier');
-    var passwordInvalid = errMessage.contains('password is invalid');
+        errorMessage.contains('no user record corresponding to this identifier');
+    var passwordInvalid = errorMessage.contains('password is invalid');
 
     if (doubleAccount) errMessage += 'Email already in Use';
     if (noUser) errMessage += 'User does not Exist please sign up';

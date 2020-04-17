@@ -42,7 +42,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 Positioned(
-                  
                   right: 0,
                   child: SingleChildScrollView(
                     child: Container(
@@ -51,14 +50,15 @@ class _LoginScreenState extends State<LoginScreen> {
                       color: Colors.white,
                       child: Padding(
                         padding: EdgeInsets.all(20),
-                                              child: FormBuilder(
+                        child: FormBuilder(
                           key: _formKey,
                           child: Scrollbar(
-                                                        child: Column(
-                              crossAxisAlignment:
-                                  CrossAxisAlignment.start,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                SizedBox(height: size.height*.30,),
+                                SizedBox(
+                                  height: size.height * .30,
+                                ),
                                 Text(
                                   'Login',
                                   style: TextStyle(
@@ -81,9 +81,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                 TextFormField(
                                   obscureText: true,
                                   controller: passwordController,
-                                  validator: (val) => val.isEmpty
-                                      ? 'Enter an password'
-                                      : null,
+                                  validator: (val) =>
+                                      val.isEmpty ? 'Enter an password' : null,
                                   decoration: InputDecoration(
                                     hintText: '*********',
                                     labelText: 'Password',
@@ -98,24 +97,20 @@ class _LoginScreenState extends State<LoginScreen> {
                                           .saveAndValidate()) {
                                         setState(() => loading = true);
 
-                                        dynamic result = await auth
+                                        await auth
                                             .signInWithEmailAndPassword(
-                                                email:
-                                                    emailController.text,
+                                                email: emailController.text,
                                                 password:
-                                                    passwordController
-                                                        .text)
+                                                    passwordController.text)
                                             .then((value) =>
                                                 Navigator.pushNamed(
                                                     context, '/home'))
-                                            .catchError(
-                                                (error, stackTrace) {
+                                            .catchError((error, stackTrace) {
                                           setState(() {
                                             loading = false;
                                           });
                                           print("outer: $error");
-                                          Dialogs().errorDialog(
-                                              context, error);
+                                          Dialogs().errorDialog(context, error);
                                         });
                                       }
                                     },
@@ -137,15 +132,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                       style: TextStyle(fontSize: 15),
                                     ),
                                     TranslateOnHover(
-                                        animationType:
-                                            AnimationType.moveUp,
+                                        animationType: AnimationType.moveUp,
                                         child: Container(
                                           width: 80,
                                           child: MaterialButton(
-                                              hoverColor:
-                                                  Colors.transparent,
-                                              splashColor:
-                                                  Colors.transparent,
+                                              hoverColor: Colors.transparent,
+                                              splashColor: Colors.transparent,
                                               onPressed: () {
                                                 Navigator.pushNamed(
                                                     context, '/signup');
@@ -154,9 +146,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                                 'Sign up',
                                                 style: TextStyle(
                                                     color: Colors.blue,
-                                                    decoration:
-                                                        TextDecoration
-                                                            .underline),
+                                                    decoration: TextDecoration
+                                                        .underline),
                                               )),
                                         )),
                                   ],

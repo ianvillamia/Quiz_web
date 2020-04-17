@@ -11,16 +11,10 @@ class PageBuilder extends StatefulWidget {
 }
 
 class _PageBuilderState extends State<PageBuilder> {
- 
-
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<User>(context, listen: false);
-    if (user == null) {
-      popLog(context);
-    } else {
-      pusher();
-    }
+    pusher();
+
     return Container();
   }
 
@@ -28,8 +22,5 @@ class _PageBuilderState extends State<PageBuilder> {
     await Navigator.pushNamed(context, widget.page);
   }
 
-  Future popLog(context) async {
-    Navigator.popUntil(
-        context, ModalRoute.withName(Navigator.defaultRouteName));
-  }
+
 }

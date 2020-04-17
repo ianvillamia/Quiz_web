@@ -11,6 +11,7 @@ class AuthenticationService {
 
 //auth change user Stream
   Stream<User> get user {
+    
     return _auth.onAuthStateChanged.map(_userFromFirebaseUser);
   }
 
@@ -18,9 +19,10 @@ class AuthenticationService {
       {@required String email, @required String password}) async {
     try {
       AuthResult result = await _auth.createUserWithEmailAndPassword(
-          email: email, password: password);
+          email: email.trim(), password: password);
       FirebaseUser user = result.user;
-      return _userFromFirebaseUser(user);
+      return _userFromFirebaseUser(user); //eto culprit
+      //nag lologin agad chitae pwede den naman hmmm 
     } catch (e) {
       return Future.error({e});
     }
@@ -30,7 +32,7 @@ class AuthenticationService {
       {@required email, @required String password}) async {
     try {
       AuthResult result = await _auth.signInWithEmailAndPassword(
-          email: email, password: password);
+          email: email.trim(), password: password);
       FirebaseUser user = result.user;
       return _userFromFirebaseUser(user);
     } catch (e) {

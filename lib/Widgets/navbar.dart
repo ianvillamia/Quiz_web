@@ -11,7 +11,7 @@ class Navbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     AuthenticationService auth = AuthenticationService();
-    final user = Provider.of<User>(context);
+    // final user = Provider.of<User>(context);
     return Container(
       height: MediaQuery.of(context).size.height * .20,
       width: MediaQuery.of(context).size.width,

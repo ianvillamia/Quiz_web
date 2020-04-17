@@ -32,7 +32,7 @@ class FluroRouter {
           SignUp());
   static void setupRouter() {
     router.define('/',
-        handler: _wrapperHandler, transitionType: TransitionType.fadeIn);
+        handler: _wrapperHandler, transitionType: TransitionType.cupertino);
     router.define('/signup',
         handler: _signupHandler, transitionType: TransitionType.cupertino);
     router.define('/home',

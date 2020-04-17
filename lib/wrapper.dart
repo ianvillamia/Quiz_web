@@ -18,17 +18,26 @@ class _WrapperState extends State<Wrapper> {
 
   @override
   Widget build(BuildContext context) {
- 
-    final user = Provider.of<User>(context);
+    return StreamBuilder<User>(
+      stream: AuthenticationService().user,
+      builder: (BuildContext context, snapshot) {
+        if(snapshot.hasData){
+return PageBuilder(page: currentPage);
+        }
+        else{
+         return LoginScreen();
+        }
+      },
+    );
+    // final user = Provider.of<User>(context);
+    // print(user);
+    // if (user == null) {
+    //   //not signed in
 
-    if (user == null) {
-      //not signed in
-
-      return LoginScreen();
-    } else {
-      //return pagebuilder
-
-      return PageBuilder(page: currentPage);
-    }
+    //   return LoginScreen();
+    // } else {
+    //   //return pagebuilder
+    //   return PageBuilder(page: currentPage);
+    // }
   }
 }

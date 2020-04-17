@@ -29,9 +29,9 @@ class _MyAppState extends State<MyApp> {
     return MultiProvider(
       providers: [
         //add providers here
-          StreamProvider<User>.value(
-          value:auth.user,
-        ),
+        //   StreamProvider<User>(
+        //   create: (_)=>auth.user,
+        // ),
         
         ListenableProvider<QuizProvider>(create: (_) => QuizProvider()),
         ListenableProvider<ReviewerProvider>(create: (_) => ReviewerProvider()),
@@ -43,7 +43,7 @@ class _MyAppState extends State<MyApp> {
       ],
       child: MaterialApp(
         title: "QuizApp",
-        initialRoute: '/',
+       
         onGenerateRoute: FluroRouter.router.generator,
         debugShowCheckedModeBanner: false,
       home: Wrapper(),
