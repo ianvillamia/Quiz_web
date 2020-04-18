@@ -23,10 +23,7 @@ class _HomeState extends State<Home> {
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
-          children: <Widget>[
-           Navbar(),
-            section1(context)
-          ],
+          children: <Widget>[Navbar(), section1(context)],
         ),
       ),
     );

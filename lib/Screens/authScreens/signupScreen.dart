@@ -184,9 +184,28 @@ class _SignUpState extends State<SignUp> {
                                           ),
                                         ),
                                       ),
+
                                     ),
                                   ),
                                 ),
+                                TranslateOnHover(
+                                        animationType: AnimationType.moveUp,
+                                        child: Container(
+                                          child: MaterialButton(
+                                              hoverColor: Colors.transparent,
+                                              splashColor: Colors.transparent,
+                                              onPressed: () {
+                                                Navigator.pushNamed(
+                                                    context, '/login');
+                                              },
+                                              child: Text(
+                                                'Proceed to Login',
+                                                style: TextStyle(
+                                                    color: Colors.blue,
+                                                    decoration: TextDecoration
+                                                        .underline),
+                                              )),
+                                        )),
                               ],
                             ),
                           )),
