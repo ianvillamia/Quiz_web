@@ -99,7 +99,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                                         await auth
                                             .signInWithEmailAndPassword(
-                                                email: emailController.text,
+                                                email: emailController.text.trim(),
                                                 password:
                                                     passwordController.text)
                                             .then((value) =>

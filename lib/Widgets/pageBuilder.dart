@@ -1,6 +1,4 @@
-import 'package:Quiz_web/Models/userModel.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class PageBuilder extends StatefulWidget {
   final String page;
@@ -12,8 +10,17 @@ class PageBuilder extends StatefulWidget {
 
 class _PageBuilderState extends State<PageBuilder> {
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Future(() {
+     Navigator.pushNamed(context, widget.page);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    pusher();
+    // pusher();
 
     return Container();
   }
@@ -21,6 +28,8 @@ class _PageBuilderState extends State<PageBuilder> {
   pusher() async {
     await Navigator.pushNamed(context, widget.page);
   }
-
-
+  //   Future popLog(context) async {
+  //   Navigator.popUntil(
+  //       context, ModalRoute.withName(Navigator.defaultRouteName));
+  // }
 }

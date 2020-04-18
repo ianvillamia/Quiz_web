@@ -1,13 +1,18 @@
-import 'package:Quiz_web/Models/userModel.dart';
 import 'package:Quiz_web/Services/Firebase/authenticationService.dart';
+import 'package:Quiz_web/wrapper.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-class Navbar extends StatelessWidget {
+class Navbar extends StatefulWidget {
+  @override
+  _NavbarState createState() => _NavbarState();
+}
+
+class _NavbarState extends State<Navbar> {
   final _formKey = GlobalKey<FormState>();
 
   var router = Router();
+
   @override
   Widget build(BuildContext context) {
     AuthenticationService auth = AuthenticationService();
@@ -70,12 +75,13 @@ class Navbar extends StatelessWidget {
                   child: Text('Sign out'),
                   onPressed: () async {
                     print('let me sign out!');
-                    await auth.signOut().then((value) {
-                      print('value is');
-                      print(value);
-                      popLog(context);
-                    }).catchError((onError) => print(onError));
-                  
+                    // await  popLog(context);
+
+                    await auth
+                        .signOut()
+                        .catchError((onError) => print(onError));
+                 Navigator.of(context).pushNamedAndRemoveUntil('/', (Route<dynamic> r) => false);
+                    //  _resetAndOpenPage(context);
                   },
                 )
               ],
@@ -86,8 +92,5 @@ class Navbar extends StatelessWidget {
     );
   }
 
-  Future popLog(context) async {
-    Navigator.popUntil(
-        context, ModalRoute.withName(Navigator.defaultRouteName));
-  }
+  _resetAndOpenPage(context) {}
 }
