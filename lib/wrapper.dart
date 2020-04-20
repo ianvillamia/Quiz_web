@@ -1,6 +1,7 @@
 import 'package:Quiz_web/Models/userModel.dart';
 
 import 'package:Quiz_web/Screens/authScreens/loginScreen.dart';
+import 'package:Quiz_web/Screens/authenticatedHome.dart';
 import 'package:Quiz_web/Screens/home.dart';
 import 'package:Quiz_web/Widgets/pageBuilder.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +31,7 @@ class _WrapperState extends State<Wrapper> {
       
       //eto testing area 
       //return home with login signup
+    //return AuthenticatedHome();
       return Home();
     } else {
       //return pagebuilder

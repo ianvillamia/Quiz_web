@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:Quiz_web/Services/Firebase/authenticationService.dart';
 import 'package:Quiz_web/Services/Providers/loginListener.dart';
+import 'package:Quiz_web/Services/Providers/quizListProvider.dart';
 import 'package:Quiz_web/Services/Providers/quizProvider.dart';
 import 'package:Quiz_web/Services/Providers/reviewerProvider.dart';
 import 'package:Quiz_web/Services/routing.dart';
@@ -26,20 +27,20 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     AuthenticationService auth = AuthenticationService();
-  
+
     return MultiProvider(
       providers: [
         //add providers here
-        StreamProvider<User>(
-            create: (_) => auth.user 
-           ),
+        StreamProvider<User>(create: (_) => auth.user),
 
         ListenableProvider<QuizProvider>(create: (_) => QuizProvider()),
         ListenableProvider<ReviewerProvider>(create: (_) => ReviewerProvider()),
         ChangeNotifierProvider<LoginListener>(
           create: (_) => LoginListener(),
         ),
-       
+        ChangeNotifierProvider<QuizListProvider>(
+          create: (_) => QuizListProvider(),
+        ),
       ],
       child: MaterialApp(
         title: "QuizApp",

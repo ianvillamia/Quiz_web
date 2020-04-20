@@ -6,7 +6,7 @@ class TranslateOnHover extends StatefulWidget {
   final animationType;
   // You can also pass the translation in here if you want to
   TranslateOnHover(
-      { this.child,
+      { @required this.child,
        this.colorChange,
        @required this.animationType});
   @override
@@ -22,13 +22,16 @@ class _TranslateOnHoverState extends State<TranslateOnHover> {
     if (widget.animationType == AnimationType.moveUp) {
       hoverTransform = Matrix4.identity()..translate(0, -10, 0);
     }
+    if(widget.animationType == AnimationType.changeColor){
+          hoverTransform = Matrix4.identity()..translate(0, 0, 0);
+    }
     return MouseRegion(
       onEnter: (e) => _mouseEnter(true),
       onExit: (e) => _mouseEnter(false),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         child: widget.child,
-        
+              
         decoration: BoxDecoration(
           color: _hovering ? widget.colorChange : null,
         ),

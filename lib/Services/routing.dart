@@ -3,6 +3,7 @@ import 'package:Quiz_web/Screens/authScreens/signupScreen.dart';
 import 'package:Quiz_web/Screens/authenticatedHome.dart';
 import 'package:Quiz_web/Screens/home.dart';
 import 'package:Quiz_web/Screens/quiz.dart';
+import 'package:Quiz_web/Screens/quizListBuilder.dart';
 import 'package:Quiz_web/Screens/quizScore.dart';
 import 'package:Quiz_web/Screens/review.dart';
 
@@ -44,11 +45,17 @@ class FluroRouter {
   static Handler _authenticatedHomeHandler = Handler(
       handlerFunc: (BuildContext context, Map<String, dynamic> params) =>
           AuthenticatedHome());
+           static Handler _quizListBuilder = Handler(
+      handlerFunc: (BuildContext context, Map<String, dynamic> params) =>
+          QuizListBuilder());
+
+          
 //-----------------------Routenames----------------------------------------//
   static void setupRouter() {
     router.define('/',
         handler: _wrapperHandler, transitionType: TransitionType.cupertino);
-
+router.define('/quizList',
+        handler: _quizListBuilder, transitionType: TransitionType.cupertino);
     router.define('/login',
         handler: _loginHandler, transitionType: TransitionType.cupertino);
 

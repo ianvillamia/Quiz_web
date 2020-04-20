@@ -3,7 +3,7 @@ import 'package:Quiz_web/Services/Firebase/authenticationService.dart';
 import 'package:Quiz_web/Widgets/Animations/loader.dart';
 import 'package:Quiz_web/Widgets/Animations/translate_on_hover.dart';
 import 'package:flutter/material.dart';
-import 'package:Quiz_web/Widgets/Animations/hover_extensions.dart';
+import 'package:Quiz_web/Widgets/Extensions/hover_extensions.dart';
 import 'package:Quiz_web/Widgets/dialogs.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:Quiz_web/Widgets/dialogs.dart';
@@ -41,9 +41,10 @@ class _SignUpState extends State<SignUp> {
                     width: size.width * .6,
                     height: size.height,
                     decoration: BoxDecoration(
+                      color: Color.fromRGBO(252,163,11,1),
                         image: DecorationImage(
-                            image: AssetImage("assets/java.jpg"),
-                            fit: BoxFit.cover)),
+                            image: AssetImage("assets/edited.jpg"),
+                            fit: BoxFit.contain)),
                   ),
                 ),
                 Positioned(

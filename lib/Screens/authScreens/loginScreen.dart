@@ -3,7 +3,7 @@ import 'package:Quiz_web/Services/Firebase/authenticationService.dart';
 import 'package:Quiz_web/Widgets/Animations/loader.dart';
 import 'package:Quiz_web/Widgets/Animations/translate_on_hover.dart';
 import 'package:flutter/material.dart';
-import 'package:Quiz_web/Widgets/Animations/hover_extensions.dart';
+import 'package:Quiz_web/Widgets/Extensions/hover_extensions.dart';
 import 'package:Quiz_web/Widgets/dialogs.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 
@@ -35,10 +35,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Container(
                     width: size.width * .6,
                     height: size.height,
+                    
                     decoration: BoxDecoration(
+                      color: Color.fromRGBO(3,0,53,1),
                         image: DecorationImage(
-                            image: AssetImage("assets/java.jpg"),
-                            fit: BoxFit.cover)),
+                            image: AssetImage("assets/phone.jpg"),
+                            fit: BoxFit.contain)),
                   ),
                 ),
                 Positioned(
@@ -101,7 +103,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                             .signInWithEmailAndPassword(
                                                 email: emailController.text.trim(),
                                                 password:
-                                                    passwordController.text)
+                                                    passwordController.text.trim())
                                             .then((value) =>
                                                 Navigator.pushNamed(
                                                     context, '/home'))

@@ -1,13 +1,10 @@
-import 'package:Quiz_web/Widgets/Quiz-widgets/identification.dart';
-import 'package:Quiz_web/Widgets/Quiz-widgets/multipleChoice.dart';
-import 'package:Quiz_web/Widgets/Quiz-widgets/quizInfo.dart';
-import 'package:Quiz_web/Widgets/Quiz-widgets/timer.dart';
-import 'package:Quiz_web/Widgets/Quiz-widgets/trueOrFalse.dart';
+import 'package:Quiz_web/Screens/quizListBuilder.dart';
+import 'package:Quiz_web/Services/Providers/quizListProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:Quiz_web/Widgets/navbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:basic_utils/basic_utils.dart';
 import 'package:provider/provider.dart';
-import 'package:Quiz_web/Services/Providers/quizProvider.dart';
 
 class AuthenticatedHome extends StatefulWidget {
   @override
@@ -15,8 +12,6 @@ class AuthenticatedHome extends StatefulWidget {
 }
 
 class _AuthenticatedHomeState extends State<AuthenticatedHome> {
-  bool initCounter = true;
-
   final db = Firestore.instance;
 
   @override
@@ -29,25 +24,30 @@ class _AuthenticatedHomeState extends State<AuthenticatedHome> {
             child: Container(
               // color: Colors.red,
               height: MediaQuery.of(context).size.height * .8,
-              width: MediaQuery.of(context).size.width * .7,
-              child: StreamBuilder<QuerySnapshot>(
-                stream: db.collection('subjectList').snapshots(),
-                builder: (BuildContext context,
-                    AsyncSnapshot<QuerySnapshot> snapshot) {
-                  if (snapshot.hasData) {
-                    return Scrollbar(
-                      child: SingleChildScrollView(
-                        child: Column(
-                            children: snapshot.data.documents
-                                .map((doc) => quizItemBuilder(doc: doc,
-                                context: context))
-                                .toList()),
-                      ),
-                    );
-                  } else {
-                    return Center(child: CircularProgressIndicator());
-                  }
-                },
+              width: MediaQuery.of(context).size.width,
+              child: Padding(
+                padding: EdgeInsets.all(25),
+                child: StreamBuilder<QuerySnapshot>(
+                  stream:
+                      db.collection('subjectList').orderBy('order').snapshots(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (snapshot.hasData) {
+                      return Scrollbar(
+                        child: SingleChildScrollView(
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: snapshot.data.documents
+                                  .map((doc) => quizItemBuilder(
+                                      doc: doc, context: context))
+                                  .toList()),
+                        ),
+                      );
+                    } else {
+                      return Center(child: CircularProgressIndicator());
+                    }
+                  },
+                ),
               ),
             ),
           ),
@@ -55,28 +55,66 @@ class _AuthenticatedHomeState extends State<AuthenticatedHome> {
             top: 0,
             child: Navbar(),
           ),
-        
         ],
       ),
     );
   }
 
-  Widget quizItemBuilder({DocumentSnapshot doc,BuildContext context}) {
+  Widget quizItemBuilder({DocumentSnapshot doc, BuildContext context}) {
     print(doc.documentID);
-  var size = MediaQuery.of(context).size;
-    return Container(
-      width: size.width*.5,
-      child: Card(
-        
-        child: Column(
-          children: <Widget>[
-            ListTile(
-              title: Text(doc.data['title'].toString()),
+    var size = MediaQuery.of(context).size;
+    if (doc.data['header_title'] == null) {
+      return Container(
+        width: size.width * .5,
+        child: Card(
+          child: InkWell(
+            splashColor: Colors.blue,
+            onTap: () {
+//  give quizID to function
+_onPressedSubject(doc.data['quizzesID']);
+
+            },
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                ListTile(
+                    title: Text(
+                  doc.data['title'],
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                )),
+                Padding(
+                    padding: EdgeInsets.all(15),
+                    child: Text(doc.data['details'].toString()))
+              ],
             ),
-            Text(doc.data['details'].toString())
-          ],
+          ),
         ),
-      ),
-    );
+      );
+    } else {
+      String headerTitle = StringUtils.capitalize(doc.data['header_title']);
+      String headerDetails = StringUtils.capitalize(doc.data['header_details']);
+      return Card(
+          child: Column(
+        children: <Widget>[
+          ListTile(
+              title: Text(
+            headerTitle,
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+          )),
+          ListTile(
+              title: Text(
+              headerDetails,
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+          ))
+        ],
+      ));
+    }
+  }
+  void _onPressedSubject(data){
+    //redirect to list of quizzes 
+    final quizListProvider = Provider.of<QuizListProvider>(context,listen: false);
+    //updates data of provider to rebuild quizlistBuilder
+    quizListProvider.updateSubjects(data);
+    Navigator.pushNamed(context, '/quizList');
   }
 }

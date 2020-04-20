@@ -1,5 +1,7 @@
+import 'package:Quiz_web/Models/animationTypes.dart';
 import 'package:Quiz_web/Models/userModel.dart';
 import 'package:Quiz_web/Services/Firebase/authenticationService.dart';
+import 'package:Quiz_web/Widgets/Animations/translate_on_hover.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -10,6 +12,67 @@ class Navbar extends StatefulWidget {
 }
 
 class _NavbarState extends State<Navbar> {
+  AuthenticationService auth = AuthenticationService();
+  List<DropdownMenuItem<String>> _dropDownMenuItems;
+
+  List<DropdownMenuItem<String>> getDropDownMenuItems() {
+    List<DropdownMenuItem<String>> items = List();
+    items.add(DropdownMenuItem(
+      value: 'username',
+      child: Text(
+        'ianvillamia@gmail.com',
+        style: TextStyle(color: Colors.white),
+      ),
+    ));
+    items.add(DropdownMenuItem(
+      value: 'Profile',
+      child: Text(
+        'Profile',
+        style: TextStyle(color: Colors.white),
+      ),
+    ));
+    items.add(DropdownMenuItem(
+      value: 'Quizzes',
+      child: Text('Quizzes', style: TextStyle(color: Colors.white)),
+    ));
+    items.add(DropdownMenuItem(
+      value: 'Log-out',
+      child: Text('Log-out', style: TextStyle(color: Colors.white)),
+    ));
+    return items;
+  }
+
+  String _selectedMenuItem;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _dropDownMenuItems = getDropDownMenuItems();
+    _selectedMenuItem = _dropDownMenuItems[0].value;
+  }
+
+  void changeDropDownItem(String selected) {
+    switch (selected.toLowerCase()) {
+      case 'profile':
+        //route to profile
+      
+        break;
+      case 'Quizzes':
+        //route to quizes
+      
+        break;
+      case 'log-out':
+       Navigator.of(context)
+                .pushNamedAndRemoveUntil('/', (Route<dynamic> r) => false);
+        signOutFunction(auth);
+
+        break;
+        
+    }
+      setState(() {
+          _selectedMenuItem = selected;
+        });
+  }
 
   var router = Router();
 
@@ -19,7 +82,8 @@ class _NavbarState extends State<Navbar> {
     // final user = Provider.of<User>(context);
     if (user == null) {
       print('otherbar');
-      return defaultBar();
+       return defaultBar();
+     // return otherBar();
     } else {
       return otherBar();
     }
@@ -67,7 +131,7 @@ class _NavbarState extends State<Navbar> {
                 SizedBox(
                   width: 10,
                 ),
-                     MaterialButton(
+                MaterialButton(
                   elevation: 0,
                   color: Color.fromRGBO(60, 207, 207, 1),
                   onPressed: () {
@@ -120,7 +184,6 @@ class _NavbarState extends State<Navbar> {
   }
 
   authenticatedButtons() {
-    AuthenticationService auth = AuthenticationService();
     return Row(
       children: <Widget>[
         MaterialButton(
@@ -140,35 +203,60 @@ class _NavbarState extends State<Navbar> {
           elevation: 0,
           color: Color.fromRGBO(60, 207, 207, 1),
           onPressed: () async {
-            await auth.signOut();
+            // await auth.signOut();
+          Navigator.pushNamed(context, '/reviewer');
           },
           child: Text('Review',
               style:
                   TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
         ),
-        SizedBox( 
+        SizedBox(
           width: 10,
-        )
-        ,
-        MaterialButton(
-       
-          color: Color.fromRGBO(60, 207, 207, 1),
-        
-          child: Text('Log out',style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold
-          ),),
-          onPressed: () async {
-            print('let me sign out!');
-            // await  popLog(context);
+        ),
+        // MaterialButton(
+        //   elevation: 0,
+        //   color: Color.fromRGBO(60, 207, 207, 1),
+        //   child: Text(
+        //     'Log out',
+        //     style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        //   ),
+        //   onPressed: () async {
+        //     print('let me sign out!');
+        //     // await  popLog(context);
 
-            await auth.signOut().catchError((onError) => print(onError));
-            Navigator.of(context)
-                .pushNamedAndRemoveUntil('/', (Route<dynamic> r) => false);
-            //  _resetAndOpenPage(context);
-          },
+        //     await auth.signOut().catchError((onError) => print(onError));
+        //     Navigator.of(context)
+        //         .pushNamedAndRemoveUntil('/', (Route<dynamic> r) => false);
+        //     //  _resetAndOpenPage(context);
+        //   },
+        // ),
+        SizedBox(
+          width: 10,
+        ),
+        TranslateOnHover(
+          animationType: AnimationType.moveUp,
+          child: DropdownButton<String>(
+            underline: SizedBox(),
+            focusColor: Colors.white,
+            dropdownColor: Color.fromRGBO(66, 87, 178, 1),
+            value: _selectedMenuItem,
+            items: _dropDownMenuItems,
+            onChanged: changeDropDownItem,
+
+            //call a function that hanldes these changes
+            //logout and routing
+          ),
         )
       ],
     );
+  }
+
+  signOutFunction(auth) async {
+    print('let me sign out!');
+
+    await auth.signOut().catchError((onError) => print(onError));
+    Navigator.of(context)
+        .pushNamedAndRemoveUntil('/', (Route<dynamic> r) => false);
+    //  _resetAndOpenPage(context);
   }
 }
