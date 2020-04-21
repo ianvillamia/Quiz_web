@@ -10,7 +10,8 @@ class Timer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     
-    final _quizProvider = Provider.of<QuizProvider>(context);
+    final _quizProvider = Provider.of<QuizProvider>(context,listen: false);
+    //
     return Card(
           child: Container(
       

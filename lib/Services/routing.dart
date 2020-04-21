@@ -52,29 +52,29 @@ class FluroRouter {
 //-----------------------Routenames----------------------------------------//
   static void setupRouter() {
     router.define('/',
-        handler: _wrapperHandler, transitionType: TransitionType.cupertino);
+        handler: _wrapperHandler, transitionType: TransitionType.fadeIn);
 router.define('/quizList',
-        handler: _quizListBuilder, transitionType: TransitionType.cupertino);
+        handler: _quizListBuilder, transitionType: TransitionType.fadeIn);
     router.define('/login',
         handler: _loginHandler, transitionType: TransitionType.cupertino);
 
     router.define('/authenticatedHome',
         handler: _authenticatedHomeHandler,
-        transitionType: TransitionType.cupertino);
+        transitionType: TransitionType.fadeIn);
 
     router.define('/signup',
         handler: _signupHandler, transitionType: TransitionType.cupertino);
 
     router.define('/home',
-        handler: _homehandler, transitionType: TransitionType.cupertino);
+        handler: _homehandler, transitionType: TransitionType.fadeIn);
 
     router.define('/quiz',
-        handler: _quizhandler, transitionType: TransitionType.cupertino);
+        handler: _quizhandler, transitionType: TransitionType.fadeIn);
 
     router.define('/reviewer',
-        handler: _reviewerHandler, transitionType: TransitionType.cupertino);
+        handler: _reviewerHandler, transitionType: TransitionType.fadeIn);
 
     router.define('/quizScore',
-        handler: _quizScoreHandler, transitionType: TransitionType.cupertino);
+        handler: _quizScoreHandler, transitionType: TransitionType.fadeIn);
   }
 }

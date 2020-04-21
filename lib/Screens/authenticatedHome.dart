@@ -114,7 +114,7 @@ _onPressedSubject(doc.data['quizzesID']);
   void _onPressedSubject(data){
     print(data);
     //redirect to list of quizzes 
-    final _quizProvider = Provider.of<QuizProvider>(context,listen: false);
+    final _quizProvider = Provider.of<QuizProvider>(context);
     //updates data of provider to rebuild quizlistBuilder
     _quizProvider.updateSubjects(data);//nagana naman
   //  print(_quizProvider.subjects);

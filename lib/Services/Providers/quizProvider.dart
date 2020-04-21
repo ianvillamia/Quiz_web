@@ -3,20 +3,25 @@ import 'package:flutter/foundation.dart';
 class QuizProvider with ChangeNotifier {
   bool isTimerVisible = false;
   String currentQuiz = '';
-  int initCounter = 1;
+  int initCounter = 0;
   bool isInit = true;
   int scroreCounter = 0;
   int trueOrFalseAnswer;
   int multipleChoiceValue;
   List subjects = [];
   String subjectTitle;
-  updateSubjects(List data) {
+  Future countInit()async{
+    initCounter++;
+    notifyListeners();
+  }
+  Future updateSubjects(List data) async{
     subjects = data;
     notifyListeners();
   }
 
-  void updateCurrentQuiz({@required String data}) {
+  Future updateCurrentQuiz({@required String data}) async{
     currentQuiz = data;
+  
     notifyListeners();
   }
 
@@ -35,7 +40,7 @@ class QuizProvider with ChangeNotifier {
     }
   }
 
-  void changeTimer(bool val) {
+  Future changeTimer(bool val)async {
     isTimerVisible = val;
     notifyListeners();
   }

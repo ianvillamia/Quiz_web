@@ -35,12 +35,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Container(
                     width: size.width * .6,
                     height: size.height,
-                    
                     decoration: BoxDecoration(
-                    color: Colors.blue,
+                        color: Colors.blue,
                         image: DecorationImage(
                             image: AssetImage("assets/login.png"),
-                            fit: BoxFit.contain)),
+                            fit: BoxFit.cover)),
                   ),
                 ),
                 Positioned(
@@ -81,10 +80,21 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ],
                                 ),
                                 TextFormField(
+                               
                                   obscureText: true,
+                                  onFieldSubmitted: (value) {
+                                       setState(() => loading = true);
+                                    print('enter pressed');
+                                    pressLogin(
+                                      auth: auth,
+                                      emailController: emailController,
+                                      passwordController: passwordController
+                                    );
+                                  },
+                                  textInputAction: TextInputAction.search,
                                   controller: passwordController,
                                   validator: (val) =>
-                                      val.isEmpty ? 'Enter an password' : null,
+                                      val.isEmpty ? 'enter password' : null,
                                   decoration: InputDecoration(
                                     hintText: '*********',
                                     labelText: 'Password',
@@ -98,22 +108,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                       if (_formKey.currentState
                                           .saveAndValidate()) {
                                         setState(() => loading = true);
-
-                                        await auth
-                                            .signInWithEmailAndPassword(
-                                                email: emailController.text.trim(),
-                                                password:
-                                                    passwordController.text.trim())
-                                            .then((value) =>
-                                                Navigator.pushNamed(
-                                                    context, '/home'))
-                                            .catchError((error, stackTrace) {
-                                          setState(() {
-                                            loading = false;
-                                          });
-                                          print("outer: $error");
-                                          Dialogs().errorDialog(context, error);
-                                        });
+                                        pressLogin(
+                                            auth: auth,
+                                            emailController: emailController,
+                                            passwordController:
+                                                passwordController);
                                       }
                                     },
                                     color: Color.fromRGBO(75, 85, 95, 1),
@@ -165,5 +164,20 @@ class _LoginScreenState extends State<LoginScreen> {
               ],
             ),
           );
+  }
+
+  void pressLogin({auth, emailController, passwordController}) async {
+    await auth
+        .signInWithEmailAndPassword(
+            email: emailController.text.trim(),
+            password: passwordController.text.trim())
+        .then((value) => Navigator.pushNamed(context, '/home'))
+        .catchError((error, stackTrace) {
+      setState(() {
+        loading = false;
+      });
+      print("outer: $error");
+      Dialogs().errorDialog(context, error);
+    });
   }
 }
