@@ -1,5 +1,6 @@
-import 'package:Quiz_web/Screens/quizListBuilder.dart';
-import 'package:Quiz_web/Services/Providers/quizListProvider.dart';
+import 'package:Quiz_web/Screens/quizScreens/quizListBuilder.dart';
+
+import 'package:Quiz_web/Services/Providers/quizProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:Quiz_web/Widgets/navbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -111,10 +112,12 @@ _onPressedSubject(doc.data['quizzesID']);
     }
   }
   void _onPressedSubject(data){
+    print(data);
     //redirect to list of quizzes 
-    final quizListProvider = Provider.of<QuizListProvider>(context,listen: false);
+    final _quizProvider = Provider.of<QuizProvider>(context,listen: false);
     //updates data of provider to rebuild quizlistBuilder
-    quizListProvider.updateSubjects(data);
+    _quizProvider.updateSubjects(data);//nagana naman
+  //  print(_quizProvider.subjects);
     Navigator.pushNamed(context, '/quizList');
   }
 }

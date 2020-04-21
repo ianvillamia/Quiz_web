@@ -9,18 +9,42 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 import 'package:Quiz_web/Services/Providers/quizProvider.dart';
 
-class Quiz extends StatefulWidget {
+class QuizBuilder extends StatefulWidget {
   @override
-  _QuizState createState() => _QuizState();
+  _QuizBuilderState createState() => _QuizBuilderState();
 }
 
-class _QuizState extends State<Quiz> {
+class _QuizBuilderState extends State<QuizBuilder> {
+  String quizTitle;
+  String quizInstructions;
+  @override
+  void initState() {
+    super.initState();
+    final _quizProvider = Provider.of<QuizProvider>(context, listen: false);
+    Firestore.instance
+        .collection(_quizProvider.currentQuiz)
+        .where("type", isEqualTo: 'header')
+        .snapshots()
+        .listen((data) => data.documents.forEach((doc) {
+              setState(() {
+                // title=doc['title'];
+                quizTitle = doc['title'];
+                quizInstructions = doc['instructions'];
+                print('getss');
+                print(quizTitle);
+                print(quizInstructions);
+                // details=doc['instructions'];
+              });
+            }));
+  }
+
   bool initCounter = true;
+
   final db = Firestore.instance;
 
   @override
   Widget build(BuildContext context) {
-    final _quizProvider = Provider.of<QuizProvider>(context, listen: false);
+    final _quizProvider = Provider.of<QuizProvider>(context);
 
     return Scaffold(
       body: Stack(
@@ -32,7 +56,10 @@ class _QuizState extends State<Quiz> {
               height: MediaQuery.of(context).size.height * .8,
               width: MediaQuery.of(context).size.width * .7,
               child: StreamBuilder<QuerySnapshot>(
-                stream: db.collection('quiz1').orderBy('order').snapshots(),
+                stream: db
+                    .collection(_quizProvider.currentQuiz)
+                    .orderBy('order')
+                    .snapshots(),
                 builder: (BuildContext context,
                     AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (snapshot.hasData) {
@@ -67,18 +94,9 @@ class _QuizState extends State<Quiz> {
 
   Widget quizItemBuilder({DocumentSnapshot doc, quizProvider}) {
     var type = doc.data['type'];
-
-    if (quizProvider.isInit && type == "header") {
-      quizProvider.isInit = false;
-      return QuizInfo(
-        quizTitle: doc.data['title'],
-        quizInstructions: doc.data['instructions'],
-        quizCreator: doc.data['creator'],
-      );
-    } else {
-  
+    if (type != 'header') {
       var questionType = doc.data['questionType'];
-    
+
       if (questionType == 'identification') {
         return Identification(
           question: doc.data['question'],
@@ -86,7 +104,6 @@ class _QuizState extends State<Quiz> {
         );
       }
       if (questionType == 'multipleChoice') {
-    
         return MultipleChoice(
           question: doc.data['question'],
           choices: doc.data['choices'],
@@ -98,6 +115,7 @@ class _QuizState extends State<Quiz> {
             question: doc.data['question'], answer: doc.data['answer']);
       }
     }
+ 
 
     return Container();
   }

@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:Quiz_web/Services/Firebase/authenticationService.dart';
 import 'package:Quiz_web/Services/Providers/loginListener.dart';
-import 'package:Quiz_web/Services/Providers/quizListProvider.dart';
 import 'package:Quiz_web/Services/Providers/quizProvider.dart';
 import 'package:Quiz_web/Services/Providers/reviewerProvider.dart';
 import 'package:Quiz_web/Services/routing.dart';
@@ -37,9 +36,6 @@ class _MyAppState extends State<MyApp> {
         ListenableProvider<ReviewerProvider>(create: (_) => ReviewerProvider()),
         ChangeNotifierProvider<LoginListener>(
           create: (_) => LoginListener(),
-        ),
-        ChangeNotifierProvider<QuizListProvider>(
-          create: (_) => QuizListProvider(),
         ),
       ],
       child: MaterialApp(

@@ -37,9 +37,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: size.height,
                     
                     decoration: BoxDecoration(
-                      color: Color.fromRGBO(3,0,53,1),
+                    color: Colors.blue,
                         image: DecorationImage(
-                            image: AssetImage("assets/phone.jpg"),
+                            image: AssetImage("assets/login.png"),
                             fit: BoxFit.contain)),
                   ),
                 ),

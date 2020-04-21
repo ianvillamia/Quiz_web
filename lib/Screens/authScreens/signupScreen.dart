@@ -41,10 +41,10 @@ class _SignUpState extends State<SignUp> {
                     width: size.width * .6,
                     height: size.height,
                     decoration: BoxDecoration(
-                      color: Color.fromRGBO(252,163,11,1),
+                        color: Colors.white,
                         image: DecorationImage(
-                            image: AssetImage("assets/edited.jpg"),
-                            fit: BoxFit.contain)),
+                            image: AssetImage("assets/rainyBoy.gif"),
+                            fit: BoxFit.cover)),
                   ),
                 ),
                 Positioned(
@@ -133,7 +133,8 @@ class _SignUpState extends State<SignUp> {
                                                   password1Controller.text)
                                           .then((value) async {
                                         print('SUCCEESSS IN SIGNUP');
-                                        Dialogs().successDialog(context, message: "success in signing up");
+                                        Dialogs().successDialog(context,
+                                            message: "success in signing up");
                                         setState(() {
                                           loading = false;
                                         });
@@ -185,28 +186,27 @@ class _SignUpState extends State<SignUp> {
                                           ),
                                         ),
                                       ),
-
                                     ),
                                   ),
                                 ),
                                 TranslateOnHover(
-                                        animationType: AnimationType.moveUp,
-                                        child: Container(
-                                          child: MaterialButton(
-                                              hoverColor: Colors.transparent,
-                                              splashColor: Colors.transparent,
-                                              onPressed: () {
-                                                Navigator.pushNamed(
-                                                    context, '/login');
-                                              },
-                                              child: Text(
-                                                'Proceed to Login',
-                                                style: TextStyle(
-                                                    color: Colors.blue,
-                                                    decoration: TextDecoration
-                                                        .underline),
-                                              )),
-                                        )),
+                                    animationType: AnimationType.moveUp,
+                                    child: Container(
+                                      child: MaterialButton(
+                                          hoverColor: Colors.transparent,
+                                          splashColor: Colors.transparent,
+                                          onPressed: () {
+                                            Navigator.pushNamed(
+                                                context, '/login');
+                                          },
+                                          child: Text(
+                                            'Proceed to Login',
+                                            style: TextStyle(
+                                                color: Colors.blue,
+                                                decoration:
+                                                    TextDecoration.underline),
+                                          )),
+                                    )),
                               ],
                             ),
                           )),

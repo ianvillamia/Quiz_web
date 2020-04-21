@@ -1,8 +1,9 @@
-import 'package:Quiz_web/Services/Providers/quizListProvider.dart';
-import 'package:Quiz_web/Widgets/Quiz-widgets/quizSubjectTile.dart';
+
+import 'package:Quiz_web/Screens/quizScreens/quizSubjectTile.dart';
+import 'package:Quiz_web/Services/Providers/quizProvider.dart';
 import 'package:Quiz_web/Widgets/navbar.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:provider/provider.dart';
 
 class QuizListBuilder extends StatefulWidget {
@@ -13,7 +14,7 @@ class QuizListBuilder extends StatefulWidget {
 class _QuizListBuilderState extends State<QuizListBuilder> {
   @override
   Widget build(BuildContext context) {
-    final quizListProvider = Provider.of<QuizListProvider>(context);
+    final _quizProvider = Provider.of<QuizProvider>(context);
     return Scaffold(
       body: Stack(
         children: <Widget>[
@@ -23,8 +24,8 @@ class _QuizListBuilderState extends State<QuizListBuilder> {
               width: MediaQuery.of(context).size.width*.3,
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: quizListProvider.subjects
-                      .map((doc) => subjectItemBuilder(docID: doc))
+                  children: _quizProvider.subjects
+                      .map((doc) => subjectItemBuilder(subject: doc))
                       .toList()),
             ),
           ),
@@ -37,9 +38,10 @@ class _QuizListBuilderState extends State<QuizListBuilder> {
     );
   }
 
-  Widget subjectItemBuilder({@required docID}) {
+  Widget subjectItemBuilder({@required subject}) {
+    //get some stateful widget that runs the quiz builder 
     return QuizSubjectTile(
-      docID: docID,
+      collectionID: subject,
     );
     //call only once
   }

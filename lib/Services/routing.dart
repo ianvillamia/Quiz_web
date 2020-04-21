@@ -2,11 +2,10 @@ import 'package:Quiz_web/Screens/authScreens/loginScreen.dart';
 import 'package:Quiz_web/Screens/authScreens/signupScreen.dart';
 import 'package:Quiz_web/Screens/authenticatedHome.dart';
 import 'package:Quiz_web/Screens/home.dart';
-import 'package:Quiz_web/Screens/quiz.dart';
-import 'package:Quiz_web/Screens/quizListBuilder.dart';
+import 'package:Quiz_web/Screens/quizScreens/quizListBuilder.dart';
 import 'package:Quiz_web/Screens/quizScore.dart';
 import 'package:Quiz_web/Screens/review.dart';
-
+import 'package:Quiz_web/Screens/quizScreens/quizBuilder.dart';
 import 'package:Quiz_web/wrapper.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +23,7 @@ class FluroRouter {
 
   static Handler _quizhandler = Handler(
       handlerFunc: (BuildContext context, Map<String, dynamic> params) =>
-          Quiz());
+          QuizBuilder());
 
   static Handler _reviewerHandler = Handler(
       handlerFunc: (BuildContext context, Map<String, dynamic> params) =>

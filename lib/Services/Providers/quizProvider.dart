@@ -2,20 +2,31 @@ import 'package:flutter/foundation.dart';
 
 class QuizProvider with ChangeNotifier {
   bool isTimerVisible = false;
+  String currentQuiz = '';
   int initCounter = 1;
   bool isInit = true;
   int scroreCounter = 0;
   int trueOrFalseAnswer;
   int multipleChoiceValue;
-  QuizProvider();
-  
-  void onChangeMultipleChoice({ @required String correctAnswer,@required String userAnswer}){
- 
+  List subjects = [];
+  String subjectTitle;
+  updateSubjects(List data) {
+    subjects = data;
+    notifyListeners();
+  }
+
+  void updateCurrentQuiz({@required String data}) {
+    currentQuiz = data;
+    notifyListeners();
+  }
+
+  void onChangeMultipleChoice(
+      {@required String correctAnswer, @required String userAnswer}) {
     answerChecker(userAnswer: userAnswer, correctAnswer: correctAnswer);
   }
 
-  void onchangeTrueOrFalse({@required int val, @required String correctAnswer}) 
-  {
+  void onchangeTrueOrFalse(
+      {@required int val, @required String correctAnswer}) {
     trueOrFalseAnswer = val;
     if (val == 1) {
       answerChecker(userAnswer: "True", correctAnswer: correctAnswer);
@@ -24,7 +35,6 @@ class QuizProvider with ChangeNotifier {
     }
   }
 
-
   void changeTimer(bool val) {
     isTimerVisible = val;
     notifyListeners();
@@ -32,8 +42,8 @@ class QuizProvider with ChangeNotifier {
 
   void answerChecker(
       {@required String userAnswer, @required String correctAnswer}) {
-        print(userAnswer);
-        print(correctAnswer);
+    print(userAnswer);
+    print(correctAnswer);
     if (userAnswer.toLowerCase() == correctAnswer.toLowerCase()) {
       scroreCounter++;
       print('correct' + scroreCounter.toString());
@@ -43,7 +53,4 @@ class QuizProvider with ChangeNotifier {
       }
     }
   }
-
-
-
 }
