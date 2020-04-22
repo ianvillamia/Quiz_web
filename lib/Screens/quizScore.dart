@@ -1,6 +1,5 @@
 import 'dart:async';
 
-
 import 'package:Quiz_web/Services/Providers/quizProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:Quiz_web/Widgets/navbar.dart';
@@ -14,10 +13,9 @@ class QuizScore extends StatefulWidget {
 }
 
 class _QuizScoreState extends State<QuizScore> {
-
   @override
   Widget build(BuildContext context) {
-    var size=  MediaQuery.of(context).size;
+    var size = MediaQuery.of(context).size;
 
     return Scaffold(
       body: Stack(
@@ -33,24 +31,73 @@ class _QuizScoreState extends State<QuizScore> {
   }
 
   scoreCard(size) {
-    return Container(
-      color: Colors.blueGrey,
-      height: size.height * .8,
-      width: size.width,
-      child: Center(
-        child: Container(
-          width: size.width*.7,
-          height: size.height*.5,
-          decoration: BoxDecoration(
-              color: Colors.white, borderRadius: BorderRadius.circular(15)),
-          child: Center(
-          
-           ),
+    return SingleChildScrollView(
+      child: Container(
+        color: Color.fromRGBO(229, 229, 229, 1),
+        height: size.height * .8,
+        width: size.width,
+        child: Center(
+          child: Container(
+            width: size.width * .7,
+            height: size.height * .5,
+            decoration: BoxDecoration(
+                color: Colors.white, borderRadius: BorderRadius.circular(15)),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    'Your score is',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  Text(
+                    '15/20',
+                    style: TextStyle(fontSize: 25),
+                  ),
+                  //what you got right
+                  Container(
+                    color: Color.fromRGBO(78, 195, 117, 1),
+                    height: 50,
+                    child: Center(
+                      child: Text('What you got Right',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold)),
+                    ),
+                  ),
+                  itembuilder(),
+                  Container(
+                    color: Colors.redAccent,
+                    height: 50,
+                    child: Center(
+                      child: Text('What you got Wrong',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold)),
+                    ),
+                  ) //what you got wrong
+                ],
+              ),
+            ),
           ),
         ),
-      
+      ),
     );
   }
-  
- 
+
+  itembuilder() {
+    return Container(
+      width: MediaQuery.of(context).size.width*.7,
+      color: Colors.redAccent,
+      child: Padding(
+          padding: EdgeInsets.all(10),
+          
+          child: Column(
+            children: <Widget>[
+               
+            ],
+          )),
+    );
+  }
 }

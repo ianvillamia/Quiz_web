@@ -67,7 +67,18 @@ class _TrueOrFalseState extends State<TrueOrFalse> {
                   ),
                 ],
               ),
-              QuestionBar()
+                 ExpansionTile(
+
+              trailing: Icon(Icons.lightbulb_outline),
+              title: Align(alignment: Alignment.bottomRight
+                ,child: Text('Show Answer')),
+              children: <Widget>[
+                Text('answer is:'+widget.answer.toString(),style: TextStyle(
+                  color: Colors.blue,fontSize: 20
+                ),),
+
+              ],
+            )
             ],
           ),
         ),

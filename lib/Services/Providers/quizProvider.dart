@@ -10,9 +10,8 @@ class QuizProvider with ChangeNotifier {
   int multipleChoiceValue;
   List subjects = [];
   String subjectTitle;
-  Future countInit()async{
+   void countInit(){
     initCounter++;
-    notifyListeners();
   }
   Future updateSubjects(List data) async{
     subjects = data;

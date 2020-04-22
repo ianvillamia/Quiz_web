@@ -72,8 +72,7 @@ class _AuthenticatedHomeState extends State<AuthenticatedHome> {
             splashColor: Colors.blue,
             onTap: () {
 //  give quizID to function
-_onPressedSubject(doc.data['quizzesID']);
-
+              _onPressedSubject(doc.data['quizzesID']);
             },
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -104,20 +103,21 @@ _onPressedSubject(doc.data['quizzesID']);
           )),
           ListTile(
               title: Text(
-              headerDetails,
+            headerDetails,
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
           ))
         ],
       ));
     }
   }
-  void _onPressedSubject(data){
+
+  void _onPressedSubject(data) {
     print(data);
-    //redirect to list of quizzes 
-    final _quizProvider = Provider.of<QuizProvider>(context);
+    //redirect to list of quizzes
+    final _quizProvider = Provider.of<QuizProvider>(context, listen: false);
     //updates data of provider to rebuild quizlistBuilder
-    _quizProvider.updateSubjects(data);//nagana naman
-  //  print(_quizProvider.subjects);
+    _quizProvider.updateSubjects(data); //nagana naman
+    //  print(_quizProvider.subjects);
     Navigator.pushNamed(context, '/quizList');
   }
 }

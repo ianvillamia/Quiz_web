@@ -54,7 +54,19 @@ class _IdentificationState extends State<Identification> {
                   ),
                 ),
               ),
-              QuestionBar()
+            ExpansionTile(
+
+              trailing: Icon(Icons.lightbulb_outline),
+              title: Align(alignment: Alignment.bottomRight
+                ,child: Text('Show Answer')),
+              children: <Widget>[
+                Text('answer is:'+widget.answer,style: TextStyle(
+                  color: Colors.blue,fontSize: 20
+                ),),
+
+              ],
+            )
+             
             ],
           ),
         ),
