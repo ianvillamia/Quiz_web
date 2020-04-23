@@ -5,26 +5,33 @@ class QuizProvider with ChangeNotifier {
   String currentQuiz = '';
   int initCounter = 0;
   bool isInit = true;
-  int scroreCounter = 0;
+  int scoreCounter = 0;
   int trueOrFalseAnswer;
   int multipleChoiceValue;
   List subjects = [];
   String subjectTitle;
-   void countInit(){
+  bool isLoading=false;
+  void changeIsLoading(){
+    isLoading=true;
+    notifyListeners();
+  }
+  void countInit() {
     initCounter++;
   }
-  void changeInit(bool val){
-    isInit=val;
+
+  void changeInit(bool val) {
+    isInit = val;
     //notifyListeners();
   }
-  Future updateSubjects(List data) async{
+
+  Future updateSubjects(List data) async {
     subjects = data;
     notifyListeners();
   }
 
-  Future updateCurrentQuiz({@required String data}) async{
+  Future updateCurrentQuiz({@required String data}) async {
     currentQuiz = data;
-  
+
     notifyListeners();
   }
 
@@ -43,23 +50,22 @@ class QuizProvider with ChangeNotifier {
     }
   }
 
-   changeTimer(bool val) {
+  changeTimer(bool val) {
     isTimerVisible = val;
     notifyListeners();
   }
 
   void answerChecker(
       {@required String userAnswer, @required String correctAnswer}) {
-   
-    var ans1 = userAnswer.toLowerCase();
-  var ans2=correctAnswer.toLowerCase();
+    var ans1 = userAnswer.toLowerCase().trim();
+    var ans2 = correctAnswer.toLowerCase().trim();
 
-    if (ans1==ans2) {
-      scroreCounter++;
-      print('correct' + scroreCounter.toString());
+    if (ans1 == ans2) {
+      scoreCounter++;
+      print('correct' + scoreCounter.toString());
     } else {
-      if (scroreCounter > 0) {
-        scroreCounter--;
+      if (scoreCounter > 0) {
+        scoreCounter--;
       }
     }
   }

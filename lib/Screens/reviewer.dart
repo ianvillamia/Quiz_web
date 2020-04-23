@@ -75,10 +75,10 @@ class Reviewer extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Divider(
-                        color: Colors.black,
-                        height: 5,
-                      ),
+                     Container(
+                       color: Colors.grey,
+                       height: 3,
+                     ),
                       Container(
                         width: size.width,
                        

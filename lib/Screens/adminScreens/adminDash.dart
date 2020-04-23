@@ -14,8 +14,7 @@ class HomeScreen extends StatelessWidget {
     final double itemWidth = size.width * .4;
 
     return Scaffold(
-        // appBar: buildAppBar(context),
-        // drawer: buildDrawer(),
+      
         body: Padding(
           padding: EdgeInsets.symmetric(horizontal: 100, vertical: 50),
           child: Column(

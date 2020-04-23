@@ -1,4 +1,3 @@
-import 'package:Quiz_web/Widgets/Quiz-widgets/initHolder.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:Quiz_web/Services/Providers/quizProvider.dart';
@@ -6,16 +5,15 @@ import 'package:slide_countdown_clock/slide_countdown_clock.dart';
 import 'package:lite_rolling_switch/lite_rolling_switch.dart';
 
 class Timer extends StatefulWidget {
- 
+  const Timer({Key key}) : super(key: key);
   @override
   _TimerState createState() => _TimerState();
 }
 
 class _TimerState extends State<Timer> {
   Widget build(BuildContext context) {
-   
     final _quizProvider = Provider.of<QuizProvider>(context);
-    
+
     return Card(
       child: Container(
         width: 250,
@@ -58,14 +56,13 @@ class _TimerState extends State<Timer> {
               iconOff: Icons.alarm_off,
               textSize: 10.0,
               onChanged: (bool state) {
-             //  print('state is turned into' + state.toString());
+                //  print('state is turned into' + state.toString());
                 // print(widget.counter);
-                if (_quizProvider.isInit==true) {
-                  
+                if (_quizProvider.isInit == true) {
                   _quizProvider.changeInit(false);
-                  //kailangan never tawagin ang notify listeners when you build 
+                  //kailangan never tawagin ang notify listeners when you build
                 } else {
-               //   print('state is' + state.toString());
+                  //   print('state is' + state.toString());
                   _quizProvider.changeTimer(state);
                 }
                 //     _quizProvider.changeTimer(state);
@@ -77,12 +74,15 @@ class _TimerState extends State<Timer> {
                 // // _quizProvider.initCounter = 2;
               },
             ),
-            MaterialButton(onPressed: (){},
-            color: Colors.blue,
-            elevation: 0,
-            child: Text('Submit',style: TextStyle(
-              color: Colors.white
-            ),),)
+            MaterialButton(
+              onPressed: () {},
+              color: Colors.blue,
+              elevation: 0,
+              child: Text(
+                'Submit',
+                style: TextStyle(color: Colors.white),
+              ),
+            )
           ],
         ),
       ),

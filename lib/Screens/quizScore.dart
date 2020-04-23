@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:Quiz_web/Widgets/navbar.dart';
 import 'package:provider/provider.dart';
 
+
 class QuizScore extends StatefulWidget {
   QuizScore({Key key}) : super(key: key);
 
@@ -13,14 +14,15 @@ class QuizScore extends StatefulWidget {
 }
 
 class _QuizScoreState extends State<QuizScore> {
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {  final _quizProvider=  Provider.of<QuizProvider>(context,listen: false);
     var size = MediaQuery.of(context).size;
 
     return Scaffold(
       body: Stack(
         children: <Widget>[
-          Positioned(top: size.height * .2, child: scoreCard(size)),
+          Positioned(top: size.height * .2, child: scoreCard(size,_quizProvider)),
           Positioned(
             top: 0,
             child: Navbar(),
@@ -30,7 +32,7 @@ class _QuizScoreState extends State<QuizScore> {
     );
   }
 
-  scoreCard(size) {
+  scoreCard(size,_quizProvider) {
     return SingleChildScrollView(
       child: Container(
         color: Color.fromRGBO(229, 229, 229, 1),
@@ -52,7 +54,7 @@ class _QuizScoreState extends State<QuizScore> {
                     style: TextStyle(fontSize: 20),
                   ),
                   Text(
-                    '15/20',
+                    _quizProvider.scoreCounter.toString(),
                     style: TextStyle(fontSize: 25),
                   ),
                   //what you got right

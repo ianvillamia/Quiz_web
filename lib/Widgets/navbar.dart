@@ -204,9 +204,24 @@ class _NavbarState extends State<Navbar> {
           color: Color.fromRGBO(60, 207, 207, 1),
           onPressed: () async {
             // await auth.signOut();
+            //what the heck
           Navigator.pushNamed(context, '/reviewer');
           },
           child: Text('Review',
+              style:
+                  TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+        ), SizedBox(
+          width: 10,
+        ),
+        MaterialButton(
+          elevation: 0,
+          color: Color.fromRGBO(60, 207, 207, 1),
+          onPressed: () async {
+            // await auth.signOut();
+            //what the heck
+          Navigator.pushNamed(context, '/flipCards');
+          },
+          child: Text('Flip Card',
               style:
                   TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
         ),

@@ -27,7 +27,6 @@ class _QuizSubjectTileState extends State<QuizSubjectTile> {
     .listen((data) =>
         data.documents.forEach((doc) {
           setState(() {
-
             title=doc['title'];
             details=doc['instructions'];
           });

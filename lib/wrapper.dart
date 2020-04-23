@@ -1,6 +1,6 @@
 import 'package:Quiz_web/Models/userModel.dart';
+import 'package:Quiz_web/Screens/adminScreens/adminDash.dart';
 import 'package:Quiz_web/Screens/home.dart';
-
 
 import 'package:Quiz_web/Screens/quizScore.dart';
 import 'package:Quiz_web/Screens/flipCards.dart';
@@ -28,21 +28,20 @@ class _WrapperState extends State<Wrapper> {
   Widget build(BuildContext context) {
     final user = Provider.of<User>(context);
 
-
     if (user == null) {
       //not signed in
 
       //eto testing area
       //return home with login signup
       //return QuizBuilder();
-  //return Reviewer();
-      return QuizBuilder();
-    //  return Home();
+      //return Reviewer();
+       //return QuizBuilder();
+     // return Home();
+     return HomeScreen();
+    return Home();
     } else {
       //return pagebuilder
       return PageBuilder(page: currentPage);
     }
   }
 }
-
-
