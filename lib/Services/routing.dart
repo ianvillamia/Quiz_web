@@ -4,9 +4,10 @@ import 'package:Quiz_web/Screens/authenticatedHome.dart';
 import 'package:Quiz_web/Screens/home.dart';
 import 'package:Quiz_web/Screens/quizScreens/quizListBuilder.dart';
 import 'package:Quiz_web/Screens/quizScore.dart';
-import 'package:Quiz_web/Screens/review.dart';
+import 'package:Quiz_web/Screens/flipCards.dart';
 import 'package:Quiz_web/Screens/quizScreens/quizBuilder.dart';
 import 'package:Quiz_web/wrapper.dart';
+import 'package:flip_card/flip_card.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 
@@ -27,7 +28,7 @@ class FluroRouter {
 
   static Handler _reviewerHandler = Handler(
       handlerFunc: (BuildContext context, Map<String, dynamic> params) =>
-          Reviewer());
+          FlipCards());
 
   static Handler _quizScoreHandler = Handler(
       handlerFunc: (BuildContext context, Map<String, dynamic> params) =>
@@ -71,7 +72,7 @@ router.define('/quizList',
     router.define('/quiz',
         handler: _quizhandler, transitionType: TransitionType.fadeIn);
 
-    router.define('/reviewer',
+    router.define('/flipCards',
         handler: _reviewerHandler, transitionType: TransitionType.fadeIn);
 
     router.define('/quizScore',

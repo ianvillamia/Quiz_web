@@ -36,9 +36,9 @@ class _IdentificationState extends State<Identification> {
                   child: TextFormField(
                     controller: _controller,
                     onChanged: (text) {
-                
+         
                       _quizProvider.answerChecker(
-                          userAnswer: _controller.text, correctAnswer: widget.answer);
+                          userAnswer: _controller.text.trim(), correctAnswer: widget.answer);
                     },
                     decoration: InputDecoration(
                       enabledBorder: UnderlineInputBorder(

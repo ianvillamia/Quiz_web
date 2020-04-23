@@ -53,10 +53,11 @@ class QuizBuilder extends StatelessWidget {
             top: 0,
             child: Navbar(),
           ),
-          // Positioned(
-          //     top: MediaQuery.of(context).size.height * .5,
-          //     right: 0,
-          //     child: Timer())
+          //create a submit button 
+          Positioned(
+              top: MediaQuery.of(context).size.height * .5,
+              right: 0,
+              child: Timer())
         ],
       ),
     );
@@ -66,10 +67,8 @@ class QuizBuilder extends StatelessWidget {
     //so hmm ano gagawin ko kailangan i return dito ung data
     final _quizProvider = Provider.of<QuizProvider>(context, listen: false);
     var type = doc.data['type'];
-    print('andito ako0');
     if (type == 'header') {
       //header
-      print('woohoo');
       //   _quizProvider.countInit();
       return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),

@@ -81,7 +81,7 @@ class _NavbarState extends State<Navbar> {
     final user = Provider.of<User>(context);
     // final user = Provider.of<User>(context);
     if (user == null) {
-      print('otherbar');
+   
        return defaultBar();
      // return otherBar();
     } else {

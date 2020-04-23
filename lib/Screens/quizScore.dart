@@ -45,7 +45,7 @@ class _QuizScoreState extends State<QuizScore> {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              
                 children: <Widget>[
                   Text(
                     'Your score is',
@@ -89,13 +89,19 @@ class _QuizScoreState extends State<QuizScore> {
   itembuilder() {
     return Container(
       width: MediaQuery.of(context).size.width*.7,
-      color: Colors.redAccent,
+   
       child: Padding(
           padding: EdgeInsets.all(10),
           
           child: Column(
             children: <Widget>[
-               
+               Row(
+                 children: <Widget>[
+                   Text('Question:'),
+       
+                   Text('What color is the sun?')
+                 ],
+               ) ,
             ],
           )),
     );

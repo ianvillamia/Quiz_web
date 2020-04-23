@@ -1,22 +1,25 @@
+import 'package:Quiz_web/Widgets/Quiz-widgets/initHolder.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:Quiz_web/Services/Providers/quizProvider.dart';
 import 'package:slide_countdown_clock/slide_countdown_clock.dart';
 import 'package:lite_rolling_switch/lite_rolling_switch.dart';
 
-class Timer extends StatelessWidget {
-  const Timer({Key key}) : super(key: key);
-
+class Timer extends StatefulWidget {
+ 
   @override
+  _TimerState createState() => _TimerState();
+}
+
+class _TimerState extends State<Timer> {
   Widget build(BuildContext context) {
+   
+    final _quizProvider = Provider.of<QuizProvider>(context);
     
-    final _quizProvider = Provider.of<QuizProvider>(context,listen: false);
-    //
     return Card(
-          child: Container(
-      
+      child: Container(
         width: 250,
-        height: 150,
+        height: 200,
         child: Column(
           children: <Widget>[
             Container(
@@ -55,13 +58,31 @@ class Timer extends StatelessWidget {
               iconOff: Icons.alarm_off,
               textSize: 10.0,
               onChanged: (bool state) {
-                //WEIRD TINATAWAG SYA ON INIT BALUGA
-                if (_quizProvider.initCounter != 1) {
+             //  print('state is turned into' + state.toString());
+                // print(widget.counter);
+                if (_quizProvider.isInit==true) {
+                  
+                  _quizProvider.changeInit(false);
+                  //kailangan never tawagin ang notify listeners when you build 
+                } else {
+               //   print('state is' + state.toString());
                   _quizProvider.changeTimer(state);
                 }
-                _quizProvider.initCounter = 2;
+                //     _quizProvider.changeTimer(state);
+                //WEIRD TINATAWAG SYA ON INIT BALUGA
+                // if (_quizProvider.initCounter != 1) {
+                //   print('potato');
+                // //  _quizProvider.changeTimer(state);
+                // }
+                // // _quizProvider.initCounter = 2;
               },
             ),
+            MaterialButton(onPressed: (){},
+            color: Colors.blue,
+            elevation: 0,
+            child: Text('Submit',style: TextStyle(
+              color: Colors.white
+            ),),)
           ],
         ),
       ),

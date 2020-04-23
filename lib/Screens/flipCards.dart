@@ -5,8 +5,7 @@ import 'package:Quiz_web/Widgets/navbar.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:provider/provider.dart';
 
-class Reviewer extends StatelessWidget {
-  const Reviewer({Key key}) : super(key: key);
+class FlipCards extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +44,7 @@ class Reviewer extends StatelessWidget {
           Positioned(
             top: MediaQuery.of(context).size.height * .4,
             child: Container(
-              color: Colors.blueGrey,
+              color: Color.fromRGBO(229,229,229,1),
               height: MediaQuery.of(context).size.height * .6,
               width: MediaQuery.of(context).size.width,
               child: Padding(

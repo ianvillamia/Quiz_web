@@ -13,6 +13,10 @@ class QuizProvider with ChangeNotifier {
    void countInit(){
     initCounter++;
   }
+  void changeInit(bool val){
+    isInit=val;
+    //notifyListeners();
+  }
   Future updateSubjects(List data) async{
     subjects = data;
     notifyListeners();
@@ -39,16 +43,18 @@ class QuizProvider with ChangeNotifier {
     }
   }
 
-  Future changeTimer(bool val)async {
+   changeTimer(bool val) {
     isTimerVisible = val;
     notifyListeners();
   }
 
   void answerChecker(
       {@required String userAnswer, @required String correctAnswer}) {
-    print(userAnswer);
-    print(correctAnswer);
-    if (userAnswer.toLowerCase() == correctAnswer.toLowerCase()) {
+   
+    var ans1 = userAnswer.toLowerCase();
+  var ans2=correctAnswer.toLowerCase();
+
+    if (ans1==ans2) {
       scroreCounter++;
       print('correct' + scroreCounter.toString());
     } else {
