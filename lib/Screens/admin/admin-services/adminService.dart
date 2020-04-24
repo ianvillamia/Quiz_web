@@ -35,4 +35,10 @@ await db.collection('subjectList').document(docID).updateData({
       print('error' + e.toString());
     }
   }
+  //
+  Future deleteSubject({@required String docID})async{
+    try{
+      await db.collection('subjectList').document(docID).delete();
+    }catch(e){}
+  }
 }

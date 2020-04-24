@@ -166,22 +166,64 @@ class AdminAlertDialogs {
                 ),
               )),
           actions: [
-            FlatButton(
-              child: Text("Update"),
+            FlatButton.icon(
+              icon: Icon(Icons.delete),
+              label: Text("Delete"),
+              color: Colors.red,
               onPressed: () async {
-                
+                //create dapat ng dialog do you really want to delete?
+                await doYouWantToDeleteDialog(context, docID);
+              },
+            ),
+            SizedBox(
+              width: size.width*.35,
+            ),
+            FlatButton.icon(
+              icon: Icon(Icons.update),
+              label: Text("Update",),
+  color: Colors.greenAccent,
+              onPressed: () async {
                 if (_formKey.currentState.validate()) {
-                   AdminService().updateSubject(
-                        subject: subjectController.text.trim(),
-                        details: detailsController.text.trim(),
-                        docID: docID);
+                  AdminService().updateSubject(
+                      subject: subjectController.text.trim(),
+                      details: detailsController.text.trim(),
+                      docID: docID);
 
-                    Navigator.pop(context);
+                  Navigator.pop(context);
                 }
               },
-            )
+            ),
           ],
         );
+      },
+    );
+  }
+
+  doYouWantToDeleteDialog(BuildContext context, String docID) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Do You really want to delete this subject?"),
+          actions: [
+            FlatButton(
+              child: Text("Yes"),
+              onPressed: () async {
+                await AdminService().deleteSubject(docID: docID).then((value) {
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                });
+              },
+            ),
+            FlatButton(
+              child: Text("No"),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+        ;
       },
     );
   }
