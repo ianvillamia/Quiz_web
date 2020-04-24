@@ -6,15 +6,31 @@ class AdminService {
   Future addSubject(
       {@required String subject, @required String details}) async {
     try {
-      QuerySnapshot _myDoc = await Firestore.instance.collection('subjectList').getDocuments();
-    List<DocumentSnapshot> _myDocCount = _myDoc.documents;
-    
+      QuerySnapshot _myDoc =
+          await Firestore.instance.collection('subjectList').getDocuments();
+      List<DocumentSnapshot> _myDocCount = _myDoc.documents;
+
       await db.collection('subjectList').add({
         'title': subject,
-        'order': (_myDocCount.length+1).toString(),
+        'order': (_myDocCount.length + 1).toString(),
         'details': details,
         'quizzesID': []
       });
+    } catch (e) {
+      print('error' + e.toString());
+    }
+  }
+
+
+  ///
+  Future updateSubject(
+      {@required String subject, @required String details,String docID}) async {
+    try {
+    
+await db.collection('subjectList').document(docID).updateData({
+'title':subject,'details':details
+});
+   
     } catch (e) {
       print('error' + e.toString());
     }

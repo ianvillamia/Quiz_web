@@ -59,7 +59,7 @@ class AdminSubjects extends StatelessWidget {
                         builder: (BuildContext context,
                             AsyncSnapshot<QuerySnapshot> snapshot) {
                           if (!snapshot.hasData)
-                            return LinearProgressIndicator();
+                            return CircularProgressIndicator();
 
                           return DataTable(columns: [
                             DataColumn(label: Text('')),
@@ -70,6 +70,8 @@ class AdminSubjects extends StatelessWidget {
                                  Text(StringUtils.capitalize(doc.data['title'].toString())),
                                  onTap: (){
                                   //show dialog for updating 
+                                  //pass title details
+                                    AdminAlertDialogs().updateSubjectDialog(context: context,doc: doc);
                                  }
                                )
                              ]
@@ -112,7 +114,7 @@ class AdminSubjects extends StatelessWidget {
                           Icons.add,
                           color: Colors.white,
                         ),
-                        label: Container()),
+                        label: Text('Add')),
                   ))
             ],
           ),
