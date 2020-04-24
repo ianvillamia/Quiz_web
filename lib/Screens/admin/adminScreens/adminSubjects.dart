@@ -1,8 +1,10 @@
 import 'package:Quiz_web/Screens/admin/admin-widgets/admin-dialogs.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:basic_utils/basic_utils.dart';
 
-class AddSubjects extends StatelessWidget {
-  const AddSubjects({Key key}) : super(key: key);
+class AdminSubjects extends StatelessWidget {
+  const AdminSubjects({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,11 +30,7 @@ class AddSubjects extends StatelessWidget {
                 child: Column(
                   children: <Widget>[
                     /**buttons and stuff */
-                    // Container(
-                    //   height: size.height * .2,
-                    //   width: size.width,
-                    //   color: Colors.grey,
-                    // ),
+                  
 
                     //*data table *//
                     dataTable(size: size, context: context)
@@ -54,20 +52,32 @@ class AddSubjects extends StatelessWidget {
             children: <Widget>[
               Positioned(
                 child: SingleChildScrollView(
-                  child: DataTable(columns: [
-                    DataColumn(label: Text('')),
-                  ], rows: [
-                    DataRow(cells: [
-                      DataCell(
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[Text('Math'), Text('details')],
-                          ), onTap: () {
-                        print('dash is clicked');
-                      }),
-                    ]),
-                  ]),
-                ),
+                    child: StreamBuilder<QuerySnapshot>(
+                        stream: Firestore.instance
+                            .collection('subjectList').where('order',isGreaterThan: '0')
+                            .snapshots(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<QuerySnapshot> snapshot) {
+                          if (!snapshot.hasData)
+                            return LinearProgressIndicator();
+
+                          return DataTable(columns: [
+                            DataColumn(label: Text('')),
+                          ], 
+                           rows: snapshot.data.documents.map((doc) => DataRow(
+                             cells:[
+                               DataCell(
+                                 Text(StringUtils.capitalize(doc.data['title'].toString())),
+                                 onTap: (){
+                                  //show dialog for updating 
+                                 }
+                               )
+                             ]
+                           )).toList()
+                                 
+                         
+                          );
+                        })),
               ),
               Positioned(
                   top: 0,
@@ -96,7 +106,7 @@ class AddSubjects extends StatelessWidget {
                     child: RaisedButton.icon(
                         onPressed: () {
                           //show dialog for adding
-                          AdminAlertDialogs().showAlertDialog(context);
+                          AdminAlertDialogs().addSubjectDialog(context);
                         },
                         icon: Icon(
                           Icons.add,
@@ -110,4 +120,6 @@ class AddSubjects extends StatelessWidget {
       ),
     );
   }
+ 
+
 }

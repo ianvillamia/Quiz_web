@@ -1,5 +1,5 @@
 import 'package:Quiz_web/Models/userModel.dart';
-import 'package:Quiz_web/Screens/admin/adminScreens/addSubjects.dart';
+import 'package:Quiz_web/Screens/admin/adminScreens/adminSubjects.dart';
 import 'package:Quiz_web/Screens/admin/adminScreens/adminDash.dart';
 import 'package:Quiz_web/Screens/home.dart';
 
@@ -39,7 +39,7 @@ class _WrapperState extends State<Wrapper> {
        //return QuizBuilder();
      // return Home();
     // return AdminHomeScreen();
-    return AddSubjects();
+    return AdminSubjects();
     return Home();
     } else {
       //return pagebuilder

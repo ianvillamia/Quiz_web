@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:Quiz_web/Screens/admin/admin-providers/adminSubjectProvider.dart';
 import 'package:Quiz_web/Services/Firebase/authenticationService.dart';
 import 'package:Quiz_web/Services/Providers/loginListener.dart';
 import 'package:Quiz_web/Services/Providers/quizProvider.dart';
@@ -37,6 +38,7 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider<LoginListener>(
           create: (_) => LoginListener(),
         ),
+             ListenableProvider<AdminSubjectProvider>(create: (_) => AdminSubjectProvider()),
       ],
       child: MaterialApp(
         title: "QuizApp",
