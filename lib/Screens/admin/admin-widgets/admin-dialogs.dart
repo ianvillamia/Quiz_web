@@ -56,8 +56,10 @@ class AdminAlertDialogs {
                 ),
               )),
           actions: [
-            FlatButton(
-              child: Text("OK"),
+            FlatButton.icon(
+              icon: Icon(Icons.add),
+              color: Colors.green,
+              label: Text("ADD"),
               onPressed: () async {
                 await checkDuplicates(
                         subjectController.text.toLowerCase().trim())

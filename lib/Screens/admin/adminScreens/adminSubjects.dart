@@ -102,20 +102,19 @@ class AdminSubjects extends StatelessWidget {
                   )),
               Positioned(
                   right: 10,
-                  child: ButtonTheme(
-                    minWidth: 50,
-                    buttonColor: Color.fromRGBO(40, 179, 81, 1),
-                    child: RaisedButton.icon(
-                        onPressed: () {
-                          //show dialog for adding
-                          AdminAlertDialogs().addSubjectDialog(context);
-                        },
-                        icon: Icon(
-                          Icons.add,
-                          color: Colors.white,
-                        ),
-                        label: Text('Add')),
-                  ))
+                  child: FlatButton.icon(
+                    color: Colors.green,
+                      onPressed: () {
+                        //show dialog for adding
+                        AdminAlertDialogs().addSubjectDialog(context);
+                      },
+                      icon: Icon(
+                        Icons.add,
+                        color: Colors.white,
+                      ),
+                      label: Text('Add',style: TextStyle(
+                        color: Colors.white
+                      ),)))
             ],
           ),
         ),
