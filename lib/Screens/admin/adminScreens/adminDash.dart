@@ -102,18 +102,21 @@ class Section1 extends StatelessWidget {
             mainText: 'Users',
             number: 250,
             subText: 'Today',
+            route: '/adminUsers',
           ),
           CardBuilder(
             asssetImage: 'assets/subjects-icon.png',
             mainText: 'Subjects',
             number: 40,
             subText: 'track subjects',
+            route: '/adminSubjects',
           ),
           CardBuilder(
             asssetImage: 'assets/quiz-icon.png',
             mainText: 'Quizzes',
             number: 10,
             subText: 'track quizzes',
+            route: '/adminQuizzes',
           ),
         ],
       ),
@@ -127,11 +130,13 @@ class CardBuilder extends StatelessWidget {
   final String mainText;
   final int number;
   final String subText;
+  final String route;
   CardBuilder(
       {@required this.asssetImage,
       @required this.mainText,
       @required this.number,
-      @required this.subText});
+      @required this.subText,
+      @required this.route});
 
   @override
   Widget build(BuildContext context) {
@@ -148,7 +153,7 @@ class CardBuilder extends StatelessWidget {
                 child: InkWell(
                   splashColor: Colors.blue.withAlpha(30),
                   onTap: () {
-                    print('Card tapped.');
+                   Navigator.pushNamed(context, route);
                   },
                   child: Container(
                       width: 200,

@@ -1,3 +1,6 @@
+import 'package:Quiz_web/Screens/admin/adminScreens/adminCreateQuiz.dart';
+import 'package:Quiz_web/Screens/admin/adminScreens/adminQuizzes.dart';
+import 'package:Quiz_web/Screens/admin/adminScreens/adminSubjects.dart';
 import 'package:Quiz_web/Screens/authScreens/loginScreen.dart';
 import 'package:Quiz_web/Screens/authScreens/signupScreen.dart';
 import 'package:Quiz_web/Screens/authenticatedHome.dart';
@@ -12,7 +15,6 @@ import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 
 class FluroRouter {
-
   static Router router = Router();
 
   static Handler _homehandler = Handler(
@@ -50,19 +52,33 @@ class FluroRouter {
   static Handler _quizListHandler = Handler(
       handlerFunc: (BuildContext context, Map<String, dynamic> params) =>
           QuizListBuilder());
-  static Handler _reviewerHandler=Handler(
-    handlerFunc: (BuildContext context,Map<String,dynamic> param)=>
-    Reviewer()
-  );
-  static Handler _quizScore = Handler(
-    handlerFunc: (BuildContext context,Map<String,dynamic> param)=>QuizScore()
-  );
+  static Handler _reviewerHandler = Handler(
+      handlerFunc: (BuildContext context, Map<String, dynamic> param) =>
+          Reviewer());
+  static Handler _quizScoreHanlder = Handler(
+      handlerFunc: (BuildContext context, Map<String, dynamic> param) =>
+          QuizScore());
+  static Handler _subjectsHandler = Handler(
+      handlerFunc: (BuildContext context, Map<String, dynamic> param) =>
+          AdminSubjects());
+  static Handler _quizzesHandler = Handler(
+      handlerFunc: (BuildContext context, Map<String, dynamic> param) =>
+          AdminQuizzes());
+            static Handler _createQuizHanlder = Handler(
+      handlerFunc: (BuildContext context, Map<String, dynamic> param) =>
+          AdminCreateQuiz());
 //-----------------------Routenames----------------------------------------//
   static void setupRouter() {
     router.define('/',
         handler: _wrapperHandler, transitionType: TransitionType.fadeIn);
-            router.define('/quizScore',
-        handler: _quizScore, transitionType: TransitionType.fadeIn);
+    router.define('/adminSubjects',
+        handler: _subjectsHandler, transitionType: TransitionType.fadeIn);
+         router.define('/adminCreateQuiz',
+        handler: _createQuizHanlder, transitionType: TransitionType.fadeIn);
+    router.define('/adminQuizzes',
+        handler: _quizzesHandler, transitionType: TransitionType.fadeIn);
+    router.define('/quizScore',
+        handler: _quizScoreHanlder, transitionType: TransitionType.fadeIn);
     router.define('/quizList',
         handler: _quizListHandler, transitionType: TransitionType.fadeIn);
     router.define('/login',
@@ -87,7 +103,7 @@ class FluroRouter {
     router.define('/quizScore',
         handler: _quizScoreHandler, transitionType: TransitionType.fadeIn);
 
-    router.define('/reviewer', handler: _reviewerHandler,transitionType: TransitionType.fadeIn);
-
+    router.define('/reviewer',
+        handler: _reviewerHandler, transitionType: TransitionType.fadeIn);
   }
 }

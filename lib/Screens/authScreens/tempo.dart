@@ -1,8 +1,6 @@
 import 'package:Quiz_web/Services/Firebase/authenticationService.dart';
 import 'package:Quiz_web/Widgets/navbar.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:Quiz_web/Models/userModel.dart';
 
 class Home extends StatefulWidget {
   const Home({Key key}) : super(key: key);

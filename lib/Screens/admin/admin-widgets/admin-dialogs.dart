@@ -1,5 +1,10 @@
 import 'package:Quiz_web/Screens/admin/admin-providers/adminSubjectProvider.dart';
 import 'package:Quiz_web/Screens/admin/admin-services/adminService.dart';
+import 'package:Quiz_web/Screens/admin/adminScreens/adminSubjects.dart';
+import 'package:Quiz_web/Services/Providers/quizProvider.dart';
+import 'package:Quiz_web/Widgets/Quiz-widgets/identification.dart';
+import 'package:Quiz_web/Widgets/Quiz-widgets/multipleChoice.dart';
+import 'package:Quiz_web/Widgets/Quiz-widgets/trueOrFalse.dart';
 import 'package:basic_utils/basic_utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -7,12 +12,13 @@ import 'package:provider/provider.dart';
 
 class AdminAlertDialogs {
   final _formKey = GlobalKey<FormState>();
+
   addSubjectDialog(BuildContext context) {
     TextEditingController subjectController = TextEditingController(),
         detailsController = TextEditingController();
 
     final adminSubjectProvider =
-        Provider.of<AdminSubjectProvider>(context, listen: false);
+        Provider.of<AdminProvider>(context, listen: false);
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -62,7 +68,8 @@ class AdminAlertDialogs {
               label: Text("ADD"),
               onPressed: () async {
                 await checkDuplicates(
-                        subjectController.text.toLowerCase().trim())
+                        subject: subjectController.text.toLowerCase().trim(),
+                        collection: 'subjectList')
                     .then((val) {
                   if (val == true) {
                     print('duplicate values');
@@ -89,10 +96,11 @@ class AdminAlertDialogs {
     );
   }
 
-  Future<bool> checkDuplicates(String subject) async {
+  Future<bool> checkDuplicates(
+      {@required String subject, @required String collection}) async {
     try {
       final QuerySnapshot result = await Firestore.instance
-          .collection('subjectList')
+          .collection(collection)
           .where('title', isEqualTo: subject)
           .limit(1)
           .getDocuments();
@@ -107,12 +115,12 @@ class AdminAlertDialogs {
         detailsController = TextEditingController();
     var docID = doc.documentID.toString();
     final adminSubjectProvider =
-        Provider.of<AdminSubjectProvider>(context, listen: false);
+        Provider.of<AdminProvider>(context, listen: false);
     String title = StringUtils.capitalize(doc.data['title'].toString());
     String details = StringUtils.capitalize(doc.data['details'].toString());
     subjectController.text = title;
     detailsController.text = details;
-    bool isEditable = false;
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -178,12 +186,14 @@ class AdminAlertDialogs {
               },
             ),
             SizedBox(
-              width: size.width*.35,
+              width: size.width * .35,
             ),
             FlatButton.icon(
               icon: Icon(Icons.update),
-              label: Text("Update",),
-  color: Colors.greenAccent,
+              label: Text(
+                "Update",
+              ),
+              color: Colors.greenAccent,
               onPressed: () async {
                 if (_formKey.currentState.validate()) {
                   AdminService().updateSubject(
@@ -228,5 +238,250 @@ class AdminAlertDialogs {
         ;
       },
     );
+  }
+
+  createQuizDialog(BuildContext context) {
+    TextEditingController quizTitleController = TextEditingController(),
+        instructionsController = TextEditingController(),
+        timeAllottedController = TextEditingController(),
+        creatorController = TextEditingController();
+
+    final _adminProvider = Provider.of<AdminProvider>(context, listen: false);
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        var size = MediaQuery.of(context).size;
+        return AlertDialog(
+          title: Text(
+            "Create a Quiz",
+          ),
+          content: Form(
+              key: _formKey,
+              child: Container(
+                height: size.height * .8,
+                width: size.width * .6,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: <Widget>[
+                      TextFormField(
+                          controller: quizTitleController,
+                          decoration: InputDecoration(
+                              labelText: "Quiz Title",
+                              hintText: 'enter subject'),
+                          validator: (val) {
+                            // print('validating');
+                            if (val.length <= 0) {
+                              _adminProvider
+                                  .changeErrorString('must not be empty');
+                            }
+                            return _adminProvider.errorText;
+                          }),
+                      TextFormField(
+                          controller: instructionsController,
+                          decoration: InputDecoration(
+                              labelText: "Instructions",
+                              hintText: 'enter details'),
+                          validator: (val) {
+                            // print('validating');
+                            if (val.length <= 0) {
+                              return 'must not be empty';
+                            } else {
+                              return null;
+                            }
+                          }),
+                      TextFormField(
+                          controller: timeAllottedController,
+                          decoration: InputDecoration(
+                              labelText: "time alloted",
+                              hintText: 'enter details'),
+                          validator: (val) {
+                            // print('validating');
+                            if (val.length <= 0) {
+                              return 'must not be empty';
+                            } else {
+                              return null;
+                            }
+                          }),
+                      TextFormField(
+                          controller: creatorController,
+                          decoration: InputDecoration(
+                              labelText: "Creator Name",
+                              hintText: 'enter details'),
+                          validator: (val) {
+                            // print('validating');
+                            if (val.length <= 0) {
+                              return 'must not be empty';
+                            } else {
+                              return null;
+                            }
+                          }),
+                    ],
+                  ),
+                ),
+              )),
+          actions: [
+            FlatButton.icon(
+              icon: Icon(Icons.forward),
+              color: Colors.green,
+              label: Text("NEXT"),
+              onPressed: () async {
+                await checkDuplicates(
+                        subject: quizTitleController.text.toLowerCase().trim(),
+                        collection: 'quizList')
+                    .then((val) {
+                  if (val == true) {
+                    print('duplicate values');
+
+                    _adminProvider.changeErrorString('duplicate quiz');
+                  } else {
+                    _adminProvider.checkSubject(true);
+                    print('potato values');
+                    AdminService()
+                        .createQuiz(
+                            context: context,
+                            title: quizTitleController.text,
+                            creator: creatorController.text,
+                            instructions: instructionsController.text,
+                            time: timeAllottedController.text)
+                        .then((value) {
+                      final _adminProvider =
+                          Provider.of<AdminProvider>(context, listen: false);
+                      _adminProvider.setQuizTitle(quizTitleController.text);
+                      Navigator.pushNamed(context, '/adminCreateQuiz');
+                    }).catchError((err) {
+                      print('errorbano');
+                    });
+                  }
+                }).catchError((onError) {});
+                if (_formKey.currentState.validate()) {}
+              },
+            )
+          ],
+        );
+      },
+    );
+  }
+
+  showQuiz(BuildContext context, String collectionID) {
+    final db = Firestore.instance;
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("QuizPreview"),
+          content: Container(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width * .5,
+            child: StreamBuilder<QuerySnapshot>(
+              stream: db
+                  .collection(collectionID) //_quizProvider.currentQuiz
+                  .orderBy('order')
+                  .snapshots(),
+              builder: (BuildContext context,
+                  AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (snapshot.hasData) {
+                  return Scrollbar(
+                    child: SingleChildScrollView(
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: snapshot.data.documents
+                              .map((doc) => IgnorePointer(
+                                    ignoring: true,
+                                    child: quizItemBuilder(
+                                        doc: doc, context: context),
+                                  ))
+                              .toList()),
+                    ),
+                  );
+                } else {
+                  return Center(child: CircularProgressIndicator());
+                }
+              },
+            ),
+          ),
+          actions: [],
+        );
+        ;
+      },
+    );
+  }
+
+  /*i hate this*/
+
+  Widget quizItemBuilder({DocumentSnapshot doc, BuildContext context}) {
+    //so hmm ano gagawin ko kailangan i return dito ung data
+    final _quizProvider = Provider.of<QuizProvider>(context, listen: false);
+    var type = doc.data['type'];
+    if (type == 'header') {
+      //header
+      //   _quizProvider.countInit();
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          child: Card(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                ListTile(
+                    title: Text(
+                  doc.data['title'],
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                )),
+                Padding(
+                    padding: EdgeInsets.all(15),
+                    child: Text(doc.data['instructions'].toString())),
+                Padding(
+                    padding: EdgeInsets.all(15),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Row(
+                          children: <Widget>[
+                            Text('Time allotted:'),
+                            Text('15 mins')
+                          ],
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text('Created By:'),
+                        Text(
+                          doc.data['creator'].toString(),
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        )
+                      ],
+                    ))
+              ],
+            ),
+          ),
+        ),
+      );
+      //add init counter
+    } else {
+      //means not header
+
+      var questionType = doc.data['questionType'];
+
+      if (questionType == 'identification') {
+        return Identification(
+          question: doc.data['question'],
+          answer: doc.data['answer'],
+        );
+      }
+      if (questionType == 'multipleChoice') {
+        return MultipleChoice(
+          question: doc.data['question'],
+          choices: doc.data['choices'],
+          answer: doc.data['answer'],
+        );
+      }
+      if (questionType == 'trueOrFalse') {
+        return TrueOrFalse(
+            question: doc.data['question'], answer: doc.data['answer']);
+      }
+    }
+
+    return Container();
   }
 }

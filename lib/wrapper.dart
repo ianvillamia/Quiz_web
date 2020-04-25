@@ -1,4 +1,5 @@
 import 'package:Quiz_web/Models/userModel.dart';
+import 'package:Quiz_web/Screens/admin/adminScreens/adminCreateQuiz.dart';
 import 'package:Quiz_web/Screens/admin/adminScreens/adminSubjects.dart';
 import 'package:Quiz_web/Screens/admin/adminScreens/adminDash.dart';
 import 'package:Quiz_web/Screens/home.dart';
@@ -36,11 +37,13 @@ class _WrapperState extends State<Wrapper> {
       //return home with login signup
       //return QuizBuilder();
       //return Reviewer();
-       //return QuizBuilder();
-     // return Home();
+      //return QuizBuilder();
+      // return Home();
     // return AdminHomeScreen();
-    return AdminSubjects();
-    return Home();
+      // return AdminSubjects();
+      //return Home();
+    return AdminCreateQuiz();
+      //return Home();
     } else {
       //return pagebuilder
       return PageBuilder(page: currentPage);

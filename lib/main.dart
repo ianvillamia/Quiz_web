@@ -35,10 +35,8 @@ class _MyAppState extends State<MyApp> {
 
         ListenableProvider<QuizProvider>(create: (_) => QuizProvider()),
         ListenableProvider<ReviewerProvider>(create: (_) => ReviewerProvider()),
-        ChangeNotifierProvider<LoginListener>(
-          create: (_) => LoginListener(),
-        ),
-             ListenableProvider<AdminSubjectProvider>(create: (_) => AdminSubjectProvider()),
+        ChangeNotifierProvider<LoginListener>(create: (_) => LoginListener()),
+        ListenableProvider<AdminProvider>(create: (_) => AdminProvider()),
       ],
       child: MaterialApp(
         title: "QuizApp",
