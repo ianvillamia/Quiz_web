@@ -1,5 +1,5 @@
 import 'package:Quiz_web/Screens/admin/admin-widgets/admin-quiz-widgets/admin-qt-identification.dart';
-import 'package:Quiz_web/Screens/admin/admin-widgets/admin-quiz-widgets/admin-qt-multipleChoice.dart';
+import 'package:Quiz_web/Screens/admin/admin-widgets/admin-quiz-widgets/admin-qt-multi.dart';
 import 'package:Quiz_web/Screens/admin/admin-widgets/admin-quiz-widgets/admin-qt-trueOrFalse.dart';
 import 'package:flutter/material.dart';
 
@@ -11,6 +11,7 @@ class AdminQuizItem extends StatefulWidget {
 }
 
 class _AminQuizItemState extends State<AdminQuizItem> {
+  TextEditingController questionController = TextEditingController();
   List<DropdownMenuItem<String>> _dropDownMenuItems;
   String _questionType;
 
@@ -33,6 +34,7 @@ class _AminQuizItemState extends State<AdminQuizItem> {
 
   @override
   void initState() {
+    questionController.text = 'sample question';
     // TODO: implement initState
     super.initState();
     _dropDownMenuItems = getDropDownMenuItems();
@@ -41,9 +43,9 @@ class _AminQuizItemState extends State<AdminQuizItem> {
 
   void changeDropDownItem(String selected) {
     setState(() {
+      questionController.text = 'enter question';
       _questionType = selected;
     });
-  
   }
 
   @override
@@ -53,24 +55,21 @@ class _AminQuizItemState extends State<AdminQuizItem> {
     return Padding(
       padding: EdgeInsets.all(10),
       child: Container(
-
         height: size.height,
-        width: size.width*.3,
-        color: Color.fromRGBO(229,229,229,1),
+        width: size.width * .3,
+        color: Color.fromRGBO(229, 229, 229, 1),
         child: Column(
           children: <Widget>[
             /************************************section1*************************************/
 
-            Container(
-              color: Colors.brown,
-              height: size.height * .3,
-              width: size.width * .3,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: <Widget>[
-                  Container(
-                    height: size.height * .1,
-                    child: Card(
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: <Widget>[
+                Container(
+                  height: size.height * .1,
+                  child: Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
                       child: DropdownButton<String>(
                         underline: SizedBox(),
                         value: _questionType,
@@ -79,46 +78,40 @@ class _AminQuizItemState extends State<AdminQuizItem> {
                       ),
                     ),
                   ),
-                  //Multiline question textfield
-                  Container(
-                    height: 100,
-                    child: Card(
-                      child: Scrollbar(
-                        child: SingleChildScrollView(
-                          child: TextFormField(
-                            decoration: InputDecoration(
-                                labelText: 'Question',
-                                hintText: 'type question here'),
-                            minLines: 3,
-                            maxLines: null,
-                          ),
-                        ),
-                      ),
-                    ),
-                  )
-                ],
-              ),
+                ),
+                //Multiline question textfield
+                Container(
+                    child: SingleChildScrollView(child: questionWidget()))
+              ],
             ),
 
 /************************************section2*************************************/
-        questionWidget()
-      
-      
-
           ],
         ),
       ),
     );
   }
-  Widget questionWidget(){
-    if(_questionType=='q-type-mult'){
-      return AdminMultipleChoice(choices: ['a','a','a','a',], question:'wgat da heck', answer: 'nada',isIgnoring: true,);
+
+  Widget questionWidget() {
+    if (_questionType == 'q-type-mult') {
+      return AdminMultipleChoice(
+        choices: [
+          'a',
+          'a',
+          'a',
+          'a',
+        ],
+        question: questionController.text,
+        answer: 'nada',
+        isIgnoring: true,
+      );
     }
-      if(_questionType=='q-type-iden'){
-      return AdminIdentification(question: 'what the ', answer: 'cool');
+    if (_questionType == 'q-type-iden') {
+      return AdminIdentification(
+          question: questionController.text, answer: 'cool');
     }
-      if(_questionType=='q-type-tf'){
-      return  AdminTrueOrFalse(question: 'cool', answer: true);
+    if (_questionType == 'q-type-tf') {
+      return AdminTrueOrFalse(question: questionController.text, answer: true);
     }
   }
 }
