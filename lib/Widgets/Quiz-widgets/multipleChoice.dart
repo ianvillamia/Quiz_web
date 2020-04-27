@@ -6,9 +6,9 @@ class MultipleChoice extends StatefulWidget {
   final List choices;
   final String question;
   final String answer;
-  final bool isIgnoring;
+
   MultipleChoice(
-      {@required this.choices, @required this.question, @required this.answer,@required this.isIgnoring});
+      {@required this.choices, @required this.question, @required this.answer});
 
   @override
   _MultipleChoiceState createState() => _MultipleChoiceState();
@@ -103,9 +103,7 @@ class _MultipleChoiceState extends State<MultipleChoice> {
                   ),
                 ],
               ),
-                IgnorePointer(
-                  ignoring: widget.isIgnoring,
-                                  child: ExpansionTile(
+                ExpansionTile(
 
               trailing: Icon(Icons.lightbulb_outline),
               title: Align(alignment: Alignment.bottomRight
@@ -116,8 +114,7 @@ class _MultipleChoiceState extends State<MultipleChoice> {
                   ),),
 
               ],
-            ),
-                )
+            )
             ],
           ),
         ),

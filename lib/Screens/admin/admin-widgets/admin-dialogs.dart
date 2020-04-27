@@ -1,4 +1,4 @@
-import 'package:Quiz_web/Screens/admin/admin-providers/adminSubjectProvider.dart';
+import 'package:Quiz_web/Screens/admin/admin-providers/adminProvider.dart';
 import 'package:Quiz_web/Screens/admin/admin-services/adminService.dart';
 import 'package:Quiz_web/Screens/admin/adminScreens/adminSubjects.dart';
 import 'package:Quiz_web/Services/Providers/quizProvider.dart';
@@ -182,7 +182,8 @@ class AdminAlertDialogs {
               color: Colors.red,
               onPressed: () async {
                 //create dapat ng dialog do you really want to delete?
-                await doYouWantToDeleteDialog(context, docID);
+                await doYouWantToDeleteDialog(
+                    context: context, docID: docID, type: 'subject');
               },
             ),
             SizedBox(
@@ -211,28 +212,95 @@ class AdminAlertDialogs {
     );
   }
 
-  doYouWantToDeleteDialog(BuildContext context, String docID) {
+  doYouWantToDeleteDialog(
+      {@required BuildContext context,
+      @required String docID,
+      @required String type}) {
+    TextEditingController confirmController = TextEditingController();
     showDialog(
       context: context,
       builder: (BuildContext context) {
+        final _adminProvider = Provider.of<AdminProvider>(context);
+        var size = MediaQuery.of(context).size;
         return AlertDialog(
-          title: Text("Do You really want to delete this subject?"),
+          titlePadding: EdgeInsets.all(0),
+          title: Container(
+            width: size.width * .5,
+            child: Column(
+              children: <Widget>[
+                Container(
+                  width: size.width*.5,
+                  height: size.height*.1,
+                    color: Color.fromRGBO(255, 82, 82, 1),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            "Do you really want to delete this $type?",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          Text('Doing so will permanently delete the $type',style: TextStyle(
+                            fontSize: 12,color: Colors.white
+                          ),)
+                        ],
+                      ),
+                    )),
+                ListTile(
+                  title: TextFormField(
+                    controller: confirmController,
+                    decoration: InputDecoration(
+                        fillColor: Colors.white,
+                        hintText: docID,
+                        labelText: 'Please type $docID below to confirm'),
+                    onChanged: (val) {
+                      if (confirmController.text == docID) {
+                        _adminProvider.toggleDeleteButton(true);
+                      } else {
+                        _adminProvider.toggleDeleteButton(false);
+                      }
+                    },
+                  ),
+                )
+              ],
+            ),
+          ),
           actions: [
-            FlatButton(
-              child: Text("Yes"),
-              onPressed: () async {
-                await AdminService().deleteSubject(docID: docID).then((value) {
-                  Navigator.pop(context);
-                  Navigator.pop(context);
-                });
-              },
-            ),
-            FlatButton(
-              child: Text("No"),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
+            Visibility(
+              visible: _adminProvider.isDeleteButtonVisible,
+              child: Row(
+                children: <Widget>[
+                  FlatButton(
+                    child: Text("Yes"),
+                    onPressed: () async {
+                      if (type.toLowerCase() == 'subject') {
+                        await AdminService()
+                            .deleteSubject(docID: docID)
+                            .then((value) {
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                        });
+                      }
+                      if (type.toLowerCase() == 'quiz') {
+                        await AdminService()
+                            .deleteQuiz(collectionID: docID)
+                            .then((value) {
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                        });
+                      }
+                    },
+                  ),
+                  FlatButton(
+                    child: Text("No"),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ],
+              ),
+            )
           ],
         );
         ;
@@ -347,6 +415,7 @@ class AdminAlertDialogs {
                       final _adminProvider =
                           Provider.of<AdminProvider>(context, listen: false);
                       _adminProvider.setQuizTitle(quizTitleController.text);
+                      Navigator.pop(context);
                       Navigator.pushNamed(context, '/adminCreateQuiz');
                     }).catchError((err) {
                       print('errorbano');
@@ -385,11 +454,8 @@ class AdminAlertDialogs {
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: snapshot.data.documents
-                              .map((doc) => IgnorePointer(
-                                    ignoring: true,
-                                    child: quizItemBuilder(
-                                        doc: doc, context: context),
-                                  ))
+                              .map((doc) =>
+                                  quizItemBuilder(doc: doc, context: context))
                               .toList()),
                     ),
                   );
@@ -399,7 +465,16 @@ class AdminAlertDialogs {
               },
             ),
           ),
-          actions: [],
+          actions: [
+            FlatButton.icon(
+                onPressed: () async {
+                  //add service to delete pass in collection id
+                  await doYouWantToDeleteDialog(
+                      context: context, docID: collectionID, type: 'quiz');
+                },
+                icon: Icon(Icons.delete),
+                label: Text('Delete'))
+          ],
         );
         ;
       },

@@ -6,7 +6,12 @@ class AdminProvider with ChangeNotifier {
   bool editable = true;
   String createQuizTitle;
 
- 
+ bool isDeleteButtonVisible=false;
+ void toggleDeleteButton(bool val){
+   isDeleteButtonVisible=val;
+   notifyListeners();
+ }
+
   void setQuizTitle(String val){
     createQuizTitle=val;
     notifyListeners();

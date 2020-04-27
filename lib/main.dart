@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:Quiz_web/Screens/admin/admin-providers/adminSubjectProvider.dart';
+import 'package:Quiz_web/Screens/admin/admin-providers/adminProvider.dart';
 import 'package:Quiz_web/Services/Firebase/authenticationService.dart';
 import 'package:Quiz_web/Services/Providers/loginListener.dart';
 import 'package:Quiz_web/Services/Providers/quizProvider.dart';

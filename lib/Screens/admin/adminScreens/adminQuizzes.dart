@@ -1,4 +1,4 @@
-import 'package:Quiz_web/Screens/admin/admin-providers/adminSubjectProvider.dart';
+import 'package:Quiz_web/Screens/admin/admin-providers/adminProvider.dart';
 import 'package:Quiz_web/Screens/admin/admin-widgets/admin-dialogs.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';

@@ -211,7 +211,7 @@ class _QuizBuilderState extends State<QuizBuilder> {
           question: doc.data['question'],
           choices: doc.data['choices'],
           answer: doc.data['answer'],
-          isIgnoring: false,
+        
         );
       }
       if (questionType == 'trueOrFalse') {

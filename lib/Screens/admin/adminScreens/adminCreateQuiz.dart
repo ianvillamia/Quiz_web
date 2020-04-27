@@ -1,6 +1,6 @@
-import 'package:Quiz_web/Screens/admin/admin-providers/adminSubjectProvider.dart';
+import 'package:Quiz_web/Screens/admin/admin-providers/adminProvider.dart';
 import 'package:Quiz_web/Screens/admin/admin-widgets/admin-dialogs.dart';
-import 'package:Quiz_web/Screens/admin/admin-widgets/adminQuizItem.dart';
+import 'package:Quiz_web/Screens/admin/admin-widgets/adminCreateQuizBody.dart';
 import 'package:Quiz_web/Services/Providers/quizProvider.dart';
 import 'package:Quiz_web/Widgets/Quiz-widgets/identification.dart';
 import 'package:Quiz_web/Widgets/Quiz-widgets/multipleChoice.dart';
@@ -25,8 +25,8 @@ class _AdminCreateQuizState extends State<AdminCreateQuiz> {
     super.initState();
     //call insert a quiz thing here first
     final _adminProvider = Provider.of<AdminProvider>(context, listen: false);
-   // collectionName = _adminProvider.createQuizTitle;
-    collectionName ='quiz1';
+ collectionName = _adminProvider.createQuizTitle;
+  //collectionName ='quiz1';
   }
 
   @override
@@ -104,7 +104,7 @@ class _AdminCreateQuizState extends State<AdminCreateQuiz> {
                   /*Create Quiz tab*/
                   Positioned(
                       right: 0,
-                      child: AdminQuizItem())
+                      child: AdminCreateQuizBody())
                 ],
               ))
         ],
@@ -176,7 +176,7 @@ class _AdminCreateQuizState extends State<AdminCreateQuiz> {
       }
       if (questionType == 'multipleChoice') {
         return MultipleChoice(
-          isIgnoring: false,
+        
           question: doc.data['question'],
           choices: doc.data['choices'],
           answer: doc.data['answer'],

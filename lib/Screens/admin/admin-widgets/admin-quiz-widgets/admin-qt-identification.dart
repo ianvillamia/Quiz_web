@@ -1,73 +1,116 @@
+import 'package:Quiz_web/Screens/admin/admin-services/adminFutures.dart';
+import 'package:Quiz_web/Screens/admin/admin-services/adminService.dart';
 import 'package:Quiz_web/Services/Providers/quizProvider.dart';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:Quiz_web/Screens/admin/admin-providers/adminProvider.dart';
 
 class AdminIdentification extends StatefulWidget {
-  final String question;
-  final String answer;
-
-  AdminIdentification({@required this.question, @required this.answer});
-
   @override
   _AdminIdentification createState() => _AdminIdentification();
 }
 
 class _AdminIdentification extends State<AdminIdentification> {
+  int selected;
+  final _formKey = GlobalKey<FormState>();
+  String userAnswer;
+  TextEditingController answerController = TextEditingController(),
+      questionController = TextEditingController();
 
-  TextEditingController _controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    final _quizProvider = Provider.of<QuizProvider>(context, listen: false);
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+    final _adminProvider = Provider.of<AdminProvider>(context, listen: false);
+    var size = MediaQuery.of(context).size;
+
+    return Form(
+      key: _formKey,
       child: Container(
+        width: MediaQuery.of(context).size.width * .8,
         child: Card(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              ListTile(
-                title: Text(widget.question),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                child: Container(
-                  width: 350,
-                  child: TextFormField(
-                    controller: _controller,
-                    onChanged: (text) {
-         
-                      _quizProvider.answerChecker(
-                          userAnswer: _controller.text.trim(), correctAnswer: widget.answer);
-                    },
-                    decoration: InputDecoration(
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.black),
-                      ),
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.cyan),
+          child: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                ListTile(
+                    title: Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Scrollbar(
+                      child: SingleChildScrollView(
+                        child: TextFormField(
+                          controller: questionController,
+                          validator: (val) {
+                            if (val.length <= 0) {
+                              _adminProvider
+                                  .changeErrorString('must not be empty');
+                            }
+                            return _adminProvider.errorText;
+                          },
+                          decoration: InputDecoration(
+                            fillColor: Colors.black,
+                            labelText: 'Question',
+                            hintText: 'type question here',
+                            focusedBorder: InputBorder.none,
+                            enabledBorder: InputBorder.none,
+                            errorBorder: InputBorder.none,
+                            disabledBorder: InputBorder.none,
+                          ),
+                          minLines: 3,
+                          maxLines: null,
+                        ),
                       ),
                     ),
-                    validator: (val) {
-                      print('validating:' + val);
-                    },
+                  ),
+                )),
+                Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextFormField(
+                      validator: (val) =>
+                          val.isEmpty ? 'please enter value' : null,
+                      controller: answerController,
+                      decoration: InputDecoration(
+                        hintText: 'Input answer',
+                        labelText: 'Answer',
+                        focusedBorder: InputBorder.none,
+                        enabledBorder: InputBorder.none,
+                        errorBorder: InputBorder.none,
+                        disabledBorder: InputBorder.none,
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            ExpansionTile(
+                MaterialButton(
+                    onPressed: () async {
+                              if (_formKey.currentState.validate()) {}
+                      String collectionID = _adminProvider.createQuizTitle;
+                      await AdminFutures.checkDuplicates(
+                              question:
+                                  questionController.text.toLowerCase().trim(),
+                              collection: _adminProvider.createQuizTitle)
+                          .then((value) {
+                        if (value == true) {
+                          print('duplicate values');
 
-              trailing: Icon(Icons.lightbulb_outline),
-              title: Align(alignment: Alignment.bottomRight
-                ,child: Text('Show Answer')),
-              children: <Widget>[
-                Text('answer is:'+widget.answer,style: TextStyle(
-                  color: Colors.blue,fontSize: 20
-                ),),
-
+                          _adminProvider.changeErrorString('duplicate values');
+                        } else {
+                          //ok values
+                          _adminProvider.changeErrorString(null);
+                          AdminService().addIdentificationQuestion(
+                              answer: answerController.text.trim(),
+                              question: questionController.text,
+                              collectionID: collectionID).then((value) => _formKey.currentState.reset());
+                        }
+                      });
+                      //run validator
+                      
+                    },
+                    color: Colors.blue,
+                    child: Text(
+                      'Add Question',
+                      style: TextStyle(color: Colors.white),
+                    ))
               ],
-            )
-             
-            ],
+            ),
           ),
         ),
       ),

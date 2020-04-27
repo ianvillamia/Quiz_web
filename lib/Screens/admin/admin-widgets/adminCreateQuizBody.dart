@@ -1,16 +1,16 @@
 import 'package:Quiz_web/Screens/admin/admin-widgets/admin-quiz-widgets/admin-qt-identification.dart';
-import 'package:Quiz_web/Screens/admin/admin-widgets/admin-quiz-widgets/admin-qt-multi.dart';
+import 'package:Quiz_web/Screens/admin/admin-widgets/admin-quiz-widgets/admin-qt-multipleChoice.dart';
 import 'package:Quiz_web/Screens/admin/admin-widgets/admin-quiz-widgets/admin-qt-trueOrFalse.dart';
 import 'package:flutter/material.dart';
 
-class AdminQuizItem extends StatefulWidget {
-  AdminQuizItem({Key key}) : super(key: key);
+class AdminCreateQuizBody extends StatefulWidget {
+  AdminCreateQuizBody({Key key}) : super(key: key);
 
   @override
-  _AminQuizItemState createState() => _AminQuizItemState();
+  _AdminCreateQuizBody createState() => _AdminCreateQuizBody();
 }
 
-class _AminQuizItemState extends State<AdminQuizItem> {
+class _AdminCreateQuizBody extends State<AdminCreateQuizBody> {
   TextEditingController questionController = TextEditingController();
   List<DropdownMenuItem<String>> _dropDownMenuItems;
   String _questionType;
@@ -80,8 +80,7 @@ class _AminQuizItemState extends State<AdminQuizItem> {
                   ),
                 ),
                 //Multiline question textfield
-                Container(
-                    child: SingleChildScrollView(child: questionWidget()))
+                questionWidget()
               ],
             ),
 
@@ -94,24 +93,13 @@ class _AminQuizItemState extends State<AdminQuizItem> {
 
   Widget questionWidget() {
     if (_questionType == 'q-type-mult') {
-      return AdminMultipleChoice(
-        choices: [
-          'a',
-          'a',
-          'a',
-          'a',
-        ],
-        question: questionController.text,
-        answer: 'nada',
-        isIgnoring: true,
-      );
+      return AdminMultipleChoice();
     }
     if (_questionType == 'q-type-iden') {
-      return AdminIdentification(
-          question: questionController.text, answer: 'cool');
+      return AdminIdentification();
     }
     if (_questionType == 'q-type-tf') {
-      return AdminTrueOrFalse(question: questionController.text, answer: true);
+      return AdminTrueOrFalse();
     }
   }
 }

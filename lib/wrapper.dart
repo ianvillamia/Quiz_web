@@ -39,10 +39,10 @@ class _WrapperState extends State<Wrapper> {
       //return Reviewer();
       //return QuizBuilder();
       // return Home();
-    // return AdminHomeScreen();
+     return AdminHomeScreen();
       // return AdminSubjects();
       //return Home();
-    return AdminCreateQuiz();
+   // return AdminCreateQuiz();
       //return Home();
     } else {
       //return pagebuilder
