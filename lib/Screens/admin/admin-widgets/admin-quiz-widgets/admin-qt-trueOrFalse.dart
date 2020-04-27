@@ -1,0 +1,88 @@
+import 'package:Quiz_web/Services/Providers/quizProvider.dart';
+import 'package:Quiz_web/Widgets/Quiz-widgets/buttonBar.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+class AdminTrueOrFalse extends StatefulWidget {
+  final String question;
+  final bool answer;
+  
+
+  AdminTrueOrFalse({@required this.question, @required this.answer});
+  @override
+  _AdminTrueOrFalse createState() => _AdminTrueOrFalse();
+}
+
+class _AdminTrueOrFalse extends State<AdminTrueOrFalse> {
+  int selected;
+  
+  @override
+  Widget build(BuildContext context) {
+
+
+    final _quizProvider = Provider.of<QuizProvider>(context,listen: false);
+     changeSelectedValue(int val) {
+      setState(() {
+        selected = val;
+       _quizProvider.onchangeTrueOrFalse(val: selected, correctAnswer: widget.answer.toString());
+      });
+    }
+    
+    
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+      child: Container(
+        width: MediaQuery.of(context).size.width * .8,
+        child: Card(
+          child: Column(
+            children: <Widget>[
+              ListTile(title: Text(widget.question)),
+              Row(
+                children: <Widget>[
+                  Radio(
+                    value: 1,
+                    groupValue: selected,
+                    onChanged: (val) {
+                 changeSelectedValue(val);
+                      },
+                  ),
+                  Text(
+                    "True",
+                    style: TextStyle(fontSize: 16),
+                  ),
+                ],
+              ),
+              Row(
+                children: <Widget>[
+                  Radio(
+                    value: 2,
+                    groupValue: selected,
+                    onChanged: (val) {
+                               changeSelectedValue(val);
+                    },
+                  ),
+                  Text(
+                    "False",
+                    style: TextStyle(fontSize: 16),
+                  ),
+                ],
+              ),
+                 ExpansionTile(
+
+              trailing: Icon(Icons.lightbulb_outline),
+              title: Align(alignment: Alignment.bottomRight
+                ,child: Text('Show Answer')),
+              children: <Widget>[
+                Text('answer is:'+widget.answer.toString(),style: TextStyle(
+                  color: Colors.blue,fontSize: 20
+                ),),
+
+              ],
+            )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

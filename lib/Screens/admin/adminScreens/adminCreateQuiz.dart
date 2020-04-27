@@ -104,13 +104,7 @@ class _AdminCreateQuizState extends State<AdminCreateQuiz> {
                   /*Create Quiz tab*/
                   Positioned(
                       right: 0,
-                      top: size.height * .2,
-                      child: Container(
-                        height: size.height * .635,
-                        width: size.width * .3,
-                        color: Color.fromRGBO(4, 43, 69, 1),
-                        child: AdminQuizItem()
-                      ))
+                      child: AdminQuizItem())
                 ],
               ))
         ],
@@ -182,6 +176,7 @@ class _AdminCreateQuizState extends State<AdminCreateQuiz> {
       }
       if (questionType == 'multipleChoice') {
         return MultipleChoice(
+          isIgnoring: false,
           question: doc.data['question'],
           choices: doc.data['choices'],
           answer: doc.data['answer'],

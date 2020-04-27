@@ -1,3 +1,6 @@
+import 'package:Quiz_web/Screens/admin/admin-widgets/admin-quiz-widgets/admin-qt-identification.dart';
+import 'package:Quiz_web/Screens/admin/admin-widgets/admin-quiz-widgets/admin-qt-multipleChoice.dart';
+import 'package:Quiz_web/Screens/admin/admin-widgets/admin-quiz-widgets/admin-qt-trueOrFalse.dart';
 import 'package:flutter/material.dart';
 
 class AdminQuizItem extends StatefulWidget {
@@ -9,63 +12,38 @@ class AdminQuizItem extends StatefulWidget {
 
 class _AminQuizItemState extends State<AdminQuizItem> {
   List<DropdownMenuItem<String>> _dropDownMenuItems;
-  String _selectedMenuItem;
+  String _questionType;
+
   List<DropdownMenuItem<String>> getDropDownMenuItems() {
     List<DropdownMenuItem<String>> items = List();
-    items.add(DropdownMenuItem(
-      value: 'username',
-      child: Text(
-        'ianvillamia@gmail.com',
-        style: TextStyle(color: Colors.white),
-      ),
-    ));
-    items.add(DropdownMenuItem(
-      value: 'Profile',
-      child: Text(
-        'Profile',
-        style: TextStyle(color: Colors.white),
-      ),
-    ));
-    items.add(DropdownMenuItem(
-      value: 'Quizzes',
-      child: Text('Quizzes', style: TextStyle(color: Colors.white)),
-    ));
-    items.add(DropdownMenuItem(
-      value: 'Log-out',
-      child: Text('Log-out', style: TextStyle(color: Colors.white)),
-    ));
+    void addItem({String value, String text}) {
+      items.add(DropdownMenuItem(
+        value: value,
+        child: Text(
+          text,
+        ),
+      ));
+    }
+
+    addItem(text: 'Multiple Choice', value: 'q-type-mult');
+    addItem(text: 'Identification', value: 'q-type-iden');
+    addItem(text: 'True or False', value: 'q-type-tf');
     return items;
   }
-
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-      _dropDownMenuItems = getDropDownMenuItems();
-    _selectedMenuItem = _dropDownMenuItems[0].value;
+    _dropDownMenuItems = getDropDownMenuItems();
+    _questionType = _dropDownMenuItems[0].value;
   }
 
   void changeDropDownItem(String selected) {
-    switch (selected.toLowerCase()) {
-      case 'profile':
-        //route to profile
-
-        break;
-      case 'Quizzes':
-        //route to quizes
-
-        break;
-      case 'log-out':
-        //  Navigator.of(context)
-        //           .pushNamedAndRemoveUntil('/', (Route<dynamic> r) => false);
-        //   signOutFunction(auth);
-
-        break;
-    }
     setState(() {
-      _selectedMenuItem = selected;
+      _questionType = selected;
     });
+  
   }
 
   @override
@@ -75,58 +53,72 @@ class _AminQuizItemState extends State<AdminQuizItem> {
     return Padding(
       padding: EdgeInsets.all(10),
       child: Container(
-        height: size.height * .6,
-        color: Colors.white,
+
+        height: size.height,
+        width: size.width*.3,
+        color: Color.fromRGBO(229,229,229,1),
         child: Column(
           children: <Widget>[
-            /*section1*/
+            /************************************section1*************************************/
+
             Container(
-              height: size.height * .2,
+              color: Colors.brown,
+              height: size.height * .3,
               width: size.width * .3,
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
                   Container(
-
-                    color: Colors.grey,
                     height: size.height * .1,
-                    child: DropdownButton<String>(
-                      underline: SizedBox(),
-                      focusColor: Colors.white,
-                      dropdownColor: Color.fromRGBO(66, 87, 178, 1),
-                      value: _selectedMenuItem,
-                      items: _dropDownMenuItems,
-                      onChanged: changeDropDownItem,
-
-                      //call a function that hanldes these changes
-                      //logout and routing
-                    ),
-                  ),
-                  Container(
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                        labelText: 'Question',
+                    child: Card(
+                      child: DropdownButton<String>(
+                        underline: SizedBox(),
+                        value: _questionType,
+                        items: _dropDownMenuItems,
+                        onChanged: changeDropDownItem,
                       ),
                     ),
                   ),
+                  //Multiline question textfield
+                  Container(
+                    height: 100,
+                    child: Card(
+                      child: Scrollbar(
+                        child: SingleChildScrollView(
+                          child: TextFormField(
+                            decoration: InputDecoration(
+                                labelText: 'Question',
+                                hintText: 'type question here'),
+                            minLines: 3,
+                            maxLines: null,
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
                 ],
               ),
             ),
-            /*section2*/
-            Container(
-              height: size.height * .2,
-              width: size.width * .3,
-              color: Colors.redAccent,
-            ),
-            /*section3*/
-            Container(
-              height: size.height * .2,
-              width: size.width * .3,
-              color: Colors.yellowAccent,
-            )
+
+/************************************section2*************************************/
+        questionWidget()
+      
+      
+
           ],
         ),
       ),
     );
+  }
+  Widget questionWidget(){
+    if(_questionType=='q-type-mult'){
+      return AdminMultipleChoice(choices: ['a','a','a','a',], question:'wgat da heck', answer: 'nada',isIgnoring: true,);
+    }
+      if(_questionType=='q-type-iden'){
+      return AdminIdentification(question: 'what the ', answer: 'cool');
+    }
+      if(_questionType=='q-type-tf'){
+      return  AdminTrueOrFalse(question: 'cool', answer: true);
+    }
   }
 }

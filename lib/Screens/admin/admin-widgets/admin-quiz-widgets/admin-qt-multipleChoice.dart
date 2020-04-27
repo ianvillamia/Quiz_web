@@ -1,32 +1,36 @@
 import 'package:Quiz_web/Services/Providers/quizProvider.dart';
+import 'package:Quiz_web/Widgets/Quiz-widgets/buttonBar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class MultipleChoice extends StatefulWidget {
+class AdminMultipleChoice extends StatefulWidget {
   final List choices;
   final String question;
   final String answer;
   final bool isIgnoring;
-  MultipleChoice(
-      {@required this.choices, @required this.question, @required this.answer,@required this.isIgnoring});
+  AdminMultipleChoice(
+      {@required this.choices,
+      @required this.question,
+      @required this.answer,
+      @required this.isIgnoring});
 
   @override
-  _MultipleChoiceState createState() => _MultipleChoiceState();
+  _AdminMultipleChoice createState() => _AdminMultipleChoice();
 }
 
-class _MultipleChoiceState extends State<MultipleChoice> {
+class _AdminMultipleChoice extends State<AdminMultipleChoice> {
   int selected;
   String userAnswer;
 
   @override
   Widget build(BuildContext context) {
     final _quizProvider = Provider.of<QuizProvider>(context, listen: false);
-     changeSelectedValue(int val) {
+    changeSelectedValue(int val) {
       setState(() {
         selected = val;
         getUserAnswer(value: selected);
         _quizProvider.onChangeMultipleChoice(
-                          correctAnswer: widget.answer, userAnswer: userAnswer);
+            correctAnswer: widget.answer, userAnswer: userAnswer);
       });
     }
 
@@ -45,9 +49,8 @@ class _MultipleChoiceState extends State<MultipleChoice> {
                   Radio(
                     value: 1,
                     groupValue: selected,
-                    onChanged: (val)  {
+                    onChanged: (val) {
                       changeSelectedValue(val);
-                      
                     },
                   ),
                   Text(
@@ -63,7 +66,6 @@ class _MultipleChoiceState extends State<MultipleChoice> {
                     groupValue: selected,
                     onChanged: (val) async {
                       changeSelectedValue(val);
-                  
                     },
                   ),
                   Text(
@@ -75,12 +77,11 @@ class _MultipleChoiceState extends State<MultipleChoice> {
               Row(
                 children: <Widget>[
                   Radio(
-                    value: 3,
-                    groupValue: selected,
-                    onChanged: (val) async {
-                      changeSelectedValue(val);
-                    }
-                  ),
+                      value: 3,
+                      groupValue: selected,
+                      onChanged: (val) async {
+                        changeSelectedValue(val);
+                      }),
                   Text(
                     widget.choices[2],
                     style: TextStyle(fontSize: 16),
@@ -94,7 +95,6 @@ class _MultipleChoiceState extends State<MultipleChoice> {
                     groupValue: selected,
                     onChanged: (val) async {
                       changeSelectedValue(val);
-                     
                     },
                   ),
                   Text(
@@ -103,21 +103,21 @@ class _MultipleChoiceState extends State<MultipleChoice> {
                   ),
                 ],
               ),
-                IgnorePointer(
-                  ignoring: widget.isIgnoring,
-                                  child: ExpansionTile(
-
-              trailing: Icon(Icons.lightbulb_outline),
-              title: Align(alignment: Alignment.bottomRight
-                  ,child: Text('Show Answer')),
-              children: <Widget>[
-                  Text('answer is:'+widget.answer,style: TextStyle(
-                    color: Colors.blue,fontSize: 20
-                  ),),
-
-              ],
-            ),
-                )
+              IgnorePointer(
+                ignoring: widget.isIgnoring,
+                child: ExpansionTile(
+                  trailing: Icon(Icons.lightbulb_outline),
+                  title: Align(
+                      alignment: Alignment.bottomRight,
+                      child: Text('Show Answer')),
+                  children: <Widget>[
+                    Text(
+                      'answer is:' + widget.answer,
+                      style: TextStyle(color: Colors.blue, fontSize: 20),
+                    ),
+                  ],
+                ),
+              )
             ],
           ),
         ),
@@ -126,7 +126,6 @@ class _MultipleChoiceState extends State<MultipleChoice> {
   }
 
   getUserAnswer({int value}) {
-
     switch (value) {
       case 1:
         userAnswer = widget.choices[0];
@@ -141,6 +140,5 @@ class _MultipleChoiceState extends State<MultipleChoice> {
         userAnswer = widget.choices[3];
         break;
     }
-  
   }
 }
