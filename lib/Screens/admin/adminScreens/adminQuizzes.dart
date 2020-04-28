@@ -72,6 +72,8 @@ class AdminQuizzes extends StatelessWidget {
                                             Text(StringUtils.capitalize(
                                                 doc.data['title'].toString())),
                                             onTap: () {
+                                            final _adminProvider = Provider.of<AdminProvider>(context,listen: false);
+                                        _adminProvider.changeCurrentQuiz(quiz: doc.data['title'].toString());
                                           //show dialog preview? for quiz not interactable
                                           AdminAlertDialogs().showQuiz(context,
                                               doc.data['title'].toString());

@@ -5,18 +5,34 @@ class AdminProvider with ChangeNotifier {
   String errorText;
   bool editable = true;
   String createQuizTitle;
+  String currentQuiz;
 
- bool isDeleteButtonVisible=false;
- void toggleDeleteButton(bool val){
-   isDeleteButtonVisible=val;
-   notifyListeners();
- }
-
-  void setQuizTitle(String val){
-    createQuizTitle=val;
+  bool isRadioSelected=false;
+  void toggleRadio({@required bool val}){
+    isRadioSelected=val;
     notifyListeners();
   }
- 
+
+  void changeCurrentQuiz({@required String quiz}){
+    currentQuiz=quiz;
+    notifyListeners();
+  }
+  int selected;
+  void changeSelection(int val) {
+    selected = val;
+    notifyListeners();
+  }
+
+  bool isDeleteButtonVisible = false;
+  void toggleDeleteButton(bool val) {
+    isDeleteButtonVisible = val;
+    notifyListeners();
+  }
+
+  void setQuizTitle(String val) {
+    createQuizTitle = val;
+    notifyListeners();
+  }
 
   void checkSubject(bool val) {
     isSubjectOk = val;

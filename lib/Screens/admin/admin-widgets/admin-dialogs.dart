@@ -229,8 +229,8 @@ class AdminAlertDialogs {
             child: Column(
               children: <Widget>[
                 Container(
-                  width: size.width*.5,
-                  height: size.height*.1,
+                    width: size.width * .5,
+                    height: size.height * .1,
                     color: Color.fromRGBO(255, 82, 82, 1),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -241,9 +241,10 @@ class AdminAlertDialogs {
                             "Do you really want to delete this $type?",
                             style: TextStyle(color: Colors.white),
                           ),
-                          Text('Doing so will permanently delete the $type',style: TextStyle(
-                            fontSize: 12,color: Colors.white
-                          ),)
+                          Text(
+                            'Doing so will permanently delete the $type',
+                            style: TextStyle(fontSize: 12, color: Colors.white),
+                          )
                         ],
                       ),
                     )),
@@ -485,7 +486,7 @@ class AdminAlertDialogs {
 
   Widget quizItemBuilder({DocumentSnapshot doc, BuildContext context}) {
     //so hmm ano gagawin ko kailangan i return dito ung data
-    final _quizProvider = Provider.of<QuizProvider>(context, listen: false);
+    //eto dito ako gagawa ..
     var type = doc.data['type'];
     if (type == 'header') {
       //header
@@ -539,24 +540,373 @@ class AdminAlertDialogs {
       var questionType = doc.data['questionType'];
 
       if (questionType == 'identification') {
-        return Identification(
-          question: doc.data['question'],
-          answer: doc.data['answer'],
+        return InkWell(
+          onTap: () {
+            //show dialog for update
+            //pass ID for update
+            print('identification');
+            updateQuiz(context: context, type: 'identification', doc: doc);
+          },
+          splashColor: Colors.blue,
+          child: Identification(
+            question: doc.data['question'],
+            answer: doc.data['answer'],
+          ),
         );
       }
       if (questionType == 'multipleChoice') {
-        return MultipleChoice(
-          question: doc.data['question'],
-          choices: doc.data['choices'],
-          answer: doc.data['answer'],
+        return InkWell(
+          onTap: () {
+            print('multiplechoice');
+            updateQuiz(context: context, type: 'multipleChoice', doc: doc);
+          },
+          splashColor: Colors.blue,
+          child: MultipleChoice(
+            question: doc.data['question'],
+            choices: doc.data['choices'],
+            answer: doc.data['answer'],
+          ),
         );
       }
       if (questionType == 'trueOrFalse') {
-        return TrueOrFalse(
-            question: doc.data['question'], answer: doc.data['answer']);
+        return InkWell(
+          onTap: () {
+            print('trueorfalse');
+            updateQuiz(context: context, type: 'trueOrFalse', doc: doc);
+          },
+          splashColor: Colors.blue,
+          child: TrueOrFalse(
+              question: doc.data['question'], answer: doc.data['answer']),
+        );
       }
     }
 
     return Container();
+  }
+
+  /*UPDATE DOC */
+
+  updateQuiz({BuildContext context, String type, DocumentSnapshot doc}) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        var size = MediaQuery.of(context).size;
+        return AlertDialog(
+          contentPadding: EdgeInsets.all(0),
+          title: Text("Update Document"),
+          content: Container(
+            width: size.width * .5,
+            child: Card(
+              child: Padding(
+                  padding: EdgeInsets.all(8),
+                  child: customBuilder(type: type, doc: doc, context: context)),
+            ),
+          ),
+          actions: [],
+        );
+      },
+    );
+  }
+
+  customBuilder({String type, DocumentSnapshot doc, BuildContext context}) {
+    var size = MediaQuery.of(context).size;
+    final _adminProvider = Provider.of<AdminProvider>(context);
+    TextEditingController questionController = TextEditingController(),
+        answerController = TextEditingController();
+    questionController.text = doc.data['question'].toString();
+    answerController.text = doc.data['answer'].toString();
+    if (type == 'identification') {
+      return Column(
+        children: <Widget>[
+          TextFormField(
+            controller: questionController,
+            decoration: InputDecoration(labelText: 'Question'),
+          ),
+          TextFormField(
+            controller: answerController,
+            decoration: InputDecoration(labelText: 'Answer'),
+          ),
+          FlatButton.icon(
+              color: Colors.redAccent,
+              onPressed: () async {
+                print('im here');
+                //update identification pass document id answer question
+                await AdminService()
+                    .updateIdentificationQuestion(
+                        context: context,
+                        question: questionController.text,
+                        answer: answerController.text.toLowerCase().trim(),
+                        doc: doc)
+                    .then((value) {
+                  print('success');
+                  Navigator.pop(context);
+                });
+              },
+              icon: Icon(
+                Icons.update,
+                color: Colors.white,
+              ),
+              label: Text(
+                'Update',
+                style: TextStyle(color: Colors.white),
+              ))
+        ],
+      );
+    }
+    if (type == 'multipleChoice') {
+      TextEditingController choice1 = TextEditingController(),
+          choice2 = TextEditingController(),
+          choice3 = TextEditingController(),
+          choice4 = TextEditingController();
+
+      List choices = doc.data['choices'];
+      choice1.text = StringUtils.capitalize(choices[0].toString());
+      choice2.text = StringUtils.capitalize(choices[1].toString());
+      choice3.text = StringUtils.capitalize(choices[2].toString());
+      choice4.text =  StringUtils.capitalize(choices[3].toString());
+
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          TextFormField(
+            controller: questionController,
+            decoration: InputDecoration(labelText: 'Question'),
+          ),
+          Row(
+            children: <Widget>[
+              Radio(
+                value: 1,
+                groupValue: _adminProvider.selected,
+                onChanged: (val) {
+                  _adminProvider.changeSelection(val);
+                },
+              ),
+              Container(
+                width: size.width * .2,
+                child: TextFormField(
+                  controller: choice1,
+                ),
+              )
+            ],
+          ),
+          Row(
+            children: <Widget>[
+              Radio(
+                value: 2,
+                groupValue: _adminProvider.selected,
+                onChanged: (val) {
+                  _adminProvider.changeSelection(val);
+                },
+              ),
+              Container(
+                width: size.width * .2,
+                child: TextFormField(
+                  controller: choice2,
+                ),
+              )
+            ],
+          ),
+          Row(
+            children: <Widget>[
+              Radio(
+                value: 3,
+                groupValue: _adminProvider.selected,
+                onChanged: (val) {
+                  _adminProvider.changeSelection(val);
+                },
+              ),
+              Container(
+                width: size.width * .2,
+                child: TextFormField(
+                  controller: choice3,
+                ),
+              )
+            ],
+          ),
+          Row(
+            children: <Widget>[
+              Radio(
+                value: 4,
+                groupValue: _adminProvider.selected,
+                onChanged: (val) {
+                  _adminProvider.changeSelection(val);
+                },
+              ),
+              Container(
+                width: size.width * .2,
+                child: TextFormField(
+                  controller: choice4,
+                ),
+              )
+            ],
+          ),
+          Container(
+            width: MediaQuery.of(context).size.width,
+            child: FlatButton.icon(
+                color: Colors.blueAccent,
+                onPressed: () async {
+                  List editedChoices = [
+                    choice1.text,
+                    choice2.text,
+                    choice3.text,
+                    choice4.text
+                  ];
+                  String answer;
+                  //show error if has no selected
+                  if (_adminProvider.selected == 1) {
+                    answer = choice1.text;
+                    await AdminService()
+                        .updateMultipleChoiceQuestion(
+                            question: questionController.text,
+                            answer: answer.toLowerCase().trim(),
+                            choices: editedChoices,
+                            doc: doc,
+                            context: context)
+                        .then((value) {
+                      Navigator.pop(context);
+                        _adminProvider.toggleRadio(val: false);
+                    });
+                  }
+                  if (_adminProvider.selected == 2) {
+                    answer = choice2.text;
+                    await AdminService()
+                        .updateMultipleChoiceQuestion(
+                            question: questionController.text,
+                            answer: answer.toLowerCase().trim(),
+                            choices: editedChoices,
+                            doc: doc,
+                            context: context)
+                        .then((value) {
+                             Navigator.pop(context);
+                        _adminProvider.toggleRadio(val: false);
+                    });
+                  }
+                  if (_adminProvider.selected == 3) {
+                    answer = choice3.text;
+                    await AdminService()
+                        .updateMultipleChoiceQuestion(
+                            question: questionController.text,
+                            answer: answer.toLowerCase().trim(),
+                            choices: editedChoices,
+                            doc: doc,
+                            context: context)
+                        .then((value) {
+                                Navigator.pop(context);
+                        _adminProvider.toggleRadio(val: false);
+                    });
+                  }
+                  if (_adminProvider.selected == 4) {
+                    answer = choice4.text;
+                    await AdminService()
+                        .updateMultipleChoiceQuestion(
+                            question: questionController.text,
+                            answer: answer.toLowerCase().trim(),
+                            choices: editedChoices,
+                            doc: doc,
+                            context: context)
+                        .then((value) {
+                                Navigator.pop(context);
+                        _adminProvider.toggleRadio(val: false);
+                    });
+                  } else {
+                    print('crispy');
+                    _adminProvider.toggleRadio(val: true);
+                  }
+
+                  //update true or false answer
+                },
+                icon: Icon(
+                  Icons.update,
+                  color: Colors.white,
+                ),
+                label: Text(
+                  'Update',
+                  style: TextStyle(color: Colors.white),
+                )),
+          ),
+          Center(
+              child: Visibility(
+                  visible: _adminProvider.isRadioSelected,
+                  child: Container(
+                      width: size.width,
+                      height: size.height * .05,
+                      color: Colors.redAccent,
+                      child: Center(
+                        child: Text(
+                          'Please choose an answer',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ))))
+        ],
+      );
+    }
+
+    if (type == 'trueOrFalse') {
+      int selected;
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          TextFormField(
+            controller: questionController,
+            decoration: InputDecoration(labelText: 'Question'),
+          ),
+          Row(
+            children: <Widget>[
+              Radio(
+                value: 1,
+                groupValue: _adminProvider.selected,
+                onChanged: (val) {
+                  _adminProvider.changeSelection(1);
+                },
+              ),
+              Text('True')
+            ],
+          ),
+          Row(
+            children: <Widget>[
+              Radio(
+                value: 2,
+                groupValue: _adminProvider.selected,
+                onChanged: (val) {
+                  _adminProvider.changeSelection(2);
+                },
+              ),
+              Text('False')
+            ],
+          ),
+          Container(
+            width: MediaQuery.of(context).size.width,
+            child: FlatButton.icon(
+                color: Colors.blueAccent,
+                onPressed: () async {
+                  bool booleanAnswer = false;
+                  if (_adminProvider.selected == 1) {
+                    booleanAnswer = true;
+                  }
+
+//update true or false answer
+                  await AdminService()
+                      .updateTrueOrFalseQuestion(
+                          context: context,
+                          question: questionController.text,
+                          answer: booleanAnswer,
+                          doc: doc)
+                      .then((value) {
+                    print('success');
+                    Navigator.pop(context);
+                  });
+                },
+                icon: Icon(
+                  Icons.update,
+                  color: Colors.white,
+                ),
+                label: Text(
+                  'Update',
+                  style: TextStyle(color: Colors.white),
+                )),
+          )
+        ],
+      );
+    }
   }
 }

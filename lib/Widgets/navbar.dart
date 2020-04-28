@@ -225,26 +225,23 @@ class _NavbarState extends State<Navbar> {
               style:
                   TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
         ),
-        SizedBox(
+       SizedBox(
           width: 10,
         ),
-        // MaterialButton(
-        //   elevation: 0,
-        //   color: Color.fromRGBO(60, 207, 207, 1),
-        //   child: Text(
-        //     'Log out',
-        //     style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-        //   ),
-        //   onPressed: () async {
-        //     print('let me sign out!');
-        //     // await  popLog(context);
-
-        //     await auth.signOut().catchError((onError) => print(onError));
-        //     Navigator.of(context)
-        //         .pushNamedAndRemoveUntil('/', (Route<dynamic> r) => false);
-        //     //  _resetAndOpenPage(context);
-        //   },
-        // ),
+        MaterialButton(
+          elevation: 0,
+          color: Color.fromRGBO(60, 207, 207, 1),
+          onPressed: () async {
+            // await auth.signOut();
+            //what the heck
+          Navigator.pushNamed(context, '/adminHome');
+          },
+          child: Text('Admin Console',
+              style:
+                  TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+        ),
+       
+       
         SizedBox(
           width: 10,
         ),

@@ -1,4 +1,5 @@
 import 'package:Quiz_web/Services/Providers/quizProvider.dart';
+import 'package:basic_utils/basic_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -51,7 +52,8 @@ class _MultipleChoiceState extends State<MultipleChoice> {
                     },
                   ),
                   Text(
-                    widget.choices[0],
+                    StringUtils.capitalize(   widget.choices[0],),
+                 
                     style: TextStyle(fontSize: 16),
                   ),
                 ],
@@ -67,7 +69,7 @@ class _MultipleChoiceState extends State<MultipleChoice> {
                     },
                   ),
                   Text(
-                    widget.choices[1],
+                    StringUtils.capitalize(   widget.choices[1],),
                     style: TextStyle(fontSize: 16),
                   ),
                 ],
@@ -82,7 +84,7 @@ class _MultipleChoiceState extends State<MultipleChoice> {
                     }
                   ),
                   Text(
-                    widget.choices[2],
+                  StringUtils.capitalize(   widget.choices[2],),
                     style: TextStyle(fontSize: 16),
                   ),
                 ],
@@ -98,7 +100,7 @@ class _MultipleChoiceState extends State<MultipleChoice> {
                     },
                   ),
                   Text(
-                    widget.choices[3],
+                  StringUtils.capitalize(   widget.choices[3],),
                     style: TextStyle(fontSize: 16),
                   ),
                 ],

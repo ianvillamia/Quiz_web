@@ -132,16 +132,16 @@ class AdminService {
   Future deleteQuiz({@required String collectionID}) async {
     //delete quiz in QUizlist
     //firrst query id then delete
-     db
+    db
         .collection('quizList')
-        .where('title', isEqualTo: collectionID) .limit(1)
+        .where('title', isEqualTo: collectionID)
+        .limit(1)
         .snapshots()
-        .listen((data) async{
-          data.documents.forEach((data)async {
-          print(data.documentID);
-              await db.collection('quizList').document(data.documentID).delete();
-           });
-      
+        .listen((data) async {
+      data.documents.forEach((data) async {
+        print(data.documentID);
+        await db.collection('quizList').document(data.documentID).delete();
+      });
     });
 
     //delete collection nagana na to lol
@@ -150,5 +150,73 @@ class AdminService {
         ds.reference.delete();
       }
     });
+  }
+
+  Future updateMultipleChoiceQuestion(
+      //for indentification and true or false
+      {@required String question,
+      @required String answer,
+      @required List choices,
+      @required DocumentSnapshot doc,
+      @required BuildContext context}) async {
+    print('object');
+    //   String collectionID=doc.data['title'].toString();
+    final _adminProvider = Provider.of<AdminProvider>(context, listen: false);
+    var collectionID = _adminProvider.currentQuiz;
+    print(doc.documentID); //ok na collection na lang
+    print(collectionID);
+    try {
+      await db
+          .collection(collectionID)
+          .document(doc.documentID)
+          .updateData({'question': question, 'answer': answer,'choices':choices});
+    } catch (e) {
+      print('error' + e.toString());
+    }
+  }
+
+  Future updateIdentificationQuestion(
+    
+      {@required String question,
+      @required String answer,
+      @required DocumentSnapshot doc,
+      @required BuildContext context}) async {
+    print('object');
+    //   String collectionID=doc.data['title'].toString();
+    final _adminProvider = Provider.of<AdminProvider>(context, listen: false);
+    var collectionID = _adminProvider.currentQuiz;
+    print(doc.documentID); //ok na collection na lang
+    print(collectionID);
+  
+    try {
+      await db
+          .collection(collectionID)
+          .document(doc.documentID)
+          .updateData({'question': question, 'answer': answer});
+    } catch (e) {
+      print('error' + e.toString());
+    }
+  }
+  Future updateTrueOrFalseQuestion(
+      //for indentification and true or false
+      {@required String question,
+      @required bool answer,
+      @required DocumentSnapshot doc,
+      @required BuildContext context}) async {
+    print('object');
+    //   String collectionID=doc.data['title'].toString();
+    final _adminProvider = Provider.of<AdminProvider>(context, listen: false);
+    var collectionID = _adminProvider.currentQuiz;
+    print(doc.documentID); //ok na collection na lang
+    print(collectionID);
+  
+    try {
+      await db
+          .collection(collectionID)
+          .document(doc.documentID)
+          .updateData({'question': question, 'answer': answer});
+    } catch (e) {
+      print('error' + e.toString());
+    }
   }
 }

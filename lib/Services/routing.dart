@@ -1,4 +1,5 @@
 import 'package:Quiz_web/Screens/admin/adminScreens/adminCreateQuiz.dart';
+import 'package:Quiz_web/Screens/admin/adminScreens/adminDash.dart';
 import 'package:Quiz_web/Screens/admin/adminScreens/adminQuizzes.dart';
 import 'package:Quiz_web/Screens/admin/adminScreens/adminSubjects.dart';
 import 'package:Quiz_web/Screens/authScreens/loginScreen.dart';
@@ -64,9 +65,12 @@ class FluroRouter {
   static Handler _quizzesHandler = Handler(
       handlerFunc: (BuildContext context, Map<String, dynamic> param) =>
           AdminQuizzes());
-            static Handler _createQuizHanlder = Handler(
+            static Handler _createQuizHandler = Handler(
       handlerFunc: (BuildContext context, Map<String, dynamic> param) =>
           AdminCreateQuiz());
+              static Handler _adminHomeHandler = Handler(
+      handlerFunc: (BuildContext context, Map<String, dynamic> param) =>
+          AdminHomeScreen());
 //-----------------------Routenames----------------------------------------//
   static void setupRouter() {
     router.define('/',
@@ -74,7 +78,9 @@ class FluroRouter {
     router.define('/adminSubjects',
         handler: _subjectsHandler, transitionType: TransitionType.fadeIn);
          router.define('/adminCreateQuiz',
-        handler: _createQuizHanlder, transitionType: TransitionType.fadeIn);
+        handler: _createQuizHandler, transitionType: TransitionType.fadeIn);
+            router.define('/adminHome',
+        handler: _adminHomeHandler, transitionType: TransitionType.fadeIn);
     router.define('/adminQuizzes',
         handler: _quizzesHandler, transitionType: TransitionType.fadeIn);
     router.define('/quizScore',
