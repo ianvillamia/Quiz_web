@@ -36,7 +36,7 @@ class _QuizBuilderState extends State<QuizBuilder> {
                     width: MediaQuery.of(context).size.width * .7,
                     child: StreamBuilder<QuerySnapshot>(
                       stream: db
-                          .collection('quiz1') //_quizProvider.currentQuiz
+                          .collection(_quizProvider.currentQuiz) //_quizProvider.currentQuiz
                           .orderBy('order')
                           .snapshots(),
                       builder: (BuildContext context,

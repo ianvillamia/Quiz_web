@@ -124,7 +124,7 @@ class AdminService {
         'answer': answer,
         'order': (_myDocCount.length).toString(),
         'question': question,
-        'questionType': 'identification'
+        'questionType': 'trueOrFalse'
       });
     } catch (e) {}
   }
