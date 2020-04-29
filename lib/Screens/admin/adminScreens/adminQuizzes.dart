@@ -34,7 +34,7 @@ class AdminQuizzes extends StatelessWidget {
                     /**buttons and stuff */
 
                     //*data table *//
-                    dataTable(size: size, context: context)
+                    quizList(size: size, context: context)
                   ],
                 ),
               ))
@@ -43,7 +43,7 @@ class AdminQuizzes extends StatelessWidget {
     );
   }
 
-  dataTable({size, context}) {
+  quizList({size, context}) {
     return Container(
       height: size.height * .9,
       color: Colors.transparent,
@@ -117,7 +117,7 @@ class AdminQuizzes extends StatelessWidget {
                         color: Colors.white,
                       ),
                       label: Text(
-                        'NEW Quiz',
+                        'Create Quiz',
                         style: TextStyle(color: Colors.white),
                       )))
             ],

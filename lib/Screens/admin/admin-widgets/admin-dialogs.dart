@@ -1,10 +1,6 @@
 import 'package:Quiz_web/Screens/admin/admin-providers/adminProvider.dart';
 import 'package:Quiz_web/Screens/admin/admin-services/adminService.dart';
-import 'package:Quiz_web/Screens/admin/adminScreens/adminSubjects.dart';
-import 'package:Quiz_web/Services/Providers/quizProvider.dart';
-import 'package:Quiz_web/Widgets/Quiz-widgets/identification.dart';
-import 'package:Quiz_web/Widgets/Quiz-widgets/multipleChoice.dart';
-import 'package:Quiz_web/Widgets/Quiz-widgets/trueOrFalse.dart';
+import 'package:Quiz_web/Screens/admin/admin-widgets/admin-builders/updateQuizBuilder.dart';
 import 'package:basic_utils/basic_utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +26,7 @@ class AdminAlertDialogs {
           content: Form(
               key: _formKey,
               child: Container(
-                height: size.height * .25,
+                height: size.height * .3,
                 width: size.width * .5,
                 child: Column(
                   children: <Widget>[
@@ -67,7 +63,8 @@ class AdminAlertDialogs {
               color: Colors.green,
               label: Text("ADD"),
               onPressed: () async {
-                await checkDuplicates(
+                       if (_formKey.currentState.validate()) {
+  await checkDuplicates(
                         subject: subjectController.text.toLowerCase().trim(),
                         collection: 'subjectList')
                     .then((val) {
@@ -87,7 +84,9 @@ class AdminAlertDialogs {
                     Navigator.pop(context);
                   }
                 }).catchError((onError) {});
-                if (_formKey.currentState.validate()) {}
+                       }
+              
+         
               },
             )
           ],
@@ -273,6 +272,7 @@ class AdminAlertDialogs {
               child: Row(
                 children: <Widget>[
                   FlatButton(
+                    color: Colors.green,
                     child: Text("Yes"),
                     onPressed: () async {
                       if (type.toLowerCase() == 'subject') {
@@ -293,7 +293,11 @@ class AdminAlertDialogs {
                       }
                     },
                   ),
+                  SizedBox(
+                    width: 5,
+                  ),
                   FlatButton(
+                    color: Colors.redAccent,
                     child: Text("No"),
                     onPressed: () {
                       Navigator.pop(context);
@@ -394,7 +398,8 @@ class AdminAlertDialogs {
               color: Colors.green,
               label: Text("NEXT"),
               onPressed: () async {
-                await checkDuplicates(
+                   if (_formKey.currentState.validate()) {
+                     await checkDuplicates(
                         subject: quizTitleController.text.toLowerCase().trim(),
                         collection: 'quizList')
                     .then((val) {
@@ -423,7 +428,9 @@ class AdminAlertDialogs {
                     });
                   }
                 }).catchError((onError) {});
-                if (_formKey.currentState.validate()) {}
+             
+                   }
+                
               },
             )
           ],
@@ -434,37 +441,38 @@ class AdminAlertDialogs {
 
   showQuiz(BuildContext context, String collectionID) {
     final db = Firestore.instance;
+    //show dialog for add quiz to subject
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("QuizPreview"),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text("Quiz Preview"),
+                  Text(
+                    "click on question if you want to update",
+                    style: TextStyle(fontSize: 12, color: Colors.grey),
+                  ),
+                ],
+              ),
+              MaterialButton(
+                color: Colors.blueAccent,
+                elevation: 0,
+                onPressed: () {},
+                child: Text('Add this Quiz to a Subject',style: TextStyle(
+                  color:Colors.white
+                ),),
+              )
+            ],
+          ),
           content: Container(
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width * .5,
-            child: StreamBuilder<QuerySnapshot>(
-              stream: db
-                  .collection(collectionID) //_quizProvider.currentQuiz
-                  .orderBy('order')
-                  .snapshots(),
-              builder: (BuildContext context,
-                  AsyncSnapshot<QuerySnapshot> snapshot) {
-                if (snapshot.hasData) {
-                  return Scrollbar(
-                    child: SingleChildScrollView(
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: snapshot.data.documents
-                              .map((doc) =>
-                                  quizItemBuilder(doc: doc, context: context))
-                              .toList()),
-                    ),
-                  );
-                } else {
-                  return Center(child: CircularProgressIndicator());
-                }
-              },
-            ),
+            child:UpdateQuizBuilder(collectionID: collectionID)
           ),
           actions: [
             FlatButton.icon(
@@ -484,429 +492,4 @@ class AdminAlertDialogs {
 
   /*i hate this*/
 
-  Widget quizItemBuilder({DocumentSnapshot doc, BuildContext context}) {
-    //so hmm ano gagawin ko kailangan i return dito ung data
-    //eto dito ako gagawa ..
-    var type = doc.data['type'];
-    if (type == 'header') {
-      //header
-      //   _quizProvider.countInit();
-      return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-        child: Container(
-          width: MediaQuery.of(context).size.width,
-          child: Card(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                ListTile(
-                    title: Text(
-                  doc.data['title'],
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                )),
-                Padding(
-                    padding: EdgeInsets.all(15),
-                    child: Text(doc.data['instructions'].toString())),
-                Padding(
-                    padding: EdgeInsets.all(15),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Row(
-                          children: <Widget>[
-                            Text('Time allotted:'),
-                            Text('15 mins')
-                          ],
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Text('Created By:'),
-                        Text(
-                          doc.data['creator'].toString(),
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        )
-                      ],
-                    ))
-              ],
-            ),
-          ),
-        ),
-      );
-      //add init counter
-    } else {
-      //means not header
-
-      var questionType = doc.data['questionType'];
-
-      if (questionType == 'identification') {
-        return InkWell(
-          onTap: () {
-            //show dialog for update
-            //pass ID for update
-            print('identification');
-            updateQuiz(context: context, type: 'identification', doc: doc);
-          },
-          splashColor: Colors.blue,
-          child: Identification(
-            question: doc.data['question'],
-            answer: doc.data['answer'],
-          ),
-        );
-      }
-      if (questionType == 'multipleChoice') {
-        return InkWell(
-          onTap: () {
-            print('multiplechoice');
-            updateQuiz(context: context, type: 'multipleChoice', doc: doc);
-          },
-          splashColor: Colors.blue,
-          child: MultipleChoice(
-            question: doc.data['question'],
-            choices: doc.data['choices'],
-            answer: doc.data['answer'],
-          ),
-        );
-      }
-      if (questionType == 'trueOrFalse') {
-        return InkWell(
-          onTap: () {
-            print('trueorfalse');
-            updateQuiz(context: context, type: 'trueOrFalse', doc: doc);
-          },
-          splashColor: Colors.blue,
-          child: TrueOrFalse(
-              question: doc.data['question'], answer: doc.data['answer']),
-        );
-      }
-    }
-
-    return Container();
-  }
-
-  /*UPDATE DOC */
-
-  updateQuiz({BuildContext context, String type, DocumentSnapshot doc}) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        var size = MediaQuery.of(context).size;
-        return AlertDialog(
-          contentPadding: EdgeInsets.all(0),
-          title: Text("Update Document"),
-          content: Container(
-            width: size.width * .5,
-            child: Card(
-              child: Padding(
-                  padding: EdgeInsets.all(8),
-                  child: customBuilder(type: type, doc: doc, context: context)),
-            ),
-          ),
-          actions: [],
-        );
-      },
-    );
-  }
-
-  customBuilder({String type, DocumentSnapshot doc, BuildContext context}) {
-    var size = MediaQuery.of(context).size;
-    final _adminProvider = Provider.of<AdminProvider>(context);
-    TextEditingController questionController = TextEditingController(),
-        answerController = TextEditingController();
-    questionController.text = doc.data['question'].toString();
-    answerController.text = doc.data['answer'].toString();
-    if (type == 'identification') {
-      return Column(
-        children: <Widget>[
-          TextFormField(
-            controller: questionController,
-            decoration: InputDecoration(labelText: 'Question'),
-          ),
-          TextFormField(
-            controller: answerController,
-            decoration: InputDecoration(labelText: 'Answer'),
-          ),
-          FlatButton.icon(
-              color: Colors.redAccent,
-              onPressed: () async {
-                print('im here');
-                //update identification pass document id answer question
-                await AdminService()
-                    .updateIdentificationQuestion(
-                        context: context,
-                        question: questionController.text,
-                        answer: answerController.text.toLowerCase().trim(),
-                        doc: doc)
-                    .then((value) {
-                  print('success');
-                  Navigator.pop(context);
-                });
-              },
-              icon: Icon(
-                Icons.update,
-                color: Colors.white,
-              ),
-              label: Text(
-                'Update',
-                style: TextStyle(color: Colors.white),
-              ))
-        ],
-      );
-    }
-    if (type == 'multipleChoice') {
-      TextEditingController choice1 = TextEditingController(),
-          choice2 = TextEditingController(),
-          choice3 = TextEditingController(),
-          choice4 = TextEditingController();
-
-      List choices = doc.data['choices'];
-      choice1.text = StringUtils.capitalize(choices[0].toString());
-      choice2.text = StringUtils.capitalize(choices[1].toString());
-      choice3.text = StringUtils.capitalize(choices[2].toString());
-      choice4.text =  StringUtils.capitalize(choices[3].toString());
-
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          TextFormField(
-            controller: questionController,
-            decoration: InputDecoration(labelText: 'Question'),
-          ),
-          Row(
-            children: <Widget>[
-              Radio(
-                value: 1,
-                groupValue: _adminProvider.selected,
-                onChanged: (val) {
-                  _adminProvider.changeSelection(val);
-                },
-              ),
-              Container(
-                width: size.width * .2,
-                child: TextFormField(
-                  controller: choice1,
-                ),
-              )
-            ],
-          ),
-          Row(
-            children: <Widget>[
-              Radio(
-                value: 2,
-                groupValue: _adminProvider.selected,
-                onChanged: (val) {
-                  _adminProvider.changeSelection(val);
-                },
-              ),
-              Container(
-                width: size.width * .2,
-                child: TextFormField(
-                  controller: choice2,
-                ),
-              )
-            ],
-          ),
-          Row(
-            children: <Widget>[
-              Radio(
-                value: 3,
-                groupValue: _adminProvider.selected,
-                onChanged: (val) {
-                  _adminProvider.changeSelection(val);
-                },
-              ),
-              Container(
-                width: size.width * .2,
-                child: TextFormField(
-                  controller: choice3,
-                ),
-              )
-            ],
-          ),
-          Row(
-            children: <Widget>[
-              Radio(
-                value: 4,
-                groupValue: _adminProvider.selected,
-                onChanged: (val) {
-                  _adminProvider.changeSelection(val);
-                },
-              ),
-              Container(
-                width: size.width * .2,
-                child: TextFormField(
-                  controller: choice4,
-                ),
-              )
-            ],
-          ),
-          Container(
-            width: MediaQuery.of(context).size.width,
-            child: FlatButton.icon(
-                color: Colors.blueAccent,
-                onPressed: () async {
-                  List editedChoices = [
-                    choice1.text,
-                    choice2.text,
-                    choice3.text,
-                    choice4.text
-                  ];
-                  String answer;
-                  //show error if has no selected
-                  if (_adminProvider.selected == 1) {
-                    answer = choice1.text;
-                    await AdminService()
-                        .updateMultipleChoiceQuestion(
-                            question: questionController.text,
-                            answer: answer.toLowerCase().trim(),
-                            choices: editedChoices,
-                            doc: doc,
-                            context: context)
-                        .then((value) {
-                      Navigator.pop(context);
-                        _adminProvider.toggleRadio(val: false);
-                    });
-                  }
-                  if (_adminProvider.selected == 2) {
-                    answer = choice2.text;
-                    await AdminService()
-                        .updateMultipleChoiceQuestion(
-                            question: questionController.text,
-                            answer: answer.toLowerCase().trim(),
-                            choices: editedChoices,
-                            doc: doc,
-                            context: context)
-                        .then((value) {
-                             Navigator.pop(context);
-                        _adminProvider.toggleRadio(val: false);
-                    });
-                  }
-                  if (_adminProvider.selected == 3) {
-                    answer = choice3.text;
-                    await AdminService()
-                        .updateMultipleChoiceQuestion(
-                            question: questionController.text,
-                            answer: answer.toLowerCase().trim(),
-                            choices: editedChoices,
-                            doc: doc,
-                            context: context)
-                        .then((value) {
-                                Navigator.pop(context);
-                        _adminProvider.toggleRadio(val: false);
-                    });
-                  }
-                  if (_adminProvider.selected == 4) {
-                    answer = choice4.text;
-                    await AdminService()
-                        .updateMultipleChoiceQuestion(
-                            question: questionController.text,
-                            answer: answer.toLowerCase().trim(),
-                            choices: editedChoices,
-                            doc: doc,
-                            context: context)
-                        .then((value) {
-                                Navigator.pop(context);
-                        _adminProvider.toggleRadio(val: false);
-                    });
-                  } else {
-                    print('crispy');
-                    _adminProvider.toggleRadio(val: true);
-                  }
-
-                  //update true or false answer
-                },
-                icon: Icon(
-                  Icons.update,
-                  color: Colors.white,
-                ),
-                label: Text(
-                  'Update',
-                  style: TextStyle(color: Colors.white),
-                )),
-          ),
-          Center(
-              child: Visibility(
-                  visible: _adminProvider.isRadioSelected,
-                  child: Container(
-                      width: size.width,
-                      height: size.height * .05,
-                      color: Colors.redAccent,
-                      child: Center(
-                        child: Text(
-                          'Please choose an answer',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ))))
-        ],
-      );
-    }
-
-    if (type == 'trueOrFalse') {
-      int selected;
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          TextFormField(
-            controller: questionController,
-            decoration: InputDecoration(labelText: 'Question'),
-          ),
-          Row(
-            children: <Widget>[
-              Radio(
-                value: 1,
-                groupValue: _adminProvider.selected,
-                onChanged: (val) {
-                  _adminProvider.changeSelection(1);
-                },
-              ),
-              Text('True')
-            ],
-          ),
-          Row(
-            children: <Widget>[
-              Radio(
-                value: 2,
-                groupValue: _adminProvider.selected,
-                onChanged: (val) {
-                  _adminProvider.changeSelection(2);
-                },
-              ),
-              Text('False')
-            ],
-          ),
-          Container(
-            width: MediaQuery.of(context).size.width,
-            child: FlatButton.icon(
-                color: Colors.blueAccent,
-                onPressed: () async {
-                  bool booleanAnswer = false;
-                  if (_adminProvider.selected == 1) {
-                    booleanAnswer = true;
-                  }
-
-//update true or false answer
-                  await AdminService()
-                      .updateTrueOrFalseQuestion(
-                          context: context,
-                          question: questionController.text,
-                          answer: booleanAnswer,
-                          doc: doc)
-                      .then((value) {
-                    print('success');
-                    Navigator.pop(context);
-                  });
-                },
-                icon: Icon(
-                  Icons.update,
-                  color: Colors.white,
-                ),
-                label: Text(
-                  'Update',
-                  style: TextStyle(color: Colors.white),
-                )),
-          )
-        ],
-      );
-    }
-  }
 }

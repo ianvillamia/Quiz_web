@@ -17,11 +17,8 @@ class AdminProvider with ChangeNotifier {
     currentQuiz=quiz;
     notifyListeners();
   }
-  int selected;
-  void changeSelection(int val) {
-    selected = val;
-    notifyListeners();
-  }
+ 
+
 
   bool isDeleteButtonVisible = false;
   void toggleDeleteButton(bool val) {

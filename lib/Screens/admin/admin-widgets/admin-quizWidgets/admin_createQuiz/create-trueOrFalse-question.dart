@@ -1,18 +1,16 @@
 import 'package:Quiz_web/Screens/admin/admin-providers/adminProvider.dart';
 import 'package:Quiz_web/Screens/admin/admin-services/adminFutures.dart';
 import 'package:Quiz_web/Screens/admin/admin-services/adminService.dart';
-import 'package:Quiz_web/Services/Providers/quizProvider.dart';
-import 'package:Quiz_web/Widgets/Quiz-widgets/buttonBar.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class AdminTrueOrFalse extends StatefulWidget {
+class CreateTrueOrFalseQuestion extends StatefulWidget {
   @override
-  _AdminTrueOrFalse createState() => _AdminTrueOrFalse();
+  _CreateTrueOrFalseQuestion createState() => _CreateTrueOrFalseQuestion();
 }
 
-class _AdminTrueOrFalse extends State<AdminTrueOrFalse> {
+class _CreateTrueOrFalseQuestion extends State<CreateTrueOrFalseQuestion> {
   int selected;
   final _formKey = GlobalKey<FormState>();
   TextEditingController questionController = TextEditingController();

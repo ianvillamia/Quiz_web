@@ -1,6 +1,6 @@
-import 'package:Quiz_web/Screens/admin/admin-widgets/admin-quiz-widgets/admin-qt-identification.dart';
-import 'package:Quiz_web/Screens/admin/admin-widgets/admin-quiz-widgets/admin-qt-multipleChoice.dart';
-import 'package:Quiz_web/Screens/admin/admin-widgets/admin-quiz-widgets/admin-qt-trueOrFalse.dart';
+import 'package:Quiz_web/Screens/admin/admin-widgets/admin-quizWidgets/admin_createQuiz/create-identification-question.dart';
+import 'package:Quiz_web/Screens/admin/admin-widgets/admin-quizWidgets/admin_createQuiz/create-multipleChoice-question.dart';
+import 'package:Quiz_web/Screens/admin/admin-widgets/admin-quizWidgets/admin_createQuiz/create-trueOrFalse-question.dart';
 import 'package:flutter/material.dart';
 
 class AdminCreateQuizBody extends StatefulWidget {
@@ -93,13 +93,13 @@ class _AdminCreateQuizBody extends State<AdminCreateQuizBody> {
 
   Widget questionWidget() {
     if (_questionType == 'q-type-mult') {
-      return AdminMultipleChoice();
+      return CreateMultipleChoiceQuestion();
     }
     if (_questionType == 'q-type-iden') {
-      return AdminIdentification();
+      return CreateIdentificationQuestion();
     }
     if (_questionType == 'q-type-tf') {
-      return AdminTrueOrFalse();
+      return CreateTrueOrFalseQuestion();
     }
   }
 }

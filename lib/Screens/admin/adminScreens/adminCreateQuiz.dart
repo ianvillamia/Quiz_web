@@ -1,13 +1,15 @@
 import 'package:Quiz_web/Screens/admin/admin-providers/adminProvider.dart';
-import 'package:Quiz_web/Screens/admin/admin-widgets/admin-dialogs.dart';
+import 'package:Quiz_web/Screens/admin/admin-widgets/admin-quizWidgets/admin_update/question-cards/updader-quizHeader.dart';
+import 'package:Quiz_web/Screens/admin/admin-widgets/admin-quizWidgets/admin_update/question-cards/update-identifaction-question.dart';
+import 'package:Quiz_web/Screens/admin/admin-widgets/admin-quizWidgets/admin_update/question-cards/update-multipleChoice-question.dart';
+import 'package:Quiz_web/Screens/admin/admin-widgets/admin-quizWidgets/admin_update/question-cards/update-quiz-header.dart';
+import 'package:Quiz_web/Screens/admin/admin-widgets/admin-quizWidgets/admin_update/update-trueOrFalse-question.dart';
 import 'package:Quiz_web/Screens/admin/admin-widgets/adminCreateQuizBody.dart';
 import 'package:Quiz_web/Services/Providers/quizProvider.dart';
-import 'package:Quiz_web/Widgets/Quiz-widgets/identification.dart';
-import 'package:Quiz_web/Widgets/Quiz-widgets/multipleChoice.dart';
-import 'package:Quiz_web/Widgets/Quiz-widgets/trueOrFalse.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../admin-widgets/admin-quizWidgets/admin_update/question-cards/updader-quizHeader.dart';
 
 class AdminCreateQuiz extends StatefulWidget {
   AdminCreateQuiz({Key key}) : super(key: key);
@@ -25,8 +27,8 @@ class _AdminCreateQuizState extends State<AdminCreateQuiz> {
     super.initState();
     //call insert a quiz thing here first
     final _adminProvider = Provider.of<AdminProvider>(context, listen: false);
- collectionName = _adminProvider.createQuizTitle;
-  //collectionName ='quiz1';
+    //collectionName = _adminProvider.createQuizTitle;
+    collectionName = 'quiz1';
   }
 
   @override
@@ -47,7 +49,6 @@ class _AdminCreateQuizState extends State<AdminCreateQuiz> {
           Container(
               width: size.width * .8,
               height: size.height,
-              color: Color.fromRGBO(235, 236, 240, 1),
               child: Stack(
                 children: <Widget>[
                   /*Instruction*/
@@ -68,7 +69,7 @@ class _AdminCreateQuizState extends State<AdminCreateQuiz> {
                     child: Container(
                       width: size.width * .45,
                       height: size.height * .9,
-                      color: Color.fromRGBO(254, 175, 98, 1),
+
                       //here should be the draggable stuff
                       child: StreamBuilder<QuerySnapshot>(
                         stream: db
@@ -85,11 +86,8 @@ class _AdminCreateQuizState extends State<AdminCreateQuiz> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: snapshot.data.documents
-                                        .map((doc) => IgnorePointer(
-                                              ignoring: true,
-                                              child: quizItemBuilder(
-                                                  doc: doc, context: context),
-                                            ))
+                                        .map((doc) => quizItemBuilder(
+                                            doc: doc, context: context))
                                         .toList()),
                               ),
                             );
@@ -102,9 +100,7 @@ class _AdminCreateQuizState extends State<AdminCreateQuiz> {
                   ),
 
                   /*Create Quiz tab*/
-                  Positioned(
-                      right: 0,
-                      child: AdminCreateQuizBody())
+                  Positioned(right: 0, child: AdminCreateQuizBody())
                 ],
               ))
         ],
@@ -118,73 +114,32 @@ class _AdminCreateQuizState extends State<AdminCreateQuiz> {
     final _quizProvider = Provider.of<QuizProvider>(context, listen: false);
     var type = doc.data['type'];
     if (type == 'header') {
-      //header
-      //   _quizProvider.countInit();
-      return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-        child: Container(
-          width: MediaQuery.of(context).size.width,
-          child: Card(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                ListTile(
-                    title: Text(
-                  doc.data['title'].toString(),
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                )),
-                Padding(
-                    padding: EdgeInsets.all(15),
-                    child: Text(doc.data['instructions'].toString())),
-                Padding(
-                    padding: EdgeInsets.all(15),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Row(
-                          children: <Widget>[
-                            Text('Time allotted:'),
-                            Text('15 mins')
-                          ],
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Text('Created By:'),
-                        Text(
-                          doc.data['creator'].toString(),
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        )
-                      ],
-                    ))
-              ],
-            ),
-          ),
-        ),
-      );
-      //add init counter
+      return UpdateQuizHeaderCard(doc: doc);
     } else {
       //means not header
 
       var questionType = doc.data['questionType'];
 
       if (questionType == 'identification') {
-        return Identification(
-          question: doc.data['question'],
-          answer: doc.data['answer'],
-        );
+        //admin clickable stuff here
+        return UpdateIdentificationQuestion(
+            question: doc.data['question'].toString(),
+            answer: doc.data['answer'].toString(),
+            doc: doc);
       }
       if (questionType == 'multipleChoice') {
-        return MultipleChoice(
-        
-          question: doc.data['question'],
-          choices: doc.data['choices'],
-          answer: doc.data['answer'],
-        );
+        return UpdateMultipleChoiceQuestion(
+            choices: doc.data['choices'],
+            question: doc.data['question'].toString(),
+            answer: doc.data['answer'].toString(),
+            doc: doc);
       }
       if (questionType == 'trueOrFalse') {
-        return TrueOrFalse(
-            question: doc.data['question'], answer: doc.data['answer']);
+        return UpdateTrueOrFalseQuestion(
+          question: doc.data['question'],
+          answer: doc.data['answer'],
+          doc: doc,
+        );
       }
     }
 

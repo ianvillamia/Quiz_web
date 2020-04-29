@@ -80,16 +80,14 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ],
                                 ),
                                 TextFormField(
-                               
                                   obscureText: true,
                                   onFieldSubmitted: (value) {
-                                       setState(() => loading = true);
+                                    setState(() => loading = true);
                                     print('enter pressed');
                                     pressLogin(
-                                      auth: auth,
-                                      emailController: emailController,
-                                      passwordController: passwordController
-                                    );
+                                        auth: auth,
+                                        emailController: emailController,
+                                        passwordController: passwordController);
                                   },
                                   textInputAction: TextInputAction.search,
                                   controller: passwordController,
@@ -169,7 +167,7 @@ class _LoginScreenState extends State<LoginScreen> {
   void pressLogin({auth, emailController, passwordController}) async {
     await auth
         .signInWithEmailAndPassword(
-            email: emailController.text.trim(), 
+            email: emailController.text.trim(),
             password: passwordController.text.trim())
         .then((value) => Navigator.pushNamed(context, '/home'))
         .catchError((error, stackTrace) {

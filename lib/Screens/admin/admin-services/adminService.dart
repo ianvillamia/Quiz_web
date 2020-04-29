@@ -166,17 +166,14 @@ class AdminService {
     print(doc.documentID); //ok na collection na lang
     print(collectionID);
     try {
-      await db
-          .collection(collectionID)
-          .document(doc.documentID)
-          .updateData({'question': question, 'answer': answer,'choices':choices});
+      await db.collection(collectionID).document(doc.documentID).updateData(
+          {'question': question, 'answer': answer, 'choices': choices});
     } catch (e) {
       print('error' + e.toString());
     }
   }
 
   Future updateIdentificationQuestion(
-    
       {@required String question,
       @required String answer,
       @required DocumentSnapshot doc,
@@ -187,7 +184,7 @@ class AdminService {
     var collectionID = _adminProvider.currentQuiz;
     print(doc.documentID); //ok na collection na lang
     print(collectionID);
-  
+
     try {
       await db
           .collection(collectionID)
@@ -197,6 +194,32 @@ class AdminService {
       print('error' + e.toString());
     }
   }
+
+  Future updateQuizHeader(
+      {@required String creatorName,
+      @required String instructions,
+      @required String title,
+      @required String time,
+      @required DocumentSnapshot doc,
+      @required BuildContext context}) async {
+    print('object');
+    final _adminProvider = Provider.of<AdminProvider>(context, listen: false);
+    var collectionID = _adminProvider.currentQuiz;
+    print(doc.documentID); //ok na collection na lang
+    print(collectionID);
+
+    try {
+      await db.collection(collectionID).document(doc.documentID).updateData({
+        'creator': creatorName,
+        'instructions': instructions,
+        'time': time,
+        'title': title
+      });
+    } catch (e) {
+      print('error' + e.toString());
+    }
+  }
+
   Future updateTrueOrFalseQuestion(
       //for indentification and true or false
       {@required String question,
@@ -209,7 +232,7 @@ class AdminService {
     var collectionID = _adminProvider.currentQuiz;
     print(doc.documentID); //ok na collection na lang
     print(collectionID);
-  
+
     try {
       await db
           .collection(collectionID)
