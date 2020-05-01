@@ -1,6 +1,5 @@
 import 'package:Quiz_web/Screens/admin/admin-services/adminFutures.dart';
 import 'package:Quiz_web/Screens/admin/admin-services/adminService.dart';
-import 'package:Quiz_web/Services/Providers/quizProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:Quiz_web/Screens/admin/admin-providers/adminProvider.dart';

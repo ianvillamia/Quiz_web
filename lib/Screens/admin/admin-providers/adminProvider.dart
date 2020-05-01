@@ -10,7 +10,12 @@ class AdminProvider with ChangeNotifier {
   String currentQuiz;
   List quizToSubjects;
   String quizToSubjectID;
- 
+  int createQuizStep=1;
+  void updateCreateQuizStep({@required val}){
+    createQuizStep=val;
+    notifyListeners();
+  }
+
   void quizSubjectPop({@required String val}) async{
     print(quizToSubjects);
     quizToSubjects.remove(val);

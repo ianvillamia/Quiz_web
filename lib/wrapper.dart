@@ -2,6 +2,7 @@ import 'package:Quiz_web/Models/userModel.dart';
 import 'package:Quiz_web/Screens/admin/adminScreens/adminCreateQuiz.dart';
 
 import 'package:Quiz_web/Screens/admin/adminScreens/adminDash.dart';
+import 'package:Quiz_web/Screens/home.dart';
 
 
 
@@ -40,9 +41,9 @@ class _WrapperState extends State<Wrapper> {
     
       // return AdminSubjects();
       //return Home();
-   return AdminCreateQuiz();
-    //return Home();
-       return AdminHomeScreen();
+  //return AdminCreateQuiz();
+    return Home();
+     // return AdminHomeScreen();
     } else {
       //return pagebuilder
       return PageBuilder(page: currentPage);

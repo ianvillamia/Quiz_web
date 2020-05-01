@@ -1,6 +1,8 @@
 import 'package:Quiz_web/Screens/admin/admin-providers/adminProvider.dart';
+import 'package:Quiz_web/Screens/admin/admin-widgets/admin-dialogs.dart';
 import 'package:Quiz_web/Screens/admin/admin-widgets/admin-quizWidgets/question-cards/quizHeader-card.dart';
-import 'package:Quiz_web/Screens/admin/admin-widgets/adminCreateQuizBody.dart';
+import 'package:Quiz_web/Screens/admin/admin-widgets/adminCreateQuizBar.dart';
+import 'package:Quiz_web/Screens/admin/admin-widgets/create-quiz-progressBar.dart';
 import 'package:Quiz_web/Services/Providers/quizProvider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -25,8 +27,8 @@ class _AdminCreateQuizState extends State<AdminCreateQuiz> {
     super.initState();
     //call insert a quiz thing here first
     final _adminProvider = Provider.of<AdminProvider>(context, listen: false);
-    //collectionName = _adminProvider.createQuizTitle;
-    collectionName = 'quiz1';
+  collectionName = _adminProvider.createQuizTitle;
+   // collectionName = 'quiz1';
   }
 
   @override
@@ -50,23 +52,12 @@ class _AdminCreateQuizState extends State<AdminCreateQuiz> {
               child: Stack(
                 children: <Widget>[
                   /*Instruction*/
-                  Positioned(
-                      left: size.width * .02,
-                      child: Container(
-                        color: Colors.white,
-                        width: size.width * .45,
-                        height: size.height * .1,
-                        child: Center(
-                          child: Text('Quiz-Preview'),
-                        ),
-                      )),
-                    //PROGRESS BAR STUFF 
-                    Positioned(
-                      top:0,
-                      child: Container()),
+
+                  //PROGRESS BAR STUFF
+
                   /*Preview Screen*/
                   Positioned(
-                    top: size.height * .1,
+                    top: size.height * .2,
                     left: size.width * .02,
                     child: Container(
                       width: size.width * .45,
@@ -102,7 +93,49 @@ class _AdminCreateQuizState extends State<AdminCreateQuiz> {
                   ),
 
                   /*Create Quiz tab*/
-                  Positioned(right: 0,top: size.height*.1, child: AdminCreateQuizBody())
+                  Positioned(
+                      right: 0,
+                      top: size.height * .15,
+                      child: Container(
+                         
+                          height: size.height * .80,
+                          child: Card(child: AdminCreateQuizBar()))),
+                  Positioned(
+                    right: 0,
+                    bottom: 0,
+                      child: Container(
+                    width: size.width*.3,
+                    height: size.height*.05,
+                    child: MaterialButton(onPressed: () {
+                      AdminAlertDialogs().showSubjectListDialog(context: context);
+                    },color: Colors.greenAccent,
+                    child: Text('Finalize'),
+                    ),
+                  )),
+                  /*Progress Bar*/
+                  Positioned(
+                    top: 0,
+                    child: Container(
+                        color: Colors.white,
+                        width: size.width * .8,
+                        height: size.height * .15,
+                        child: CreateQuizProgressBar()),
+                  ),
+                  Positioned(
+                      top: size.height * .17,
+                      child: Container(
+                        color: Colors.grey,
+                        width: size.width * .46,
+                        height: size.height * .05,
+                        child: Center(
+                          child: Text(
+                            'Quiz-Preview',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      )),
                 ],
               ))
         ],

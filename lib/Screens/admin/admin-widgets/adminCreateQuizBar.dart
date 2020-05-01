@@ -4,14 +4,14 @@ import 'package:Quiz_web/Screens/admin/admin-widgets/admin-quizWidgets/admin_cre
 import 'package:Quiz_web/Screens/admin/admin-widgets/admin-quizWidgets/admin_createQuiz/create-trueOrFalse-question.dart';
 import 'package:flutter/material.dart';
 
-class AdminCreateQuizBody extends StatefulWidget {
-  AdminCreateQuizBody({Key key}) : super(key: key);
+class AdminCreateQuizBar extends StatefulWidget {
+  AdminCreateQuizBar({Key key}) : super(key: key);
 
   @override
-  _AdminCreateQuizBody createState() => _AdminCreateQuizBody();
+  _AdminCreateQuizBar createState() => _AdminCreateQuizBar();
 }
 
-class _AdminCreateQuizBody extends State<AdminCreateQuizBody> {
+class _AdminCreateQuizBar extends State<AdminCreateQuizBar> {
   TextEditingController questionController = TextEditingController();
   List<DropdownMenuItem<String>> _dropDownMenuItems;
   String _questionType;
@@ -61,35 +61,36 @@ class _AdminCreateQuizBody extends State<AdminCreateQuizBody> {
         child: Scrollbar(
                   child: SingleChildScrollView(
                     child: Column(
-              children: <Widget>[
-                /************************************section1*************************************/
-
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: <Widget>[
-                    Container(
-                      height: size.height * .1,
-                      child: Card(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: DropdownButton<String>(
-                            underline: SizedBox(),
-                            value: _questionType,
-                            items: _dropDownMenuItems,
-                            onChanged: changeDropDownItem,
-                          ),
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: <Widget>[
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Text('Create Question Section',style: TextStyle(
+                              decoration: TextDecoration.underline,
+                              color:Colors.grey
+                            ),),
+                            Container(
+                              height: size.height * .1,
+                              child: Card(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: DropdownButton<String>(
+                                    underline: SizedBox(),
+                                    value: _questionType,
+                                    items: _dropDownMenuItems,
+                                    onChanged: changeDropDownItem,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
+                        //Multiline question textfield
+                        questionWidget()
+                        
+                      ],
                     ),
-                    //Multiline question textfield
-                    questionWidget()
-                    
-                  ],
-                ),
-
-/************************************section2*************************************/
-              ],
-            ),
           ),
         ),
       ),

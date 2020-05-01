@@ -25,16 +25,32 @@ class _UpdateIdentificationDialogState
       key: _formKey,
       child: Column(
         children: <Widget>[
-          TextFormField(
-            validator: (val) {
-              if (val.isEmpty) {
-                return 'Please input a value';
-              } else
-                return null;
-            },
-            controller: questionController,
-            decoration: InputDecoration(labelText: 'Question'),
-          ),
+             Scrollbar(
+                  child: SingleChildScrollView(
+                    child: TextFormField(
+                      controller: questionController,
+                      validator: (val) {
+                        if (val.length <= 0) {
+                          return 'must have values';
+                        } else {
+                          return null;
+                        }
+                      },
+                      decoration: InputDecoration(
+                        fillColor: Colors.black,
+                        labelText: 'Question',
+                        hintText: 'type question here',
+                        focusedBorder: InputBorder.none,
+                        enabledBorder: InputBorder.none,
+                        errorBorder: InputBorder.none,
+                        disabledBorder: InputBorder.none,
+                      ),
+                      minLines: 3,
+                      maxLines: null,
+                
+                    ),
+                  ),
+                ),
           TextFormField(
             controller: answerController,
             validator: (val) {

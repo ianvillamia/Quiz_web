@@ -2,9 +2,11 @@ import 'package:Quiz_web/Screens/admin/admin-providers/adminProvider.dart';
 import 'package:Quiz_web/Screens/admin/admin-services/adminService.dart';
 import 'package:Quiz_web/Screens/admin/admin-subjectList/subjectList-dialog.dart';
 import 'package:Quiz_web/Screens/admin/admin-widgets/admin-builders/updateQuizBuilder.dart';
+import 'package:Quiz_web/Screens/admin/admin-widgets/create-quiz-progressBar.dart';
 import 'package:basic_utils/basic_utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class AdminAlertDialogs {
@@ -322,9 +324,26 @@ class AdminAlertDialogs {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-              titlePadding: EdgeInsets.all(0),
-              content: Container(
-                  width: 300, height: 300, child: SubjectListDialog()));
+            titlePadding: EdgeInsets.all(0),
+            content: Container(
+                width: 300,
+                height: 300,
+                child: Column(
+                  children: <Widget>[
+                    Text('Add Quiz to subjects'),
+                    SubjectListDialog(),
+                  ],
+                )),
+            actions: <Widget>[
+              MaterialButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/adminQuizzes');
+                },
+                child: Text('Done'),
+                color: Colors.greenAccent,
+              )
+            ],
+          );
         });
   }
   ///////
@@ -332,26 +351,30 @@ class AdminAlertDialogs {
   createQuizDialog(BuildContext context) {
     TextEditingController quizTitleController = TextEditingController(),
         instructionsController = TextEditingController(),
-        timeAllottedController = TextEditingController(),
+        hourController = TextEditingController(),
+        minuteController = TextEditingController(),
         creatorController = TextEditingController();
 
     final _adminProvider = Provider.of<AdminProvider>(context, listen: false);
+    _adminProvider.updateCreateQuizStep(val: 1);
     showDialog(
       context: context,
       builder: (BuildContext context) {
         var size = MediaQuery.of(context).size;
         return AlertDialog(
-          title: Text(
-            "Create a Quiz",
-          ),
+          title: CreateQuizProgressBar(),
           content: Form(
               key: _formKey,
               child: Container(
-                height: size.height * .8,
                 width: size.width * .6,
                 child: SingleChildScrollView(
                   child: Column(
                     children: <Widget>[
+                      Text(
+                        "Create a Quiz",
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
                       TextFormField(
                           controller: quizTitleController,
                           decoration: InputDecoration(
@@ -373,24 +396,58 @@ class AdminAlertDialogs {
                           validator: (val) {
                             // print('validating');
                             if (val.length <= 0) {
-                              return 'must not be empty';
+                              return 'must not be empty/ 0';
                             } else {
                               return null;
                             }
                           }),
-                      TextFormField(
-                          controller: timeAllottedController,
-                          decoration: InputDecoration(
-                              labelText: "time alloted",
-                              hintText: 'enter details'),
-                          validator: (val) {
-                            // print('validating');
-                            if (val.length <= 0) {
-                              return 'must not be empty';
-                            } else {
-                              return null;
-                            }
-                          }),
+                      Row(
+                        children: <Widget>[
+                          Container(
+                            width: 100,
+                            child: TextFormField(
+                                controller: hourController,
+                                maxLength: 2,
+                                keyboardType: TextInputType.number,
+                                inputFormatters: <TextInputFormatter>[
+                                  WhitelistingTextInputFormatter.digitsOnly
+                                ],
+                                decoration: InputDecoration(
+                                    labelText: "Hours", hintText: '00'),
+                                validator: (val) {
+                                  // print('validating');
+                                  if (val.length <= 0) {
+                                    return 'must not be empty';
+                                  } else {
+                                    return null;
+                                  }
+                                }),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Container(
+                            width: 100,
+                            child: TextFormField(
+                                controller: minuteController,
+                                maxLength: 2,
+                                keyboardType: TextInputType.number,
+                                inputFormatters: <TextInputFormatter>[
+                                  WhitelistingTextInputFormatter.digitsOnly
+                                ],
+                                decoration: InputDecoration(
+                                    labelText: "Hours", hintText: '00'),
+                                validator: (val) {
+                                  // print('validating');
+                                  if (val.length <= 0) {
+                                    return 'must not be empty';
+                                  } else {
+                                    return null;
+                                  }
+                                }),
+                          ),
+                        ],
+                      ),
                       TextFormField(
                           controller: creatorController,
                           decoration: InputDecoration(
@@ -424,10 +481,14 @@ class AdminAlertDialogs {
                       .then((val) {
                     if (val == true) {
                       print('duplicate values');
-                      duplicateQuizDialog(context: context,title: quizTitleController.text);
+                      duplicateQuizDialog(
+                          context: context, title: quizTitleController.text);
                       //show na lang ng dialog wag na sa baba...
                       // _adminProvider.changeErrorString('duplicate values');
                     } else {
+                      //update progress bar
+                      _adminProvider.updateCreateQuizStep(val: 2);
+
                       _adminProvider.checkSubject(true);
                       _adminProvider.changeErrorString(null);
 
@@ -438,7 +499,10 @@ class AdminAlertDialogs {
                               title: quizTitleController.text,
                               creator: creatorController.text,
                               instructions: instructionsController.text,
-                              time: timeAllottedController.text)
+                              hour: int.parse(hourController.text.trim()),
+                              minute: int.parse(minuteController.text.trim())
+                              // time: timeAllottedController.text
+                              )
                           .then((value) {
                         final _adminProvider =
                             Provider.of<AdminProvider>(context, listen: false);
@@ -458,25 +522,32 @@ class AdminAlertDialogs {
       },
     );
   }
-  //show duplicate quiz 
-  duplicateQuizDialog({BuildContext context,String title}){
-    showDialog(context: context,builder: (BuildContext context){
-      String quizText=StringUtils.capitalize(title);
-      return AlertDialog(
-        title: Column(
-          children: <Widget>[
-            Icon(Icons.error),
-            Text('$quizText already exists'),
-            Text('please rename quiz',style:TextStyle(fontSize: 12,color:Colors.grey))
-          ],
-        ),
-        actions: <Widget>[
-            MaterialButton(onPressed: (){
-              Navigator.pop(context);
-            },child: Text('ok'),)
-        ],
-      );
-    });
+
+  //show duplicate quiz
+  duplicateQuizDialog({BuildContext context, String title}) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          String quizText = StringUtils.capitalize(title);
+          return AlertDialog(
+            title: Column(
+              children: <Widget>[
+                Icon(Icons.error),
+                Text('$quizText already exists'),
+                Text('please rename quiz',
+                    style: TextStyle(fontSize: 12, color: Colors.grey))
+              ],
+            ),
+            actions: <Widget>[
+              MaterialButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('ok'),
+              )
+            ],
+          );
+        });
   }
 
   showQuiz(BuildContext context, String collectionID) {

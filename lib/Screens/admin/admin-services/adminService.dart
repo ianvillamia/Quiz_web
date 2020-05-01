@@ -50,7 +50,8 @@ class AdminService {
       {@required BuildContext context,
       @required String title,
       @required String instructions,
-      @required String time,
+      @required int hour,
+      @required int minute,
       @required String creator}) async {
     try {
       //first add the quiz to quizList
@@ -61,9 +62,11 @@ class AdminService {
         'creator': creator,
         'instructions': instructions,
         'order': '0',
-        'time': time,
+        'hour':hour,
+        'minute':minute,
+        'title':title,
         'type': 'header',
-        'title': title.toLowerCase().trim()
+   
       });
     } catch (e) {
       print('create fail' + e.toString());
@@ -202,7 +205,8 @@ class AdminService {
       {@required String creatorName,
       @required String instructions,
       @required String title,
-      @required String time,
+  @required int hour,
+  @required int minute,
       @required DocumentSnapshot doc,
       @required BuildContext context}) async {
     print('object');
@@ -215,7 +219,8 @@ class AdminService {
       await db.collection(collectionID).document(doc.documentID).updateData({
         'creator': creatorName,
         'instructions': instructions,
-        'time': time,
+     'hour':hour,
+     'minute'
         'title': title
       });
     } catch (e) {
