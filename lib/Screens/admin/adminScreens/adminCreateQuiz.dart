@@ -1,15 +1,13 @@
 import 'package:Quiz_web/Screens/admin/admin-providers/adminProvider.dart';
-import 'package:Quiz_web/Screens/admin/admin-widgets/admin-quizWidgets/admin_update/question-cards/updader-quizHeader.dart';
-import 'package:Quiz_web/Screens/admin/admin-widgets/admin-quizWidgets/admin_update/question-cards/update-identifaction-question.dart';
-import 'package:Quiz_web/Screens/admin/admin-widgets/admin-quizWidgets/admin_update/question-cards/update-multipleChoice-question.dart';
-import 'package:Quiz_web/Screens/admin/admin-widgets/admin-quizWidgets/admin_update/question-cards/update-quiz-header.dart';
-import 'package:Quiz_web/Screens/admin/admin-widgets/admin-quizWidgets/admin_update/update-trueOrFalse-question.dart';
+import 'package:Quiz_web/Screens/admin/admin-widgets/admin-quizWidgets/question-cards/quizHeader-card.dart';
 import 'package:Quiz_web/Screens/admin/admin-widgets/adminCreateQuizBody.dart';
 import 'package:Quiz_web/Services/Providers/quizProvider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../admin-widgets/admin-quizWidgets/admin_update/question-cards/updader-quizHeader.dart';
+import 'package:Quiz_web/Screens/admin/admin-widgets/admin-quizWidgets/question-cards/identification-card.dart';
+import 'package:Quiz_web/Screens/admin/admin-widgets/admin-quizWidgets/question-cards/multipleChoice-card.dart';
+import 'package:Quiz_web/Screens/admin/admin-widgets/admin-quizWidgets/question-cards/trueOrFalse-card.dart';
 
 class AdminCreateQuiz extends StatefulWidget {
   AdminCreateQuiz({Key key}) : super(key: key);
@@ -27,8 +25,8 @@ class _AdminCreateQuizState extends State<AdminCreateQuiz> {
     super.initState();
     //call insert a quiz thing here first
     final _adminProvider = Provider.of<AdminProvider>(context, listen: false);
-    //collectionName = _adminProvider.createQuizTitle;
-    collectionName = 'quiz1';
+    collectionName = _adminProvider.createQuizTitle;
+    //collectionName = 'quiz1';
   }
 
   @override
@@ -114,7 +112,7 @@ class _AdminCreateQuizState extends State<AdminCreateQuiz> {
     final _quizProvider = Provider.of<QuizProvider>(context, listen: false);
     var type = doc.data['type'];
     if (type == 'header') {
-      return UpdateQuizHeaderCard(doc: doc);
+      return QuizHeaderCard(doc: doc);
     } else {
       //means not header
 
@@ -122,20 +120,20 @@ class _AdminCreateQuizState extends State<AdminCreateQuiz> {
 
       if (questionType == 'identification') {
         //admin clickable stuff here
-        return UpdateIdentificationQuestion(
+        return IdentificationCard(
             question: doc.data['question'].toString(),
             answer: doc.data['answer'].toString(),
             doc: doc);
       }
       if (questionType == 'multipleChoice') {
-        return UpdateMultipleChoiceQuestion(
+        return MultipleChoiceCard(
             choices: doc.data['choices'],
             question: doc.data['question'].toString(),
             answer: doc.data['answer'].toString(),
             doc: doc);
       }
       if (questionType == 'trueOrFalse') {
-        return UpdateTrueOrFalseQuestion(
+        return TrueOrFalseCard(
           question: doc.data['question'],
           answer: doc.data['answer'],
           doc: doc,

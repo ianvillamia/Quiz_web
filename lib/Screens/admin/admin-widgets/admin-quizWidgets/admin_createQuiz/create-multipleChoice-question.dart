@@ -7,11 +7,20 @@ import 'package:Quiz_web/Screens/admin/admin-providers/adminProvider.dart';
 
 class CreateMultipleChoiceQuestion extends StatefulWidget {
   @override
-  _CreateMultipleChoiceQuestion createState() => _CreateMultipleChoiceQuestion();
+  _CreateMultipleChoiceQuestion createState() =>
+      _CreateMultipleChoiceQuestion();
 }
 
-class _CreateMultipleChoiceQuestion extends State<CreateMultipleChoiceQuestion> {
+class _CreateMultipleChoiceQuestion
+    extends State<CreateMultipleChoiceQuestion> {
   int selected;
+  bool isRadioSelected = false;
+  void changeSelectedRadio({@required int val}) {
+    setState(() {
+      selected = val;
+    });
+  }
+
   final _formKey = GlobalKey<FormState>();
   String userAnswer;
   TextEditingController choice1 = TextEditingController(),
@@ -24,7 +33,7 @@ class _CreateMultipleChoiceQuestion extends State<CreateMultipleChoiceQuestion> 
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    final _adminProvider = Provider.of<AdminProvider>(context);
+    final _adminProvider = Provider.of<AdminProvider>(context, listen: false);
     return Form(
       key: _formKey,
       child: Container(
@@ -32,110 +41,187 @@ class _CreateMultipleChoiceQuestion extends State<CreateMultipleChoiceQuestion> 
         width: MediaQuery.of(context).size.width * .8,
         child: Card(
           child: SingleChildScrollView(
+              child: Padding(
+            padding: const EdgeInsets.all(8.0),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                ListTile(
-                    title: Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Scrollbar(
-                      child: SingleChildScrollView(
-                        child: TextFormField(
-                          controller: questionController,
-                          validator: (val) {
-                            if (val.length <= 0) {
-                              _adminProvider
-                                  .changeErrorString('must not be empty');
-                            }
-                            return _adminProvider.errorText;
-                          },
-                          decoration: InputDecoration(
-                            fillColor: Colors.black,
-                            labelText: 'Question',
-                            hintText: 'type question here',
-                            focusedBorder: InputBorder.none,
-                            enabledBorder: InputBorder.none,
-                            errorBorder: InputBorder.none,
-                            disabledBorder: InputBorder.none,
-                          ),
-                          minLines: 3,
-                          maxLines: null,
-                        ),
-                      ),
-                    ),
-                  ),
-                )),
-                buildChoiceItem(
-                    controller: choice1, hintText: 'Enter value for choice1'),
-                buildChoiceItem(
-                    controller: choice2, hintText: 'Enter value for choice2'),
-                buildChoiceItem(
-                    controller: choice3, hintText: 'Enter value for choice3'),
-                buildChoiceItem(
-                    controller: choice4, hintText: 'Enter value for choice4'),
-                Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextFormField(
-                      validator: (val) =>
-                          val.isEmpty ? 'please enter value' : null,
-                      controller: answerController,
-                      decoration: InputDecoration(
-                        hintText: 'Input answer',
-                        labelText: 'Answer',
-                        focusedBorder: InputBorder.none,
-                        enabledBorder: InputBorder.none,
-                        errorBorder: InputBorder.none,
-                        disabledBorder: InputBorder.none,
-                      ),
-                    ),
-                  ),
+                TextFormField(
+                  controller: questionController,
+                  decoration: InputDecoration(labelText: 'Question'),
+                  validator: (val) {
+                    if (val.isEmpty) return 'Should not be empty';
+                    return null;
+                  },
                 ),
-                MaterialButton(
-                    onPressed: () async {
-                      List choiceList = [
-                        choice1.text.trim(),
-                        choice2.text.trim(),
-                        choice3.text.trim(),
-                        choice4.text.trim()
-                      ];
-                   
+                Row(
+                  children: <Widget>[
+                    Radio(
+                      value: 1,
+                      groupValue: selected,
+                      onChanged: (val) {
+                        changeSelectedRadio(val: val);
+                        //make this local state
+                      },
+                    ),
+                    Container(
+                      width: size.width * .2,
+                      child: TextFormField(
+                        controller: choice1,
+                        validator: (val) {
+                          if (val.isEmpty) return 'Should not be empty';
+                          return null;
+                        },
+                      ),
+                    )
+                  ],
+                ),
+                Row(
+                  children: <Widget>[
+                    Radio(
+                      value: 2,
+                      groupValue: selected,
+                      onChanged: (val) {
+                        changeSelectedRadio(val: val);
+                      },
+                    ),
+                    Container(
+                      width: size.width * .2,
+                      child: TextFormField(
+                        controller: choice2,
+                        validator: (val) {
+                          if (val.isEmpty) return 'Should not be empty';
+                          return null;
+                        },
+                      ),
+                    )
+                  ],
+                ),
+                Row(
+                  children: <Widget>[
+                    Radio(
+                      value: 3,
+                      groupValue: selected,
+                      onChanged: (val) {
+                        changeSelectedRadio(val: val);
+                      },
+                    ),
+                    Container(
+                      width: size.width * .2,
+                      child: TextFormField(
+                        validator: (val) {
+                          if (val.isEmpty) return 'Should not be empty';
+                          return null;
+                        },
+                        controller: choice3,
+                      ),
+                    )
+                  ],
+                ),
+                Row(
+                  children: <Widget>[
+                    Radio(
+                      value: 4,
+                      groupValue: selected,
+                      onChanged: (val) {
+                        changeSelectedRadio(val: val);
+                      },
+                    ),
+                    Container(
+                      width: size.width * .2,
+                      child: TextFormField(
+                        validator: (val) {
+                          if (val.isEmpty) return 'Should not be empty';
+                          return null;
+                        },
+                        controller: choice4,
+                      ),
+                    )
+                  ],
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                Text(
+                  'please select the value of the correct answer',
+                  style: TextStyle(color: Colors.grey, fontSize: 12),
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  child: FlatButton.icon(
+                      color: Colors.blueAccent,
+                      onPressed: () async {
+                        if (_formKey.currentState.validate()) {
+                          if (selected == null) {
+                            setState(() {
+                              isRadioSelected = true;
+                            });
+                          } else {
+                            List editedChoices = [
+                              choice1.text.toLowerCase().trim(),
+                              choice2.text.toLowerCase().trim(),
+                              choice3.text.toLowerCase().trim(),
+                              choice4.text.toLowerCase().trim()
+                            ];
+                            String answer;
+                            //show error if has no selected
+                            switch (selected) {
+                              case 1:
+                                answer = choice1.text;
 
-                      //run validator
-                      //check choices are the same...
+                                break;
+                              case 2:
+                                answer = choice2.text;
+                                break;
+                              case 3:
+                                answer = choice3.text;
+                                break;
+                              case 4:
+                                answer = choice4.text;
+                                break;
+                              default:
+                            }
+                            await AdminService()
+                                .addMultipleQuestion(
+                                    answer: answer,
+                                    question: questionController.text,
+                                    choices: editedChoices,
+                                    collectionID: _adminProvider.currentQuiz)
+                                .then((value) => print('success'+_adminProvider.currentQuiz.toString()));
 
-                      if (_formKey.currentState.validate()) {}
-                      await AdminFutures.checkDuplicates(
-                              question:
-                                  questionController.text.toLowerCase().trim(),
-                              collection: _adminProvider.createQuizTitle)
-                          .then((value) {
-                        if (value == true) {
-                          print('duplicate values');
+                            //run async
 
-                          _adminProvider.changeErrorString('duplicate values');
-                        } else {
-                          //values ok
-                          _adminProvider.changeErrorString(null);
-                          String collectionID = _adminProvider.createQuizTitle;
-                          AdminService()
-                              .addMultipleQuestion(
-                                  answer: answerController.text.trim(),
-                                  question: questionController.text,
-                                  choices: choiceList,
-                                  collectionID: collectionID)
-                              .then((value) => _formKey.currentState.reset());
+                          } //update true or false answer
                         }
-                      });
-                    },
-                    color: Colors.blue,
-                    child: Text(
-                      'Add Question',
-                      style: TextStyle(color: Colors.white),
-                    ))
+                      },
+                      icon: Icon(
+                        Icons.add,
+                        color: Colors.white,
+                      ),
+                      label: Text(
+                        'ADD Question',
+                        style: TextStyle(color: Colors.white),
+                      )),
+                ),
+                Center(
+                    child: Visibility(
+                        visible: isRadioSelected,
+                        child: Container(
+                            width: size.width,
+                            height: size.height * .05,
+                            color: Colors.redAccent,
+                            child: Center(
+                              child: Text(
+                                'Please choose an answer',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ))))
               ],
             ),
-          ),
+          )),
         ),
       ),
     );

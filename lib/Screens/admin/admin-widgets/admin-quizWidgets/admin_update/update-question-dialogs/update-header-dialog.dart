@@ -71,7 +71,7 @@ class _UpdateHeaderDialog
             decoration: InputDecoration(labelText: 'time'),
           ),
           FlatButton.icon(
-              color: Colors.redAccent,
+              color: Colors.blueAccent,
               onPressed: () async {
                 if (_formKey.currentState.validate()) {
                   await AdminService()

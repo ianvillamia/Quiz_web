@@ -7,10 +7,12 @@ import 'package:Quiz_web/Screens/admin/admin-providers/adminProvider.dart';
 
 class CreateIdentificationQuestion extends StatefulWidget {
   @override
-  _CreateIdentificationQuestion createState() => _CreateIdentificationQuestion();
+  _CreateIdentificationQuestion createState() =>
+      _CreateIdentificationQuestion();
 }
 
-class _CreateIdentificationQuestion extends State<CreateIdentificationQuestion> {
+class _CreateIdentificationQuestion
+    extends State<CreateIdentificationQuestion> {
   int selected;
   final _formKey = GlobalKey<FormState>();
   String userAnswer;
@@ -40,10 +42,10 @@ class _CreateIdentificationQuestion extends State<CreateIdentificationQuestion> 
                           controller: questionController,
                           validator: (val) {
                             if (val.length <= 0) {
-                              _adminProvider
-                                  .changeErrorString('must not be empty');
+                              return 'must have values';
+                            } else {
+                              return null;
                             }
-                            return _adminProvider.errorText;
                           },
                           decoration: InputDecoration(
                             fillColor: Colors.black,
@@ -81,28 +83,33 @@ class _CreateIdentificationQuestion extends State<CreateIdentificationQuestion> 
                 ),
                 MaterialButton(
                     onPressed: () async {
-                              if (_formKey.currentState.validate()) {}
-                      String collectionID = _adminProvider.createQuizTitle;
-                      await AdminFutures.checkDuplicates(
-                              question:
-                                  questionController.text.toLowerCase().trim(),
-                              collection: _adminProvider.createQuizTitle)
-                          .then((value) {
-                        if (value == true) {
-                          print('duplicate values');
+                      if (_formKey.currentState.validate()) {
+                        String collectionID = _adminProvider.createQuizTitle;
+                        await AdminFutures.checkDuplicates(
+                                question: questionController.text
+                                    .toLowerCase()
+                                    .trim(),
+                                collection: _adminProvider.createQuizTitle)
+                            .then((value) {
+                          if (value == true) {
+                            print('duplicate values');
 
-                          _adminProvider.changeErrorString('duplicate values');
-                        } else {
-                          //ok values
-                          _adminProvider.changeErrorString(null);
-                          AdminService().addIdentificationQuestion(
-                              answer: answerController.text.trim(),
-                              question: questionController.text,
-                              collectionID: collectionID).then((value) => _formKey.currentState.reset());
-                        }
-                      });
+                            _adminProvider
+                                .changeErrorString('duplicate values');
+                          } else {
+                            //ok values
+                            _adminProvider.changeErrorString(null);
+                            AdminService()
+                                .addIdentificationQuestion(
+                                    answer: answerController.text.trim(),
+                                    question: questionController.text,
+                                    collectionID: collectionID)
+                                .then((value) => _formKey.currentState.reset());
+                          }
+                        });
+                      }
+
                       //run validator
-                      
                     },
                     color: Colors.blue,
                     child: Text(

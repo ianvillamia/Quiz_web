@@ -6,18 +6,18 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class UpdateIdentificationQuestion extends StatefulWidget {
+class IdentificationCard extends StatefulWidget {
   final String question;
   final String answer;
   final DocumentSnapshot doc;
 
-  UpdateIdentificationQuestion({@required this.question, @required this.answer,@required this.doc});
+  IdentificationCard({@required this.question, @required this.answer,@required this.doc});
 
   @override
-  _UpdateIdentificationQuestion createState() => _UpdateIdentificationQuestion();
+  _IdentificationCard createState() => _IdentificationCard();
 }
 
-class _UpdateIdentificationQuestion extends State<UpdateIdentificationQuestion> {
+class _IdentificationCard extends State<IdentificationCard> {
 
   TextEditingController _controller = TextEditingController();
   @override

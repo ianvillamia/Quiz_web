@@ -11,12 +11,20 @@ class CreateTrueOrFalseQuestion extends StatefulWidget {
 }
 
 class _CreateTrueOrFalseQuestion extends State<CreateTrueOrFalseQuestion> {
-  int selected;
+    int selected;
+  bool isRadioSelected = false;
+  void changeSelectedRadio({@required int val}) {
+    setState(() {
+      selected = val;
+    });
+  }
+
   final _formKey = GlobalKey<FormState>();
   TextEditingController questionController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    var  size = MediaQuery.of(context).size;
     final _adminProvider = Provider.of<AdminProvider>(context, listen: false);
     changeSelectedValue(int val) {
       setState(() {
@@ -31,111 +39,83 @@ class _CreateTrueOrFalseQuestion extends State<CreateTrueOrFalseQuestion> {
         child: Container(
           width: MediaQuery.of(context).size.width * .8,
           child: Card(
-            child: Column(
-              children: <Widget>[
-                ListTile(
-                    title: Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Scrollbar(
-                      child: SingleChildScrollView(
-                        child: TextFormField(
-                          controller: questionController,
-                          validator: (val) {
-                            if (val.length <= 0) {
-                              _adminProvider
-                                  .changeErrorString('must not be empty');
-                            }
-                            return _adminProvider.errorText;
-                          },
-                          onChanged: (val) {
-                            setState(() {});
-                          },
-                          decoration: InputDecoration(
-                            fillColor: Colors.black,
-                            labelText: 'Question',
-                            hintText: 'type question here',
-                            focusedBorder: InputBorder.none,
-                            enabledBorder: InputBorder.none,
-                            errorBorder: InputBorder.none,
-                            disabledBorder: InputBorder.none,
-                          ),
-                          minLines: 3,
-                          maxLines: null,
-                        ),
-                      ),
-                    ),
-                  ),
+            child:Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        TextFormField(
+          controller: questionController,
+          decoration: InputDecoration(labelText: 'Question'),
+        ),
+        Row(
+          children: <Widget>[
+              Radio(
+                value: 1,
+                groupValue: selected,
+                onChanged: (val) {
+                  changeSelectedRadio(val: val);
+                },
+              ),
+              Text('True')
+          ],
+        ),
+        Row(
+          children: <Widget>[
+              Radio(
+                value: 2,
+                groupValue: selected,
+                onChanged: (val) {
+                  changeSelectedRadio(val: val);
+                },
+              ),
+              Text('False')
+          ],
+        ),
+        Container(
+          width: MediaQuery.of(context).size.width,
+          child: FlatButton.icon(
+                color: Colors.blueAccent,
+                onPressed: () async {
+                  if (selected == null) {
+                    setState(() {
+                      isRadioSelected = true;
+                    });
+                  } else {
+                    var booleanAnswer = false;
+                    if (selected == 1) {
+                      booleanAnswer = true;
+                    }
+                   await AdminService().addTrueOrFalseQuestion(answer: booleanAnswer, question: questionController.text, collectionID: _adminProvider.currentQuiz).then((value) => print('success'));
+                  }
+
+//update true or false answer
+                },
+                icon: Icon(
+                  Icons.update,
+                  color: Colors.white,
+                ),
+                label: Text(
+                  'Update',
+                  style: TextStyle(color: Colors.white),
                 )),
-                Row(
-                  children: <Widget>[
-                    Radio(
-                      value: 1,
-                      groupValue: selected,
-                      onChanged: (val) {
-                        changeSelectedValue(val);
-                      },
-                    ),
-                    Text(
-                      "True",
-                      style: TextStyle(fontSize: 16),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: <Widget>[
-                    Radio(
-                      value: 2,
-                      groupValue: selected,
-                      onChanged: (val) {
-                        changeSelectedValue(val);
-                      },
-                    ),
-                    Text(
-                      "False",
-                      style: TextStyle(fontSize: 16),
-                    ),
-                  ],
-                ),
-                //material button here
-                MaterialButton(
-                    onPressed: () async {
-                      //run validator
-                      if (_formKey.currentState.validate()) {}
-                      String collectionID = _adminProvider.createQuizTitle;
-                      await AdminFutures.checkDuplicates(
-                              question:
-                                  questionController.text.toLowerCase().trim(),
-                              collection: _adminProvider.createQuizTitle)
-                          .then((value) {
-                        if (value == true) {
-                          print('duplicate values');
-
-                          _adminProvider.changeErrorString('duplicate values');
-                        } else {
-                          _adminProvider.changeErrorString(null);
-                          //run here no duplicates
-                          bool answerVal = false;
-                          if (selected == 1) {
-                            answerVal = true;
-                          }
-
-                          AdminService()
-                              .addTrueOrFalseQuestion(
-                                  answer: answerVal,
-                                  question: questionController.text,
-                                  collectionID: collectionID)
-                              .then((value) => _formKey.currentState.reset());
-                        }
-                      });
-                    },
-                    color: Colors.blue,
-                    child: Text(
-                      'Add Question',
-                      style: TextStyle(color: Colors.white),
-                    ))
-              ],
-            ),
+        ),
+        Center(
+              child: Visibility(
+                  visible: isRadioSelected,
+                  child: Container(
+                      width: size.width,
+                      height: size.height * .05,
+                      color: Colors.redAccent,
+                      child: Center(
+                        child: Text(
+                          'Please choose an answer',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ))))
+      ],
+    ),
+            )
           ),
         ),
       ),

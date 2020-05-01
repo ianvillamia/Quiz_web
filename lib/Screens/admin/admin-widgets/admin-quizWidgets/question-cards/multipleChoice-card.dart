@@ -5,24 +5,24 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class UpdateMultipleChoiceQuestion extends StatefulWidget {
+class MultipleChoiceCard extends StatefulWidget {
   final List choices;
   final String question;
   final String answer;
   final DocumentSnapshot doc;
-  UpdateMultipleChoiceQuestion(
+  MultipleChoiceCard(
       {@required this.choices,
       @required this.question,
       @required this.answer,
       @required this.doc});
 
   @override
-  _UpdateMultipleChoiceQuestion createState() =>
-      _UpdateMultipleChoiceQuestion();
+  _MultipleChoiceCard createState() =>
+      _MultipleChoiceCard();
 }
 
-class _UpdateMultipleChoiceQuestion
-    extends State<UpdateMultipleChoiceQuestion> {
+class _MultipleChoiceCard
+    extends State<MultipleChoiceCard> {
   int selected;
   String userAnswer;
 

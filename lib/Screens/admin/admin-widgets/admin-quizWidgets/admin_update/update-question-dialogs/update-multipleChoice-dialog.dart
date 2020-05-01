@@ -131,7 +131,25 @@ class _UpdateMultipleChoiceDialogState
           height: 5,
         ),
         Container(
-          width: MediaQuery.of(context).size.width,
+          child: FlatButton.icon(
+              color: Colors.redAccent,
+              textColor: Colors.white,
+              onPressed: () async {
+                final _adminProvider =
+                    Provider.of<AdminProvider>(context, listen: false);
+                await AdminService().deleteQuestion(
+                    collectionID: _adminProvider.currentQuiz,
+                    documentID: doc.documentID.toString());
+                //do delete here
+                //pass id here
+              },
+              icon: Icon(Icons.delete),
+              label: Text('Delete')),
+        ),
+        SizedBox(
+          height: 5,
+        ),
+        Container(
           child: FlatButton.icon(
               color: Colors.blueAccent,
               onPressed: () async {

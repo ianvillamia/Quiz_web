@@ -1,9 +1,9 @@
 import 'package:Quiz_web/Screens/admin/admin-services/adminUpdateQuiz.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-class UpdateQuizHeaderCard extends StatelessWidget {
+class QuizHeaderCard extends StatelessWidget {
  final DocumentSnapshot doc;
-  UpdateQuizHeaderCard({@required this.doc});
+  QuizHeaderCard({@required this.doc});
 
 
   @override
@@ -14,8 +14,9 @@ class UpdateQuizHeaderCard extends StatelessWidget {
           width: MediaQuery.of(context).size.width,
           child: Card(
               child: InkWell(
-                onTap: (){
- UpdateQuizClass().
+                onTap: ()async{
+                  print('clicked dialog');
+ await UpdateQuizClass().
                   updateQuiz(context: context, type: 'header', doc: doc);
                 },
                 splashColor: Colors.blue,

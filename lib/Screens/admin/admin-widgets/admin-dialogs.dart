@@ -1,5 +1,6 @@
 import 'package:Quiz_web/Screens/admin/admin-providers/adminProvider.dart';
 import 'package:Quiz_web/Screens/admin/admin-services/adminService.dart';
+import 'package:Quiz_web/Screens/admin/admin-subjectList/subjectList-dialog.dart';
 import 'package:Quiz_web/Screens/admin/admin-widgets/admin-builders/updateQuizBuilder.dart';
 import 'package:basic_utils/basic_utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -313,6 +314,30 @@ class AdminAlertDialogs {
     );
   }
 
+
+//* */
+showSubjectListDialog(
+      {@required BuildContext context,
+     }) {
+    TextEditingController confirmController = TextEditingController();
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+      
+     
+        return AlertDialog(
+          titlePadding: EdgeInsets.all(0),
+          content: Container(
+            width: 300,
+            height: 300,
+            child: SubjectListDialog()));
+      }
+      
+    );
+  }
+  ///////
+
+
   createQuizDialog(BuildContext context) {
     TextEditingController quizTitleController = TextEditingController(),
         instructionsController = TextEditingController(),
@@ -399,6 +424,7 @@ class AdminAlertDialogs {
               label: Text("NEXT"),
               onPressed: () async {
                    if (_formKey.currentState.validate()) {
+                      _adminProvider.changeCurrentQuiz(quiz: quizTitleController.text);
                      await checkDuplicates(
                         subject: quizTitleController.text.toLowerCase().trim(),
                         collection: 'quizList')
@@ -462,7 +488,10 @@ class AdminAlertDialogs {
               MaterialButton(
                 color: Colors.blueAccent,
                 elevation: 0,
-                onPressed: () {},
+                onPressed: () {
+                  print('showing subject list');
+                showSubjectListDialog(context: context);
+                },
                 child: Text('Add this Quiz to a Subject',style: TextStyle(
                   color:Colors.white
                 ),),

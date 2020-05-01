@@ -1,22 +1,21 @@
 import 'package:Quiz_web/Screens/admin/admin-services/adminUpdateQuiz.dart';
 import 'package:Quiz_web/Services/Providers/quizProvider.dart';
-import 'package:Quiz_web/Widgets/Quiz-widgets/buttonBar.dart';
 import 'package:basic_utils/basic_utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class UpdateTrueOrFalseQuestion extends StatefulWidget {
+class TrueOrFalseCard extends StatefulWidget {
   final String question;
   final bool answer;
   final DocumentSnapshot doc;
 
-  UpdateTrueOrFalseQuestion({@required this.question, @required this.answer,@required this.doc});
+  TrueOrFalseCard({@required this.question, @required this.answer,@required this.doc});
   @override
-  _UpdateTrueOrFalseQuestion createState() => _UpdateTrueOrFalseQuestion();
+  _TrueOrFalseCard createState() => _TrueOrFalseCard();
 }
 
-class _UpdateTrueOrFalseQuestion extends State<UpdateTrueOrFalseQuestion> {
+class _TrueOrFalseCard extends State<TrueOrFalseCard> {
   int selected;
   
   @override

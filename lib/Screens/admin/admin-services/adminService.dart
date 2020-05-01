@@ -151,6 +151,9 @@ class AdminService {
       }
     });
   }
+ Future<void> deleteQuestion({@required String collectionID, @required String documentID}){
+    return db.collection(collectionID).document(documentID).delete();
+  }
 
   Future updateMultipleChoiceQuestion(
       //for indentification and true or false

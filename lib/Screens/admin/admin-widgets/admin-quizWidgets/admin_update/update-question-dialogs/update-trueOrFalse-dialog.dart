@@ -87,11 +87,11 @@ class _UpdateTrueOrFalseDialogState extends State<UpdateTrueOrFalseDialog> {
 //update true or false answer
               },
               icon: Icon(
-                Icons.update,
+                Icons.add,
                 color: Colors.white,
               ),
               label: Text(
-                'Update',
+                'Add Question',
                 style: TextStyle(color: Colors.white),
               )),
         ),

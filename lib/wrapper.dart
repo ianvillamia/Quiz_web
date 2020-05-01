@@ -1,13 +1,10 @@
 import 'package:Quiz_web/Models/userModel.dart';
 import 'package:Quiz_web/Screens/admin/adminScreens/adminCreateQuiz.dart';
-import 'package:Quiz_web/Screens/admin/adminScreens/adminSubjects.dart';
-import 'package:Quiz_web/Screens/admin/adminScreens/adminDash.dart';
-import 'package:Quiz_web/Screens/home.dart';
 
-import 'package:Quiz_web/Screens/quizScore.dart';
-import 'package:Quiz_web/Screens/flipCards.dart';
-import 'package:Quiz_web/Screens/quizScreens/quizBuilder.dart';
-import 'package:Quiz_web/Screens/reviewer.dart';
+import 'package:Quiz_web/Screens/admin/adminScreens/adminDash.dart';
+
+
+
 
 import 'package:Quiz_web/Widgets/pageBuilder.dart';
 import 'package:flutter/material.dart';
@@ -34,6 +31,7 @@ class _WrapperState extends State<Wrapper> {
       //not signed in
 
       //eto testing area
+      
       //return home with login signup
       //return QuizBuilder();
       //return Reviewer();
@@ -42,7 +40,7 @@ class _WrapperState extends State<Wrapper> {
     
       // return AdminSubjects();
       //return Home();
-  // return AdminCreateQuiz();
+   //return AdminCreateQuiz();
     //return Home();
        return AdminHomeScreen();
     } else {
