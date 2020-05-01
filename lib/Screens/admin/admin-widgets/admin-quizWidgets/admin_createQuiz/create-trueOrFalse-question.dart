@@ -44,10 +44,32 @@ class _CreateTrueOrFalseQuestion extends State<CreateTrueOrFalseQuestion> {
               child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        TextFormField(
+    Scrollbar(
+      child: SingleChildScrollView(
+        child: TextFormField(
           controller: questionController,
-          decoration: InputDecoration(labelText: 'Question'),
+          validator: (val) {
+            if (val.length <= 0) {
+              return 'must have values';
+            } else {
+              return null;
+            }
+          },
+          decoration: InputDecoration(
+            fillColor: Colors.black,
+            labelText: 'Question',
+            hintText: 'type question here',
+            focusedBorder: InputBorder.none,
+            enabledBorder: InputBorder.none,
+            errorBorder: InputBorder.none,
+            disabledBorder: InputBorder.none,
+          ),
+          minLines: 3,
+          maxLines: null,
+    
         ),
+      ),
+    ),
         Row(
           children: <Widget>[
               Radio(

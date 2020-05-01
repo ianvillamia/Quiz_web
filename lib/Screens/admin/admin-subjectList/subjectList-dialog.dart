@@ -10,14 +10,34 @@ class SubjectListDialog extends StatefulWidget {
 }
 
 class _SubjectListDialogState extends State<SubjectListDialog> {
+
+
   final db = Firestore.instance;
+
+@override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    final _adminProvider = Provider.of<AdminProvider>(context,listen: false);
+     Firestore.instance
+        .collection('quizToSubjects')
+        .where('title', isEqualTo:_adminProvider.currentQuiz)
+        .limit(1)
+        .snapshots()
+        .listen((data) async {
+      data.documents.forEach((doc) async {
+        _adminProvider.quizToSubjects = doc.data['subjects'];
+        //add thing to provider --update
+        _adminProvider.quizToSubjectID=doc.documentID;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    final _adminProvider = Provider.of<AdminProvider>(context,listen: false);
     return StreamBuilder<QuerySnapshot>(
       stream: db
-          .collection('quizToSubjects').where('title',isEqualTo: _adminProvider.currentQuiz) //_quizProvider.currentQuiz
+          .collection('subjectList') //_quizProvider.currentQuiz
           .snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasData) {
@@ -36,9 +56,18 @@ class _SubjectListDialogState extends State<SubjectListDialog> {
       },
     );
   }
+
   //
-  Widget checkBoxItem({doc}){
-    print(doc.data['subjects']);
-    return Container();
+  Widget checkBoxItem({doc}) {
+    String subjectTitle = doc.data['title'];
+    final _adminProvider = Provider.of<AdminProvider>(context);
+    for (var item in _adminProvider.quizToSubjects) {
+      if (subjectTitle == item) {
+      //  print('subjectTItle:$subjectTitle--item:$item---same');
+        return SubjectCheckBox(title: subjectTitle, isSelected: true,doc: doc,);
+      }
+    }
+    return SubjectCheckBox(title: subjectTitle, isSelected: false,doc: doc,);
+    //irereturn neto 2 times chitae
   }
 }

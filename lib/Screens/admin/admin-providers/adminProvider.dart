@@ -1,3 +1,5 @@
+import 'package:Quiz_web/Screens/admin/admin-services/adminService.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 
 class AdminProvider with ChangeNotifier {
@@ -6,19 +8,40 @@ class AdminProvider with ChangeNotifier {
   bool editable = true;
   String createQuizTitle;
   String currentQuiz;
-
-  bool isRadioSelected=false;
-  void toggleRadio({@required bool val}){
-    isRadioSelected=val;
-    notifyListeners();
-  }
-
-  void changeCurrentQuiz({@required String quiz}){
-    currentQuiz=quiz;
-    notifyListeners();
-  }
+  List quizToSubjects;
+  String quizToSubjectID;
  
+  void quizSubjectPop({@required String val}) async{
+    print(quizToSubjects);
+    quizToSubjects.remove(val);
+    print('croo');
+    print(quizToSubjects);
+    //do firebase update here
+    await AdminService().updateQuizSubjects(documentID: quizToSubjectID.toString(), subjects: quizToSubjects);
+    notifyListeners();
+  }
 
+  void quizSubjectPush({@required String val}) async{
+    print(val);
+   print(quizToSubjects);
+    quizToSubjects.add(val);
+    print('croo');
+    print(quizToSubjects);
+      //do firebase update here
+   await AdminService().updateQuizSubjects(documentID: quizToSubjectID.toString(), subjects: quizToSubjects);
+    notifyListeners();
+  }
+
+  bool isRadioSelected = false;
+  void toggleRadio({@required bool val}) {
+    isRadioSelected = val;
+    notifyListeners();
+  }
+
+  void changeCurrentQuiz({@required String quiz}) {
+    currentQuiz = quiz;
+    notifyListeners();
+  }
 
   bool isDeleteButtonVisible = false;
   void toggleDeleteButton(bool val) {
@@ -45,4 +68,6 @@ class AdminProvider with ChangeNotifier {
     editable = val;
     notifyListeners();
   }
+
+
 }

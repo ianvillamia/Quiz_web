@@ -32,52 +32,45 @@ class _CreateIdentificationQuestion
           child: SingleChildScrollView(
             child: Column(
               children: <Widget>[
-                ListTile(
-                    title: Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Scrollbar(
-                      child: SingleChildScrollView(
-                        child: TextFormField(
-                          controller: questionController,
-                          validator: (val) {
-                            if (val.length <= 0) {
-                              return 'must have values';
-                            } else {
-                              return null;
-                            }
-                          },
-                          decoration: InputDecoration(
-                            fillColor: Colors.black,
-                            labelText: 'Question',
-                            hintText: 'type question here',
-                            focusedBorder: InputBorder.none,
-                            enabledBorder: InputBorder.none,
-                            errorBorder: InputBorder.none,
-                            disabledBorder: InputBorder.none,
+                Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Scrollbar(
+                        child: SingleChildScrollView(
+                          child: TextFormField(
+                            controller: questionController,
+                            validator: (val) {
+                              if (val.length <= 0) {
+                                return 'must have values';
+                              } else {
+                                return null;
+                              }
+                            },
+                            decoration: InputDecoration(
+                              fillColor: Colors.black,
+                              labelText: 'Question',
+                              hintText: 'type question here',
+                              focusedBorder: InputBorder.none,
+                              enabledBorder: InputBorder.none,
+                              errorBorder: InputBorder.none,
+                              disabledBorder: InputBorder.none,
+                            ),
+                            minLines: 3,
+                            maxLines: null,
+                      
                           ),
-                          minLines: 3,
-                          maxLines: null,
                         ),
                       ),
                     ),
-                  ),
-                )),
-                Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextFormField(
-                      validator: (val) =>
-                          val.isEmpty ? 'please enter value' : null,
-                      controller: answerController,
-                      decoration: InputDecoration(
-                        hintText: 'Input answer',
-                        labelText: 'Answer',
-                        focusedBorder: InputBorder.none,
-                        enabledBorder: InputBorder.none,
-                        errorBorder: InputBorder.none,
-                        disabledBorder: InputBorder.none,
-                      ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    validator: (val) =>
+                        val.isEmpty ? 'please enter value' : null,
+                    controller: answerController,
+                    decoration: InputDecoration(
+                      hintText: 'Input answer',
+                      labelText: 'Answer',
+                     
                     ),
                   ),
                 ),

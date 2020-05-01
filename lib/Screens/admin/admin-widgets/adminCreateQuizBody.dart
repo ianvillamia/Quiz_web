@@ -1,3 +1,4 @@
+import 'package:Quiz_web/Screens/admin/admin-subjectList/subjectList-dialog.dart';
 import 'package:Quiz_web/Screens/admin/admin-widgets/admin-quizWidgets/admin_createQuiz/create-identification-question.dart';
 import 'package:Quiz_web/Screens/admin/admin-widgets/admin-quizWidgets/admin_createQuiz/create-multipleChoice-question.dart';
 import 'package:Quiz_web/Screens/admin/admin-widgets/admin-quizWidgets/admin_createQuiz/create-trueOrFalse-question.dart';
@@ -55,37 +56,41 @@ class _AdminCreateQuizBody extends State<AdminCreateQuizBody> {
     return Padding(
       padding: EdgeInsets.all(10),
       child: Container(
-        height: size.height,
+        height: size.height*.9,
         width: size.width * .3,
-        color: Color.fromRGBO(229, 229, 229, 1),
-        child: Column(
-          children: <Widget>[
-            /************************************section1*************************************/
-
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
+        child: Scrollbar(
+                  child: SingleChildScrollView(
+                    child: Column(
               children: <Widget>[
-                Container(
-                  height: size.height * .1,
-                  child: Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: DropdownButton<String>(
-                        underline: SizedBox(),
-                        value: _questionType,
-                        items: _dropDownMenuItems,
-                        onChanged: changeDropDownItem,
+                /************************************section1*************************************/
+
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: <Widget>[
+                    Container(
+                      height: size.height * .1,
+                      child: Card(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: DropdownButton<String>(
+                            underline: SizedBox(),
+                            value: _questionType,
+                            items: _dropDownMenuItems,
+                            onChanged: changeDropDownItem,
+                          ),
+                        ),
                       ),
                     ),
-                  ),
+                    //Multiline question textfield
+                    questionWidget()
+                    
+                  ],
                 ),
-                //Multiline question textfield
-                questionWidget()
-              ],
-            ),
 
 /************************************section2*************************************/
-          ],
+              ],
+            ),
+          ),
         ),
       ),
     );

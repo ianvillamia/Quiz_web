@@ -25,8 +25,8 @@ class _AdminCreateQuizState extends State<AdminCreateQuiz> {
     super.initState();
     //call insert a quiz thing here first
     final _adminProvider = Provider.of<AdminProvider>(context, listen: false);
-    collectionName = _adminProvider.createQuizTitle;
-    //collectionName = 'quiz1';
+    //collectionName = _adminProvider.createQuizTitle;
+    collectionName = 'quiz1';
   }
 
   @override
@@ -60,6 +60,10 @@ class _AdminCreateQuizState extends State<AdminCreateQuiz> {
                           child: Text('Quiz-Preview'),
                         ),
                       )),
+                    //PROGRESS BAR STUFF 
+                    Positioned(
+                      top:0,
+                      child: Container()),
                   /*Preview Screen*/
                   Positioned(
                     top: size.height * .1,
@@ -98,7 +102,7 @@ class _AdminCreateQuizState extends State<AdminCreateQuiz> {
                   ),
 
                   /*Create Quiz tab*/
-                  Positioned(right: 0, child: AdminCreateQuizBody())
+                  Positioned(right: 0,top: size.height*.1, child: AdminCreateQuizBody())
                 ],
               ))
         ],

@@ -245,4 +245,16 @@ class AdminService {
       print('error' + e.toString());
     }
   }
+  Future updateQuizSubjects({@required String documentID,@required List subjects })async{
+ try {
+   //get document id first 
+
+      await db
+          .collection('quizToSubjects')
+          .document(documentID)
+          .updateData({'subjects':subjects});
+    } catch (e) {
+      print('error' + e.toString());
+    }
+  }
 }

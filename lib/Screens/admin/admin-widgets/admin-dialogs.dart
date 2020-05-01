@@ -64,30 +64,29 @@ class AdminAlertDialogs {
               color: Colors.green,
               label: Text("ADD"),
               onPressed: () async {
-                       if (_formKey.currentState.validate()) {
-  await checkDuplicates(
-                        subject: subjectController.text.toLowerCase().trim(),
-                        collection: 'subjectList')
-                    .then((val) {
-                  if (val == true) {
-                    print('duplicate values');
+                if (_formKey.currentState.validate()) {
+                  await checkDuplicates(
+                          subject: subjectController.text.toLowerCase().trim(),
+                          collection: 'subjectList')
+                      .then((val) {
+                    if (val == true) {
+                      print('duplicate values');
 
-                    adminSubjectProvider.changeErrorString('duplicate values');
-                  } else {
-                    adminSubjectProvider.checkSubject(true);
-                    print('ok values');
-                    adminSubjectProvider.changeErrorString(null);
-                    AdminService()
-                        .addSubject(
-                            subject: subjectController.text,
-                            details: detailsController.text)
-                        .then((value) => print('success'));
-                    Navigator.pop(context);
-                  }
-                }).catchError((onError) {});
-                       }
-              
-         
+                      adminSubjectProvider
+                          .changeErrorString('duplicate values');
+                    } else {
+                      adminSubjectProvider.checkSubject(true);
+                      print('ok values');
+                      adminSubjectProvider.changeErrorString(null);
+                      AdminService()
+                          .addSubject(
+                              subject: subjectController.text,
+                              details: detailsController.text)
+                          .then((value) => print('success'));
+                      Navigator.pop(context);
+                    }
+                  }).catchError((onError) {});
+                }
               },
             )
           ],
@@ -314,29 +313,21 @@ class AdminAlertDialogs {
     );
   }
 
-
 //* */
-showSubjectListDialog(
-      {@required BuildContext context,
-     }) {
+  showSubjectListDialog({
+    @required BuildContext context,
+  }) {
     TextEditingController confirmController = TextEditingController();
     showDialog(
-      context: context,
-      builder: (BuildContext context) {
-      
-     
-        return AlertDialog(
-          titlePadding: EdgeInsets.all(0),
-          content: Container(
-            width: 300,
-            height: 300,
-            child: SubjectListDialog()));
-      }
-      
-    );
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+              titlePadding: EdgeInsets.all(0),
+              content: Container(
+                  width: 300, height: 300, child: SubjectListDialog()));
+        });
   }
   ///////
-
 
   createQuizDialog(BuildContext context) {
     TextEditingController quizTitleController = TextEditingController(),
@@ -368,11 +359,11 @@ showSubjectListDialog(
                               hintText: 'enter subject'),
                           validator: (val) {
                             // print('validating');
-                            if (val.length <= 0) {
-                              _adminProvider
-                                  .changeErrorString('must not be empty');
+                            if (val.isEmpty) {
+                              return 'must not be empty';
+                            } else {
+                              return null;
                             }
-                            return _adminProvider.errorText;
                           }),
                       TextFormField(
                           controller: instructionsController,
@@ -423,46 +414,69 @@ showSubjectListDialog(
               color: Colors.green,
               label: Text("NEXT"),
               onPressed: () async {
-                   if (_formKey.currentState.validate()) {
-                      _adminProvider.changeCurrentQuiz(quiz: quizTitleController.text);
-                     await checkDuplicates(
-                        subject: quizTitleController.text.toLowerCase().trim(),
-                        collection: 'quizList')
-                    .then((val) {
-                  if (val == true) {
-                    print('duplicate values');
+                if (_formKey.currentState.validate()) {
+                  _adminProvider.changeCurrentQuiz(
+                      quiz: quizTitleController.text);
+                  await checkDuplicates(
+                          subject:
+                              quizTitleController.text.toLowerCase().trim(),
+                          collection: 'quizList')
+                      .then((val) {
+                    if (val == true) {
+                      print('duplicate values');
+                      duplicateQuizDialog(context: context,title: quizTitleController.text);
+                      //show na lang ng dialog wag na sa baba...
+                      // _adminProvider.changeErrorString('duplicate values');
+                    } else {
+                      _adminProvider.checkSubject(true);
+                      _adminProvider.changeErrorString(null);
 
-                    _adminProvider.changeErrorString('duplicate quiz');
-                  } else {
-                    _adminProvider.checkSubject(true);
-                    print('potato values');
-                    AdminService()
-                        .createQuiz(
-                            context: context,
-                            title: quizTitleController.text,
-                            creator: creatorController.text,
-                            instructions: instructionsController.text,
-                            time: timeAllottedController.text)
-                        .then((value) {
-                      final _adminProvider =
-                          Provider.of<AdminProvider>(context, listen: false);
-                      _adminProvider.setQuizTitle(quizTitleController.text);
-                      Navigator.pop(context);
-                      Navigator.pushNamed(context, '/adminCreateQuiz');
-                    }).catchError((err) {
-                      print('errorbano');
-                    });
-                  }
-                }).catchError((onError) {});
-             
-                   }
-                
+                      print('potato values');
+                      AdminService()
+                          .createQuiz(
+                              context: context,
+                              title: quizTitleController.text,
+                              creator: creatorController.text,
+                              instructions: instructionsController.text,
+                              time: timeAllottedController.text)
+                          .then((value) {
+                        final _adminProvider =
+                            Provider.of<AdminProvider>(context, listen: false);
+                        _adminProvider.setQuizTitle(quizTitleController.text);
+                        Navigator.pop(context);
+                        Navigator.pushNamed(context, '/adminCreateQuiz');
+                      }).catchError((err) {
+                        print('errorbano');
+                      });
+                    }
+                  }).catchError((onError) {});
+                }
               },
             )
           ],
         );
       },
     );
+  }
+  //show duplicate quiz 
+  duplicateQuizDialog({BuildContext context,String title}){
+    showDialog(context: context,builder: (BuildContext context){
+      String quizText=StringUtils.capitalize(title);
+      return AlertDialog(
+        title: Column(
+          children: <Widget>[
+            Icon(Icons.error),
+            Text('$quizText already exists'),
+            Text('please rename quiz',style:TextStyle(fontSize: 12,color:Colors.grey))
+          ],
+        ),
+        actions: <Widget>[
+            MaterialButton(onPressed: (){
+              Navigator.pop(context);
+            },child: Text('ok'),)
+        ],
+      );
+    });
   }
 
   showQuiz(BuildContext context, String collectionID) {
@@ -490,19 +504,19 @@ showSubjectListDialog(
                 elevation: 0,
                 onPressed: () {
                   print('showing subject list');
-                showSubjectListDialog(context: context);
+                  showSubjectListDialog(context: context);
                 },
-                child: Text('Add this Quiz to a Subject',style: TextStyle(
-                  color:Colors.white
-                ),),
+                child: Text(
+                  'Add this Quiz to a Subject',
+                  style: TextStyle(color: Colors.white),
+                ),
               )
             ],
           ),
           content: Container(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width * .5,
-            child:UpdateQuizBuilder(collectionID: collectionID)
-          ),
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width * .5,
+              child: UpdateQuizBuilder(collectionID: collectionID)),
           actions: [
             FlatButton.icon(
                 onPressed: () async {
