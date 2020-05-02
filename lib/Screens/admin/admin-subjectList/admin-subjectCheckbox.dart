@@ -37,7 +37,7 @@ class _SubjectCheckBoxState extends State<SubjectCheckBox> {
               if (val == false) {
                 //pop
                 _adminProvider.quizSubjectPop(val: widget.title);
-               AdminService().updateQuizzesForSubjectList(title: widget.title);
+               AdminService().updateQuizzesForSubjectListPop(title: widget.title,currentQuiz: _adminProvider.currentQuiz);
                 //pop quiz from title here
                 //step1 get array quizzesID from subjectList
                 //step2 remove this.title from array just list.remove()
@@ -47,7 +47,7 @@ class _SubjectCheckBoxState extends State<SubjectCheckBox> {
               } else {
                 //push
                _adminProvider.quizSubjectPush(val: widget.title);
-                AdminService().updateQuizzesForSubjectList(title: widget.title);
+                AdminService().updateQuizzesForSubjectListPush(title: widget.title,currentQuiz: _adminProvider.currentQuiz);
                 //should print out 3d4G30htj
               /*step1 get list
               step2 add the current quiz to list 

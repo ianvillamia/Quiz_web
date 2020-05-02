@@ -264,7 +264,7 @@ class AdminService {
           .document(documentID)
           .updateData({'subjects': subjects});
       // document id meaning
-      
+
       // for every subject update thing
       // currentID quiz aka title to be added subjectList
 
@@ -279,20 +279,58 @@ class AdminService {
   }
 
   //updating quizID for subjectList
-  Future updateQuizzesForSubjectList({@required String title})async{
+  Future updateQuizzesForSubjectListPop({@required String title,@required String currentQuiz}) async {
+    var documentID;
+    List currentList;
     db
         .collection('subjectList')
-        .where('title', isEqualTo:title)
+        .where('title', isEqualTo: title)
         .limit(1)
         .snapshots()
         .listen((data) async {
       data.documents.forEach((data) async {
         print(data.documentID);
-        //await db.collection('quizList').document(data.documentID).delete();
+        documentID=data.documentID;
+        currentList=data.data['quizzesID'];
+        currentList.remove(currentQuiz);
+         print(currentList);
       });
-                //pop quiz from title here
-                //step1 get array quizzesID from subjectList
-                //step2 remove this.title from array just list.remove()
-           });   //step3 commit array to this.title aka subjects
+    });
+  Future.delayed(Duration(seconds: 2),()async{
+ await db.collection('subjectList').document(documentID).updateData({
+      'quizzesID':currentList
+    });
+  });
+  
   }
+   Future updateQuizzesForSubjectListPush({@required String title,@required String currentQuiz}) async {
+    var documentID;
+    List currentList;
+    db
+        .collection('subjectList')
+        .where('title', isEqualTo: title)
+        .limit(1)
+        .snapshots()
+        .listen((data) async {
+      data.documents.forEach((data) async {
+        print(data.documentID);
+        documentID=data.documentID;
+        currentList=data.data['quizzesID'];
+        
+        currentList.add(currentQuiz);
+    
+      });
+    });
+   Future.delayed(Duration(seconds: 2),()async{
+ var distinctQuizID = currentList.toSet().toList();
+          await db.collection('subjectList').document(documentID).updateData({
+      'quizzesID':distinctQuizID
+    });
+   });
+  
+  }
+  //pop quiz from title here
+  //step1 get array quizzesID from subjectList
+  //step2 remove this.title from array just list.remove()
+  //step3 commit array to this.title aka subjects
 }
