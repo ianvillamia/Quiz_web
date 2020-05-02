@@ -11,7 +11,8 @@ class AdminProvider with ChangeNotifier {
   List quizToSubjects;
   String quizToSubjectID;
   int createQuizStep=1;
-  void updateCreateQuizStep({@required val}){
+  void updateCreateQuizStep({@required val}){ 
+    
     createQuizStep=val;
     notifyListeners();
   }
