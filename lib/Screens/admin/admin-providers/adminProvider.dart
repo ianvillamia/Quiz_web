@@ -22,7 +22,9 @@ class AdminProvider with ChangeNotifier {
     print('croo');
     print(quizToSubjects);
     //do firebase update here
-    await AdminService().updateQuizSubjects(documentID: quizToSubjectID.toString(), subjects: quizToSubjects);
+    //i have current quiz here
+    await AdminService().updateQuizSubjects(curentQuiz: currentQuiz,documentID: quizToSubjectID.toString(), subjects: quizToSubjects);
+    
     notifyListeners();
   }
 
@@ -33,7 +35,7 @@ class AdminProvider with ChangeNotifier {
     print('croo');
     print(quizToSubjects);
       //do firebase update here
-   await AdminService().updateQuizSubjects(documentID: quizToSubjectID.toString(), subjects: quizToSubjects);
+   await AdminService().updateQuizSubjects(curentQuiz: currentQuiz,documentID: quizToSubjectID.toString(), subjects: quizToSubjects);
     notifyListeners();
   }
 

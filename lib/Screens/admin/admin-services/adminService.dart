@@ -62,11 +62,10 @@ class AdminService {
         'creator': creator,
         'instructions': instructions,
         'order': '0',
-        'hour':hour,
-        'minute':minute,
-        'title':title,
+        'hour': hour,
+        'minute': minute,
+        'title': title,
         'type': 'header',
-   
       });
     } catch (e) {
       print('create fail' + e.toString());
@@ -154,7 +153,9 @@ class AdminService {
       }
     });
   }
- Future<void> deleteQuestion({@required String collectionID, @required String documentID}){
+
+  Future<void> deleteQuestion(
+      {@required String collectionID, @required String documentID}) {
     return db.collection(collectionID).document(documentID).delete();
   }
 
@@ -205,8 +206,8 @@ class AdminService {
       {@required String creatorName,
       @required String instructions,
       @required String title,
-  @required int hour,
-  @required int minute,
+      @required int hour,
+      @required int minute,
       @required DocumentSnapshot doc,
       @required BuildContext context}) async {
     print('object');
@@ -219,8 +220,8 @@ class AdminService {
       await db.collection(collectionID).document(doc.documentID).updateData({
         'creator': creatorName,
         'instructions': instructions,
-     'hour':hour,
-     'minute'
+        'hour': hour,
+        'minute': minute,
         'title': title
       });
     } catch (e) {
@@ -250,16 +251,48 @@ class AdminService {
       print('error' + e.toString());
     }
   }
-  Future updateQuizSubjects({@required String documentID,@required List subjects })async{
- try {
-   //get document id first 
+
+  Future updateQuizSubjects(
+      {@required String documentID,
+      @required List subjects,
+      @required String curentQuiz}) async {
+    try {
+      //get document id first
 
       await db
           .collection('quizToSubjects')
           .document(documentID)
-          .updateData({'subjects':subjects});
+          .updateData({'subjects': subjects});
+      // document id meaning
+      
+      // for every subject update thing
+      // currentID quiz aka title to be added subjectList
+
+      // i can access title ofquiz and subjects
+
+      // updatesubjectList
+      // get current quiz from thing but i need provider
+
     } catch (e) {
       print('error' + e.toString());
     }
+  }
+
+  //updating quizID for subjectList
+  Future updateQuizzesForSubjectList({@required String title})async{
+    db
+        .collection('subjectList')
+        .where('title', isEqualTo:title)
+        .limit(1)
+        .snapshots()
+        .listen((data) async {
+      data.documents.forEach((data) async {
+        print(data.documentID);
+        //await db.collection('quizList').document(data.documentID).delete();
+      });
+                //pop quiz from title here
+                //step1 get array quizzesID from subjectList
+                //step2 remove this.title from array just list.remove()
+           });   //step3 commit array to this.title aka subjects
   }
 }

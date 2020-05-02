@@ -29,6 +29,9 @@ class _SubjectListDialogState extends State<SubjectListDialog> {
         _adminProvider.quizToSubjects = doc.data['subjects'];
         //add thing to provider --update
         _adminProvider.quizToSubjectID=doc.documentID;
+        
+        //eto document id nung stuff
+
       });
     });
   }

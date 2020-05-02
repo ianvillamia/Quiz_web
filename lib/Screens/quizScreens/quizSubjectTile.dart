@@ -26,6 +26,7 @@ class _QuizSubjectTileState extends State<QuizSubjectTile> {
     .snapshots()
     .listen((data) =>
         data.documents.forEach((doc) {
+        
           setState(() {
             title=doc['title'];
             details=doc['instructions'];
