@@ -55,7 +55,7 @@ class AdminService {
       @required String creator}) async {
     try {
       //first add the quiz to quizList
-      await db.collection('quizList').add({'title': title, 'ID': title});
+      await db.collection('quizList').add({'title': title,'subjects':[]});
 
       //second create the header for quiz
       await db.collection(title).add({
@@ -252,26 +252,21 @@ class AdminService {
     }
   }
 
+//wat is this
   Future updateQuizSubjects(
       {@required String documentID,
       @required List subjects,
-      @required String curentQuiz}) async {
+      @required String currentQuiz}) async {
     try {
       //get document id first
-
+      
+      print('documentID is: '+documentID);
+      print('subjects:'+subjects.toString());
+      print('currentQuiz:'+currentQuiz);
       await db
-          .collection('quizToSubjects')
+          .collection('quizList')//change this to quizList no need to quizTosubjects
           .document(documentID)
           .updateData({'subjects': subjects});
-      // document id meaning
-
-      // for every subject update thing
-      // currentID quiz aka title to be added subjectList
-
-      // i can access title ofquiz and subjects
-
-      // updatesubjectList
-      // get current quiz from thing but i need provider
 
     } catch (e) {
       print('error' + e.toString());
@@ -293,14 +288,16 @@ class AdminService {
         documentID=data.documentID;
         currentList=data.data['quizzesID'];
         currentList.remove(currentQuiz);
-         print(currentList);
+   
+     
       });
-    });
-  Future.delayed(Duration(seconds: 2),()async{
- await db.collection('subjectList').document(documentID).updateData({
+      Future.delayed(Duration(seconds: 2),()async{
+             await db.collection('subjectList').document(documentID).updateData({
       'quizzesID':currentList
     });
-  });
+      });
+    });
+
   
   }
    Future updateQuizzesForSubjectListPush({@required String title,@required String currentQuiz}) async {
@@ -317,16 +314,17 @@ class AdminService {
         documentID=data.documentID;
         currentList=data.data['quizzesID'];
         
-        currentList.add(currentQuiz);
     
       });
-    });
-   Future.delayed(Duration(seconds: 2),()async{
- var distinctQuizID = currentList.toSet().toList();
+    });    
+    Future.delayed(Duration(seconds: 2),()async{
+      currentList.add(currentQuiz);
+        var distinctQuizID = currentList.toSet().toList();
           await db.collection('subjectList').document(documentID).updateData({
       'quizzesID':distinctQuizID
     });
-   });
+    });
+
   
   }
   //pop quiz from title here

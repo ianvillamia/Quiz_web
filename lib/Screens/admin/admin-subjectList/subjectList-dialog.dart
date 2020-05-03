@@ -11,33 +11,36 @@ class SubjectListDialog extends StatefulWidget {
 
 class _SubjectListDialogState extends State<SubjectListDialog> {
 
-
-  final db = Firestore.instance;
-
 @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    potato();
+  }
+  final db = Firestore.instance;
+
+potato(){
+    //getting document id of subject  
     final _adminProvider = Provider.of<AdminProvider>(context,listen: false);
      Firestore.instance
-        .collection('quizToSubjects')
+        .collection('quizList')
         .where('title', isEqualTo:_adminProvider.currentQuiz)
         .limit(1)
         .snapshots()
         .listen((data) async {
       data.documents.forEach((doc) async {
-        _adminProvider.quizToSubjects = doc.data['subjects'];
-        //add thing to provider --update
-        _adminProvider.quizToSubjectID=doc.documentID;
+        _adminProvider.updateQuizSubjects(subjects: doc.data['subjects'], id: doc.documentID.toString());
+       
         
         //eto document id nung stuff
 
       });
     });
-  }
+}
 
   @override
   Widget build(BuildContext context) {
+    potato();
     return StreamBuilder<QuerySnapshot>(
       stream: db
           .collection('subjectList') //_quizProvider.currentQuiz
@@ -63,14 +66,17 @@ class _SubjectListDialogState extends State<SubjectListDialog> {
   //
   Widget checkBoxItem({doc}) {
     String subjectTitle = doc.data['title'];
-    final _adminProvider = Provider.of<AdminProvider>(context);
-    for (var item in _adminProvider.quizToSubjects) {
+    final _adminProvider = Provider.of<AdminProvider>(context,listen: false);
+    print('so checkbox is');
+    print(_adminProvider.quizSubjects);
+    for (var item in _adminProvider.quizSubjects) {
       if (subjectTitle == item) {
       //  print('subjectTItle:$subjectTitle--item:$item---same');
         return SubjectCheckBox(title: subjectTitle, isSelected: true,doc: doc,);
       }
     }
-    return SubjectCheckBox(title: subjectTitle, isSelected: false,doc: doc,);
-    //irereturn neto 2 times chitae
+   return SubjectCheckBox(title: subjectTitle, isSelected: false,doc: doc,);
+   // irereturn neto 2 times chitae
+  //return Container();
   }
 }

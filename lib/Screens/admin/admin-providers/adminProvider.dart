@@ -1,5 +1,4 @@
 import 'package:Quiz_web/Screens/admin/admin-services/adminService.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 
 class AdminProvider with ChangeNotifier {
@@ -8,9 +7,14 @@ class AdminProvider with ChangeNotifier {
   bool editable = true;
   String createQuizTitle;
   String currentQuiz;
-  List quizToSubjects;
-  String quizToSubjectID;
+  List quizSubjects;
+  String subjectListID;
   int createQuizStep=1;
+  void updateQuizSubjects({@required List subjects, @required String id}){
+    quizSubjects=subjects;
+    subjectListID=id;
+    notifyListeners();
+  }
   void updateCreateQuizStep({@required val}){ 
     
     createQuizStep=val;
@@ -18,25 +22,25 @@ class AdminProvider with ChangeNotifier {
   }
 
   void quizSubjectPop({@required String val}) async{
-    print(quizToSubjects);
-    quizToSubjects.remove(val);
-    print('croo');
-    print(quizToSubjects);
+    print(quizSubjects);
+    quizSubjects.remove(val);
+    // print('croo');
+    // print(quizToSubjects);
     //do firebase update here
     //i have current quiz here
-    await AdminService().updateQuizSubjects(curentQuiz: currentQuiz,documentID: quizToSubjectID.toString(), subjects: quizToSubjects);
+    await AdminService().updateQuizSubjects(currentQuiz: currentQuiz,documentID: subjectListID.toString(), subjects: quizSubjects);
     
     notifyListeners();
   }
 
   void quizSubjectPush({@required String val}) async{
     print(val);
-   print(quizToSubjects);
-    quizToSubjects.add(val);
-    print('croo');
-    print(quizToSubjects);
-      //do firebase update here
-   await AdminService().updateQuizSubjects(curentQuiz: currentQuiz,documentID: quizToSubjectID.toString(), subjects: quizToSubjects);
+   print(quizSubjects);
+    quizSubjects.add(val);
+    // print('croo');
+    // print(quizToSubjects);
+    //   //do firebase update here
+   await AdminService().updateQuizSubjects(currentQuiz: currentQuiz,documentID: subjectListID.toString(), subjects: quizSubjects);
     notifyListeners();
   }
 
