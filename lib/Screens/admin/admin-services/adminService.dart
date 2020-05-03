@@ -152,6 +152,9 @@ class AdminService {
         ds.reference.delete();
       }
     });
+    //delete  quizID from subject list so it will not show 
+    //for each collection
+  
   }
 
   Future<void> deleteQuestion(
