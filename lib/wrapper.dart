@@ -42,8 +42,8 @@ class _WrapperState extends State<Wrapper> {
       // return AdminSubjects();
       //return Home();
   //return AdminCreateQuiz();
-    //return Home();
-     return AdminHomeScreen();
+    return Home();
+    // return AdminHomeScreen();
     } else {
       //return pagebuilder
       return PageBuilder(page: currentPage);
