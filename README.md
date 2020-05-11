@@ -1,2 +1,4 @@
 # Quiz_web
- Quiz-ee
+ Quiz App for web using Flutter Web and Firebase Firestore 
+ 
+ 
